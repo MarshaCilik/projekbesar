@@ -25,5 +25,10 @@ namespace WinFormsApp1
             login.Show();
             this.Hide();
         }
+
+        private void btn_LihatProdukTani_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

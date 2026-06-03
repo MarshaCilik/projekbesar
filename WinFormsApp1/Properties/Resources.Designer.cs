@@ -93,6 +93,16 @@ namespace WinFormsApp1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Desain_tanpa_judul {
+            get {
+                object obj = ResourceManager.GetObject("Desain tanpa judul", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap logo_produk_tani {
             get {
                 object obj = ResourceManager.GetObject("logo produk tani", resourceCulture);
@@ -126,6 +136,16 @@ namespace WinFormsApp1.Properties {
         internal static System.Drawing.Bitmap pngtree_background_blur_rice_field_blur_sunrise_photo_image_20947706 {
             get {
                 object obj = ResourceManager.GetObject("pngtree-background-blur-rice-field-blur-sunrise-photo-image_20947706", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap riwayat {
+            get {
+                object obj = ResourceManager.GetObject("riwayat", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
