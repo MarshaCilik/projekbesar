@@ -28,18 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
+            Dgv_BarangTani = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)Dgv_BarangTani).BeginInit();
             SuspendLayout();
+            // 
+            // Dgv_BarangTani
+            // 
+            Dgv_BarangTani.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            Dgv_BarangTani.Location = new Point(27, 180);
+            Dgv_BarangTani.Name = "Dgv_BarangTani";
+            Dgv_BarangTani.Size = new Size(996, 380);
+            Dgv_BarangTani.TabIndex = 0;
             // 
             // LihatProdukTani
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1264, 628);
+            Controls.Add(Dgv_BarangTani);
             Name = "LihatProdukTani";
-            Text = "LihatProdukTani";
+            RightToLeftLayout = true;
+            Text = "Lihat Stok Barang Tani";
+            ((System.ComponentModel.ISupportInitialize)Dgv_BarangTani).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
+
+        private DataGridView Dgv_BarangTani;
     }
 }

@@ -28,7 +28,9 @@ namespace WinFormsApp1
 
         private void btn_LihatProdukTani_Click(object sender, EventArgs e)
         {
-
+            LihatProdukTani form = new LihatProdukTani();
+            form.Show();
+            this.Hide();
         }
     }
 }

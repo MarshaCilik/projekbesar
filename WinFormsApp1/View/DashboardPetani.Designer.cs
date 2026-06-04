@@ -29,6 +29,10 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
+            pictureBox6 = new PictureBox();
+            lbl_riwayat = new Label();
+            pictureBox5 = new PictureBox();
+            label4 = new Label();
             btn_Logout = new Button();
             dashboard = new Label();
             pictureBox2 = new PictureBox();
@@ -44,11 +48,10 @@
             btn_LihatAlatSewa = new Button();
             label3 = new Label();
             pictureBox4 = new PictureBox();
-            label4 = new Label();
-            pictureBox5 = new PictureBox();
-            pictureBox6 = new PictureBox();
-            lbl_riwayat = new Label();
+            label5 = new Label();
             panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel2.SuspendLayout();
@@ -56,12 +59,11 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
             SuspendLayout();
             // 
             // panel1
             // 
+            panel1.Controls.Add(label5);
             panel1.Controls.Add(pictureBox6);
             panel1.Controls.Add(lbl_riwayat);
             panel1.Controls.Add(pictureBox5);
@@ -75,6 +77,48 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(319, 624);
             panel1.TabIndex = 0;
+            // 
+            // pictureBox6
+            // 
+            pictureBox6.BackColor = Color.Transparent;
+            pictureBox6.BackgroundImage = Properties.Resources.riwayat;
+            pictureBox6.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox6.Location = new Point(11, 286);
+            pictureBox6.Name = "pictureBox6";
+            pictureBox6.Size = new Size(46, 41);
+            pictureBox6.TabIndex = 8;
+            pictureBox6.TabStop = false;
+            // 
+            // lbl_riwayat
+            // 
+            lbl_riwayat.AutoSize = true;
+            lbl_riwayat.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbl_riwayat.Location = new Point(69, 296);
+            lbl_riwayat.Name = "lbl_riwayat";
+            lbl_riwayat.Size = new Size(170, 25);
+            lbl_riwayat.TabIndex = 7;
+            lbl_riwayat.Text = "Riwayat Pembelian";
+            // 
+            // pictureBox5
+            // 
+            pictureBox5.BackColor = Color.Transparent;
+            pictureBox5.BackgroundImage = Properties.Resources.Desain_tanpa_judul;
+            pictureBox5.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox5.Location = new Point(18, 178);
+            pictureBox5.Name = "pictureBox5";
+            pictureBox5.Size = new Size(46, 41);
+            pictureBox5.TabIndex = 6;
+            pictureBox5.TabStop = false;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label4.Location = new Point(69, 187);
+            label4.Name = "label4";
+            label4.Size = new Size(82, 25);
+            label4.TabIndex = 5;
+            label4.Text = "Pesanan";
             // 
             // btn_Logout
             // 
@@ -236,47 +280,15 @@
             pictureBox4.TabIndex = 3;
             pictureBox4.TabStop = false;
             // 
-            // label4
+            // label5
             // 
-            label4.AutoSize = true;
-            label4.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label4.Location = new Point(69, 187);
-            label4.Name = "label4";
-            label4.Size = new Size(88, 25);
-            label4.TabIndex = 5;
-            label4.Text = "Transaksi";
-            // 
-            // pictureBox5
-            // 
-            pictureBox5.BackColor = Color.Transparent;
-            pictureBox5.BackgroundImage = Properties.Resources.Desain_tanpa_judul;
-            pictureBox5.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox5.Location = new Point(18, 178);
-            pictureBox5.Name = "pictureBox5";
-            pictureBox5.Size = new Size(46, 41);
-            pictureBox5.TabIndex = 6;
-            pictureBox5.TabStop = false;
-            // 
-            // pictureBox6
-            // 
-            pictureBox6.BackColor = Color.Transparent;
-            pictureBox6.BackgroundImage = Properties.Resources.riwayat;
-            pictureBox6.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox6.Location = new Point(18, 236);
-            pictureBox6.Name = "pictureBox6";
-            pictureBox6.Size = new Size(46, 41);
-            pictureBox6.TabIndex = 8;
-            pictureBox6.TabStop = false;
-            // 
-            // lbl_riwayat
-            // 
-            lbl_riwayat.AutoSize = true;
-            lbl_riwayat.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbl_riwayat.Location = new Point(76, 246);
-            lbl_riwayat.Name = "lbl_riwayat";
-            lbl_riwayat.Size = new Size(170, 25);
-            lbl_riwayat.TabIndex = 7;
-            lbl_riwayat.Text = "Riwayat Pembelian";
+            label5.AutoSize = true;
+            label5.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label5.Location = new Point(69, 243);
+            label5.Name = "label5";
+            label5.Size = new Size(88, 25);
+            label5.TabIndex = 9;
+            label5.Text = "Transaksi";
             // 
             // DashboardPetani
             // 
@@ -293,6 +305,8 @@
             Text = "DashboardPetani";
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel2.ResumeLayout(false);
@@ -303,8 +317,6 @@
             panel4.ResumeLayout(false);
             panel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();
             ResumeLayout(false);
         }
 
@@ -330,5 +342,6 @@
         private Label label4;
         private PictureBox pictureBox6;
         private Label lbl_riwayat;
+        private Label label5;
     }
 }
