@@ -34,5 +34,7 @@ namespace WinFormsApp1.Models
             }
             return listbarang;
         }
+
+
     }
 }

@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using WinFormsApp1.Controller;
 using WinFormsApp1.Models;
+using WinFormsApp1.View;
 
 namespace WinFormsApp1
 {
@@ -30,6 +31,18 @@ namespace WinFormsApp1
 
             Dgv_BarangTani.DataSource = null;
             Dgv_BarangTani.DataSource = listbarangtani;
+        }
+
+        private void Btn_TambahPesanan_Click(object sender, EventArgs e)
+        {
+            if (Dgv_BarangTani != null)
+            {
+                barangTani selectedbarang = (barangTani)Dgv_BarangTani.CurrentRow.DataBoundItem;
+                PopUpPesanan form = new PopUpPesanan(selectedbarang);
+
+                form.Show();
+
+            }
         }
     }
 }

@@ -29,22 +29,36 @@
         private void InitializeComponent()
         {
             Dgv_BarangTani = new DataGridView();
+            Btn_TambahPesanan = new Button();
             ((System.ComponentModel.ISupportInitialize)Dgv_BarangTani).BeginInit();
             SuspendLayout();
             // 
             // Dgv_BarangTani
             // 
             Dgv_BarangTani.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            Dgv_BarangTani.Location = new Point(27, 180);
+            Dgv_BarangTani.Location = new Point(27, 143);
             Dgv_BarangTani.Name = "Dgv_BarangTani";
-            Dgv_BarangTani.Size = new Size(996, 380);
+            Dgv_BarangTani.Size = new Size(996, 417);
             Dgv_BarangTani.TabIndex = 0;
+            // 
+            // Btn_TambahPesanan
+            // 
+            Btn_TambahPesanan.BackColor = Color.LimeGreen;
+            Btn_TambahPesanan.ForeColor = SystemColors.ActiveCaptionText;
+            Btn_TambahPesanan.Location = new Point(906, 88);
+            Btn_TambahPesanan.Name = "Btn_TambahPesanan";
+            Btn_TambahPesanan.Size = new Size(117, 39);
+            Btn_TambahPesanan.TabIndex = 1;
+            Btn_TambahPesanan.Text = "Tambah Pesanan";
+            Btn_TambahPesanan.UseVisualStyleBackColor = false;
+            Btn_TambahPesanan.Click += Btn_TambahPesanan_Click;
             // 
             // LihatProdukTani
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1264, 628);
+            Controls.Add(Btn_TambahPesanan);
             Controls.Add(Dgv_BarangTani);
             Name = "LihatProdukTani";
             RightToLeftLayout = true;
@@ -56,5 +70,6 @@
         #endregion
 
         private DataGridView Dgv_BarangTani;
+        private Button Btn_TambahPesanan;
     }
 }

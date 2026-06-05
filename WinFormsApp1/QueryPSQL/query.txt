@@ -1,0 +1,37 @@
+create or replace procedure add_pesanan_barang(
+p_users_id int, 
+p_opsi_pengiriman varchar, 
+p_barang_id int, 
+p_quantity int
+)
+LANGUAGE plpgsql
+as $$
+DECLARE
+	v_pesanan_id int;
+	v_status_pesanan varchar;
+	v_harga_per_item numeric;
+BEGIN	
+	SELECT status_pesanan, pesanan_id
+	INTO v_status_pesanan, v_pesanan_id
+	FROM pesanan
+	where users_id = p_users_id;
+
+	SELECT harga_per_item 
+	INTO v_harga_per_item
+	FROM barang
+	where barang_id = p_barang_id;
+
+	IF v_status_pesanan IS NULL THEN
+			INSERT INTO pesanan(tanggal_pesanan, users_id, status_pesanan, opsi_pengiriman)
+			VALUES (now(), p_users_id, 'Data belum terkirim', p_opsi_pengiriman) 
+			returning pesanan_id into v_pesanan_id;
+
+			INSERT INTO detail_pesanan_pembelian(quantity, harga_per_item, pesanan_id, barang_id)
+			VALUES (p_quantity, v_harga_per_item, v_pesanan_id, p_barang_id);
+	ELSIF v_status_pesanan = 'Data belum terkirim' THEN--jika pesanan sudah ada
+			INSERT INTO detail_pesanan_pembelian(quantity, harga_per_item, pesanan_id, barang_id)
+			VALUES (p_quantity, v_harga_per_item, v_pesanan_id, p_barang_id);
+
+	END IF;
+END;
+$$;
