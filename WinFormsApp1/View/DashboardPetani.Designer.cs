@@ -29,319 +29,175 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
-            pictureBox6 = new PictureBox();
-            lbl_riwayat = new Label();
-            pictureBox5 = new PictureBox();
-            label4 = new Label();
             btn_Logout = new Button();
-            dashboard = new Label();
-            pictureBox2 = new PictureBox();
             usernameShow = new Label();
-            pictureBox1 = new PictureBox();
             panel2 = new Panel();
             label1 = new Label();
-            panel3 = new Panel();
             btn_LihatProdukTani = new Button();
-            label2 = new Label();
-            pictureBox3 = new PictureBox();
-            panel4 = new Panel();
             btn_LihatAlatSewa = new Button();
-            label3 = new Label();
-            pictureBox4 = new PictureBox();
-            label5 = new Label();
+            npgsqlDataAdapter1 = new Npgsql.NpgsqlDataAdapter();
+            panel3 = new Panel();
+            Dgv_BarangTani = new DataGridView();
+            btn_PesanProduk = new Button();
             panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel2.SuspendLayout();
             panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
-            panel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)Dgv_BarangTani).BeginInit();
             SuspendLayout();
             // 
             // panel1
             // 
-            panel1.Controls.Add(label5);
-            panel1.Controls.Add(pictureBox6);
-            panel1.Controls.Add(lbl_riwayat);
-            panel1.Controls.Add(pictureBox5);
-            panel1.Controls.Add(label4);
+            panel1.BackColor = Color.Transparent;
+            panel1.BackgroundImage = Properties.Resources.dashbord_petani_kiri;
             panel1.Controls.Add(btn_Logout);
-            panel1.Controls.Add(dashboard);
-            panel1.Controls.Add(pictureBox2);
-            panel1.Controls.Add(usernameShow);
-            panel1.Controls.Add(pictureBox1);
             panel1.Location = new Point(-5, -4);
             panel1.Name = "panel1";
-            panel1.Size = new Size(319, 624);
+            panel1.Size = new Size(263, 1013);
             panel1.TabIndex = 0;
-            // 
-            // pictureBox6
-            // 
-            pictureBox6.BackColor = Color.Transparent;
-            pictureBox6.BackgroundImage = Properties.Resources.riwayat;
-            pictureBox6.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox6.Location = new Point(11, 286);
-            pictureBox6.Name = "pictureBox6";
-            pictureBox6.Size = new Size(46, 41);
-            pictureBox6.TabIndex = 8;
-            pictureBox6.TabStop = false;
-            // 
-            // lbl_riwayat
-            // 
-            lbl_riwayat.AutoSize = true;
-            lbl_riwayat.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbl_riwayat.Location = new Point(69, 296);
-            lbl_riwayat.Name = "lbl_riwayat";
-            lbl_riwayat.Size = new Size(170, 25);
-            lbl_riwayat.TabIndex = 7;
-            lbl_riwayat.Text = "Riwayat Pembelian";
-            // 
-            // pictureBox5
-            // 
-            pictureBox5.BackColor = Color.Transparent;
-            pictureBox5.BackgroundImage = Properties.Resources.Desain_tanpa_judul;
-            pictureBox5.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox5.Location = new Point(18, 178);
-            pictureBox5.Name = "pictureBox5";
-            pictureBox5.Size = new Size(46, 41);
-            pictureBox5.TabIndex = 6;
-            pictureBox5.TabStop = false;
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label4.Location = new Point(69, 187);
-            label4.Name = "label4";
-            label4.Size = new Size(82, 25);
-            label4.TabIndex = 5;
-            label4.Text = "Pesanan";
             // 
             // btn_Logout
             // 
-            btn_Logout.BackColor = Color.Red;
-            btn_Logout.Location = new Point(193, 539);
+            btn_Logout.BackColor = Color.Transparent;
+            btn_Logout.FlatAppearance.BorderSize = 0;
+            btn_Logout.FlatAppearance.MouseDownBackColor = Color.Transparent;
+            btn_Logout.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            btn_Logout.FlatStyle = FlatStyle.Flat;
+            btn_Logout.Location = new Point(17, 960);
             btn_Logout.Name = "btn_Logout";
-            btn_Logout.Size = new Size(93, 39);
+            btn_Logout.Size = new Size(93, 29);
             btn_Logout.TabIndex = 4;
-            btn_Logout.Text = "Logout";
             btn_Logout.UseVisualStyleBackColor = false;
             btn_Logout.Click += btn_Logout_Click;
-            // 
-            // dashboard
-            // 
-            dashboard.AutoSize = true;
-            dashboard.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            dashboard.Location = new Point(69, 133);
-            dashboard.Name = "dashboard";
-            dashboard.Size = new Size(109, 25);
-            dashboard.TabIndex = 3;
-            dashboard.Text = "Dashboard";
-            // 
-            // pictureBox2
-            // 
-            pictureBox2.BackColor = Color.Transparent;
-            pictureBox2.BackgroundImage = Properties.Resources.dashboard;
-            pictureBox2.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox2.Location = new Point(19, 123);
-            pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(46, 41);
-            pictureBox2.TabIndex = 2;
-            pictureBox2.TabStop = false;
             // 
             // usernameShow
             // 
             usernameShow.AutoSize = true;
-            usernameShow.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            usernameShow.Location = new Point(100, 28);
+            usernameShow.Font = new Font("Segoe UI", 26.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            usernameShow.ForeColor = SystemColors.ButtonFace;
+            usernameShow.Location = new Point(26, 50);
             usernameShow.Name = "usernameShow";
-            usernameShow.Size = new Size(186, 32);
+            usernameShow.Size = new Size(573, 47);
             usernameShow.TabIndex = 1;
-            usernameShow.Text = "UsernamePetani";
-            // 
-            // pictureBox1
-            // 
-            pictureBox1.BackColor = Color.Transparent;
-            pictureBox1.BackgroundImage = Properties.Resources.petanilogo1;
-            pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox1.Location = new Point(0, -6);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(104, 110);
-            pictureBox1.TabIndex = 0;
-            pictureBox1.TabStop = false;
+            usernameShow.Text = "Selamat Datang! UsernamePetani";
             // 
             // panel2
             // 
+            panel2.BackColor = Color.FromArgb(49, 106, 14);
             panel2.Controls.Add(label1);
-            panel2.Location = new Point(332, 12);
+            panel2.Controls.Add(usernameShow);
+            panel2.Location = new Point(282, 31);
             panel2.Name = "panel2";
-            panel2.Size = new Size(826, 88);
+            panel2.Size = new Size(1061, 180);
             panel2.TabIndex = 1;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(26, 22);
+            label1.Font = new Font("Segoe UI Light", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.ForeColor = SystemColors.ButtonFace;
+            label1.Location = new Point(26, 97);
             label1.Name = "label1";
-            label1.Size = new Size(299, 40);
-            label1.TabIndex = 0;
-            label1.Text = "Total Pengeluaran : Rp";
-            // 
-            // panel3
-            // 
-            panel3.BackColor = Color.Transparent;
-            panel3.BackgroundImage = Properties.Resources.card;
-            panel3.BackgroundImageLayout = ImageLayout.Stretch;
-            panel3.Controls.Add(btn_LihatProdukTani);
-            panel3.Controls.Add(label2);
-            panel3.Controls.Add(pictureBox3);
-            panel3.Location = new Point(358, 129);
-            panel3.Name = "panel3";
-            panel3.Size = new Size(381, 445);
-            panel3.TabIndex = 2;
+            label1.Size = new Size(774, 30);
+            label1.TabIndex = 2;
+            label1.Text = "Pantau stok produk koperasi dan atur penyewaan alat tani dengan lebih mudah hari ini.";
             // 
             // btn_LihatProdukTani
             // 
-            btn_LihatProdukTani.BackColor = SystemColors.MenuHighlight;
-            btn_LihatProdukTani.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btn_LihatProdukTani.Location = new Point(14, 302);
+            btn_LihatProdukTani.BackColor = Color.FromArgb(49, 106, 14);
+            btn_LihatProdukTani.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btn_LihatProdukTani.ForeColor = SystemColors.ButtonFace;
+            btn_LihatProdukTani.Location = new Point(282, 281);
             btn_LihatProdukTani.Name = "btn_LihatProdukTani";
-            btn_LihatProdukTani.Size = new Size(347, 62);
+            btn_LihatProdukTani.Size = new Size(130, 32);
             btn_LihatProdukTani.TabIndex = 1;
-            btn_LihatProdukTani.Text = "Lihat Sekarang";
+            btn_LihatProdukTani.Text = "Produk";
             btn_LihatProdukTani.UseVisualStyleBackColor = false;
             btn_LihatProdukTani.Click += btn_LihatProdukTani_Click;
             // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 26.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(79, 32);
-            label2.Name = "label2";
-            label2.Size = new Size(218, 47);
-            label2.TabIndex = 0;
-            label2.Text = "Produk Tani";
-            // 
-            // pictureBox3
-            // 
-            pictureBox3.BackgroundImage = Properties.Resources.logo_produk_tani;
-            pictureBox3.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox3.Location = new Point(97, 65);
-            pictureBox3.Name = "pictureBox3";
-            pictureBox3.Size = new Size(183, 248);
-            pictureBox3.TabIndex = 2;
-            pictureBox3.TabStop = false;
-            // 
-            // panel4
-            // 
-            panel4.BackColor = Color.Transparent;
-            panel4.BackgroundImage = Properties.Resources.card;
-            panel4.BackgroundImageLayout = ImageLayout.Stretch;
-            panel4.Controls.Add(btn_LihatAlatSewa);
-            panel4.Controls.Add(label3);
-            panel4.Controls.Add(pictureBox4);
-            panel4.Location = new Point(762, 129);
-            panel4.Name = "panel4";
-            panel4.Size = new Size(381, 445);
-            panel4.TabIndex = 3;
-            // 
             // btn_LihatAlatSewa
             // 
-            btn_LihatAlatSewa.BackColor = SystemColors.MenuHighlight;
-            btn_LihatAlatSewa.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btn_LihatAlatSewa.Location = new Point(16, 302);
+            btn_LihatAlatSewa.BackColor = SystemColors.InactiveCaption;
+            btn_LihatAlatSewa.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btn_LihatAlatSewa.ForeColor = Color.FromArgb(49, 106, 14);
+            btn_LihatAlatSewa.Location = new Point(418, 281);
             btn_LihatAlatSewa.Name = "btn_LihatAlatSewa";
-            btn_LihatAlatSewa.Size = new Size(347, 62);
+            btn_LihatAlatSewa.Size = new Size(130, 32);
             btn_LihatAlatSewa.TabIndex = 2;
-            btn_LihatAlatSewa.Text = "Lihat Sekarang";
+            btn_LihatAlatSewa.Text = "Alat Sewa";
             btn_LihatAlatSewa.UseVisualStyleBackColor = false;
             // 
-            // label3
+            // npgsqlDataAdapter1
             // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 26.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.Location = new Point(107, 32);
-            label3.Name = "label3";
-            label3.Size = new Size(184, 47);
-            label3.TabIndex = 1;
-            label3.Text = "Alat Sewa";
+            npgsqlDataAdapter1.DeleteCommand = null;
+            npgsqlDataAdapter1.InsertCommand = null;
+            npgsqlDataAdapter1.SelectCommand = null;
+            npgsqlDataAdapter1.UpdateCommand = null;
             // 
-            // pictureBox4
+            // panel3
             // 
-            pictureBox4.BackgroundImage = Properties.Resources.alat_sewa;
-            pictureBox4.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox4.Location = new Point(107, 65);
-            pictureBox4.Name = "pictureBox4";
-            pictureBox4.Size = new Size(183, 248);
-            pictureBox4.TabIndex = 3;
-            pictureBox4.TabStop = false;
+            panel3.BackColor = Color.FromArgb(122, 148, 114);
+            panel3.Controls.Add(Dgv_BarangTani);
+            panel3.Location = new Point(282, 332);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(1061, 653);
+            panel3.TabIndex = 3;
             // 
-            // label5
+            // Dgv_BarangTani
             // 
-            label5.AutoSize = true;
-            label5.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label5.Location = new Point(69, 243);
-            label5.Name = "label5";
-            label5.Size = new Size(88, 25);
-            label5.TabIndex = 9;
-            label5.Text = "Transaksi";
+            Dgv_BarangTani.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            Dgv_BarangTani.Location = new Point(13, 15);
+            Dgv_BarangTani.Name = "Dgv_BarangTani";
+            Dgv_BarangTani.Size = new Size(1032, 621);
+            Dgv_BarangTani.TabIndex = 1;
+            // 
+            // btn_PesanProduk
+            // 
+            btn_PesanProduk.BackColor = Color.LimeGreen;
+            btn_PesanProduk.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btn_PesanProduk.ForeColor = Color.Black;
+            btn_PesanProduk.Location = new Point(1136, 281);
+            btn_PesanProduk.Name = "btn_PesanProduk";
+            btn_PesanProduk.Size = new Size(191, 32);
+            btn_PesanProduk.TabIndex = 4;
+            btn_PesanProduk.Text = "Pesan Produk";
+            btn_PesanProduk.UseVisualStyleBackColor = false;
+            btn_PesanProduk.Click += btn_PesanProduk_Click;
             // 
             // DashboardPetani
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackgroundImage = Properties.Resources.pngtree_background_blur_rice_field_blur_sunrise_photo_image_20947706;
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(1179, 605);
-            Controls.Add(panel4);
+            ClientSize = new Size(1367, 1005);
+            Controls.Add(btn_PesanProduk);
             Controls.Add(panel3);
+            Controls.Add(btn_LihatAlatSewa);
+            Controls.Add(btn_LihatProdukTani);
             Controls.Add(panel2);
             Controls.Add(panel1);
             Name = "DashboardPetani";
             Text = "DashboardPetani";
+            WindowState = FormWindowState.Maximized;
             panel1.ResumeLayout(false);
-            panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             panel3.ResumeLayout(false);
-            panel3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
-            panel4.ResumeLayout(false);
-            panel4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
+            ((System.ComponentModel.ISupportInitialize)Dgv_BarangTani).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
         private Panel panel1;
-        private PictureBox pictureBox1;
         private Panel panel2;
-        private Label label1;
-        private Panel panel3;
         private Button btn_LihatProdukTani;
-        private Label label2;
-        private Panel panel4;
-        private Label label3;
         private Label usernameShow;
         private Button btn_LihatAlatSewa;
-        private Label dashboard;
-        private PictureBox pictureBox2;
         private Button btn_Logout;
-        private PictureBox pictureBox3;
-        private PictureBox pictureBox4;
-        private PictureBox pictureBox5;
-        private Label label4;
-        private PictureBox pictureBox6;
-        private Label lbl_riwayat;
-        private Label label5;
+        private Label label1;
+        private Npgsql.NpgsqlDataAdapter npgsqlDataAdapter1;
+        private Panel panel3;
+        private DataGridView Dgv_BarangTani;
+        private Button btn_PesanProduk;
     }
 }

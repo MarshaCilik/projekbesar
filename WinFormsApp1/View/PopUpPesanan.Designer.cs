@@ -32,7 +32,7 @@
             TbStok = new TextBox();
             Btn_Tambah = new Button();
             label2 = new Label();
-            label3 = new Label();
+            lbl_formbarang = new Label();
             cmbPengiriman = new ComboBox();
             SuspendLayout();
             // 
@@ -74,15 +74,15 @@
             label2.TabIndex = 3;
             label2.Text = "Opsi Pengiriman";
             // 
-            // label3
+            // lbl_formbarang
             // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(12, 9);
-            label3.Name = "label3";
-            label3.Size = new Size(105, 20);
-            label3.TabIndex = 5;
-            label3.Text = "Form Barang x";
+            lbl_formbarang.AutoSize = true;
+            lbl_formbarang.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbl_formbarang.Location = new Point(12, 9);
+            lbl_formbarang.Name = "lbl_formbarang";
+            lbl_formbarang.Size = new Size(105, 20);
+            lbl_formbarang.TabIndex = 5;
+            lbl_formbarang.Text = "Form Barang x";
             // 
             // cmbPengiriman
             // 
@@ -99,7 +99,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(558, 231);
             Controls.Add(cmbPengiriman);
-            Controls.Add(label3);
+            Controls.Add(lbl_formbarang);
             Controls.Add(label2);
             Controls.Add(Btn_Tambah);
             Controls.Add(TbStok);
@@ -117,7 +117,7 @@
         private TextBox TbStok;
         private Button Btn_Tambah;
         private Label label2;
-        private Label label3;
+        private Label lbl_formbarang;
         private ComboBox cmbPengiriman;
     }
 }

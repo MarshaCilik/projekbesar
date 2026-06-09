@@ -93,9 +93,29 @@ namespace WinFormsApp1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap dashbord_petani_kiri {
+            get {
+                object obj = ResourceManager.GetObject("dashbord petani kiri", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Desain_tanpa_judul {
             get {
                 object obj = ResourceManager.GetObject("Desain tanpa judul", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap fe3206811ece50e7f67e433999750266b64732d3 {
+            get {
+                object obj = ResourceManager.GetObject("fe3206811ece50e7f67e433999750266b64732d3", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
