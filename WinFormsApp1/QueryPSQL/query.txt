@@ -35,3 +35,10 @@ BEGIN
 	END IF;
 END;
 $$;
+
+create view v_SemuaDataUser as
+select u.users_id, u.nama, u.no_telp, u.email, u.username, u.passwords, u.isactive
+, u.alamat, u.created_at, u.update_at, r.roles, d.nama_desa
+from users u
+join roles r using(roles_id)
+join desa d using(desa_id);

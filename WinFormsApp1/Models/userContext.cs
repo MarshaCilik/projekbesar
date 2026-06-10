@@ -9,6 +9,10 @@ namespace WinFormsApp1.Models
 {
     public class userContext
     {
+        public void ReadAllUserData()
+        {
+
+        }
         public void Create(usersData user)
         {
             using (NpgsqlConnection conn = connectDB.GetConnection())
