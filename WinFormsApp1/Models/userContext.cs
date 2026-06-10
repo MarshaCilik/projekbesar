@@ -2,18 +2,85 @@
 using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using WinFormsApp1.Helpers;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace WinFormsApp1.Models
 {
     public class userContext
     {
-        public void ReadAllUserData()
+        public List<Users> ReadUserDataForAdmin(string DataUser)
         {
+            if (DataUser == "semua")
+            {
+                DataUser = "v_SemuaDataUser";
+            }
+            else if (DataUser == "karyawan")
+            {
+                DataUser = "v_KaryawanDataUser";
+            }
+            else if (DataUser == "petani")
+            {
+                DataUser = "v_PetaniDataUser";
+            }
+            List<Users> list = new List<Users>();
+            using (NpgsqlConnection conn = connectDB.GetConnection())
+            {
+                string sql = $"SELECT * FROM {DataUser}";
+                using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
+                {
+                    using (NpgsqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            DateOnly? createdAt = dr["created_at"] != DBNull.Value
+                                ? DateOnly.FromDateTime(Convert.ToDateTime(dr["created_at"]))
+                                : null;
 
+                            DateOnly? updateAt = dr["update_at"] != DBNull.Value
+                                ? DateOnly.FromDateTime(Convert.ToDateTime(dr["update_at"]))
+                                : null;
+
+                            string role = dr["roles"].ToString().ToLower();
+
+                            int userId = Convert.ToInt32(dr["users_id"]);
+                            string username = dr["username"].ToString();
+                            string password = dr["passwords"].ToString();
+                            string nama = dr["nama"].ToString();
+                            string noTelp = dr["no_telp"].ToString();
+                            string email = dr["email"].ToString();
+                            string alamat = dr["alamat"].ToString();
+                            bool isActive = Convert.ToBoolean(dr["isactive"]);
+                            string namaDesa = dr["nama_desa"].ToString();
+                            string namaKecamatan = dr["nama_kecamatan"].ToString();
+
+                            Users userObj;
+
+                            if (role == "admin")
+                            {
+                                userObj = new AdminUser(userId, username, password, nama, noTelp, email, isActive, createdAt, updateAt, alamat, namaDesa, namaKecamatan);
+                            }
+                            else if (role == "karyawan")
+                            {
+                                userObj = new KaryawanUser(userId, username, password, nama, noTelp, email, isActive, createdAt, updateAt, alamat, namaDesa, namaKecamatan);
+                            }
+                            else // petani
+                            {
+                                userObj = new PetaniUser(userId, username, password, nama, noTelp, email, isActive, createdAt, updateAt, alamat, namaDesa, namaKecamatan);
+                            }
+
+                            list.Add(userObj);
+                        }
+                    }
+                }
+            }
+            return list;
         }
-        public void Create(usersData user)
+        public void Create(usersDataRegister user)
         {
             using (NpgsqlConnection conn = connectDB.GetConnection())
             {

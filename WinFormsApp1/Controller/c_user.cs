@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualBasic.ApplicationServices;
 using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using WinFormsApp1.Models;
 
@@ -9,8 +10,24 @@ namespace WinFormsApp1.Controller
     class c_user
     {
         userContext context = new userContext();
+        public List<Users> ReadAllUser(string DataUser) //method read
+        {
+            if (DataUser == "karyawan")
+            {
+                return context.ReadUserDataForAdmin("karyawan");
+            }
+            else if (DataUser == "petani")
+            {
+                return context.ReadUserDataForAdmin("petani");
+            }
+            else if (DataUser == "semua")
+            {
+                return context.ReadUserDataForAdmin("semua");
+            }
+            return null;
+        }
 
-        public string Validation(usersData user) //Method validasi
+        public string Validation(usersDataRegister user) //Method validasi Register
         {
             if (string.IsNullOrWhiteSpace(user.nama) ||
                 string.IsNullOrWhiteSpace(user.alamat) ||
@@ -27,7 +44,7 @@ namespace WinFormsApp1.Controller
             return null;
         }
 
-        public string Create(usersData user) //method create
+        public string Create(usersDataRegister user) //method create
         {
             string validation = Validation(user);
 

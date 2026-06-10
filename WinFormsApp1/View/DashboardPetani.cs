@@ -55,6 +55,7 @@ namespace WinFormsApp1
             {
                 barangTani selectedbarang = (barangTani)Dgv_BarangTani.CurrentRow.DataBoundItem;
                 PopUpPesanan form = new PopUpPesanan(selectedbarang);
+                form.Show();
                 //if (form.ShowDialog() == DialogResult.OK)
                 //{
                 //    string result = controller.Create(form.barangTani);

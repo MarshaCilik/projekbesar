@@ -5,7 +5,7 @@ using System.Text;
 
 namespace WinFormsApp1.Models
 {
-    public class usersData : userLogin
+    public class usersDataRegister : usersDataLogin
     {
         public string nama { get; set; }
         public string email { get; set; }
@@ -14,7 +14,7 @@ namespace WinFormsApp1.Models
         public string kecamatan { get; set; }
         public string desa { get; set; }
 
-        public usersData(string nama, string email, string nomor_telepon, string alamat, string kecamatan, string desa, string username, string password) : base(username, password)
+        public usersDataRegister(string nama, string email, string nomor_telepon, string alamat, string kecamatan, string desa, string username, string password) : base(username, password)
         {
             this.nama = nama;
             this.email = email;

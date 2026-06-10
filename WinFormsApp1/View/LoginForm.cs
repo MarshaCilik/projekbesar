@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.ApplicationServices;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -24,12 +25,25 @@ namespace WinFormsApp1
 
             var hasilLogin = aut.Login(TbUsername.Text, TbPassword.Text);
 
-            if (hasilLogin.Pesan == "Sukses" && hasilLogin.Role == 1)
+            if (!hasilLogin.IsSukses)
             {
-                MessageBox.Show("Selamat Datang!");
-                DashboardPetani dashboardpetani1 = new DashboardPetani(TbUsername.Text);
-                dashboardpetani1.Show();
+                MessageBox.Show(hasilLogin.Pesan, "Peringatan!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
+            Users sessionUser = null;
+
+            if (hasilLogin.Role == 1)
+            {
+                sessionUser = new PetaniUser(0, TbUsername.Text, "", "", "", "", true, null, null, "", "", "");
+            }
+            else if (hasilLogin.Role == 2)
+            {
+                sessionUser = new KaryawanUser(0, TbUsername.Text, "", "", "", "", true, null, null,"", "", "");
+            }
+            else if (hasilLogin.Role == 3)
+            {
+                sessionUser = new AdminUser(0, TbUsername.Text, "", "", "", "", true, null, null,"", "", "");
             }
             else if (hasilLogin.Pesan == "Username atau Password tidak boleh kosong!")
             {
@@ -46,14 +60,11 @@ namespace WinFormsApp1
                 MessageBox.Show($"{hasilLogin.Pesan}", "Peringatan!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            if (sessionUser != null)
+            {
+                sessionUser.BukaDashboard();
 
-            else if (hasilLogin.Pesan == "Sukses" && hasilLogin.Role == 2)
-            {
-                //Masuk dashboard karyawan
-            }
-            else if (hasilLogin.Pesan == "Sukses" && hasilLogin.Role == 3)
-            {
-                //Masuk dashboard admin
+                this.Hide(); 
             }
             this.Hide();
         }

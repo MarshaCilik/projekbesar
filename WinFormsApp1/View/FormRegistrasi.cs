@@ -7,7 +7,7 @@ namespace WinFormsApp1
 {
     public partial class FormRegistrasi : Form
     {
-        public usersData UserData { get; private set; }
+        public usersDataRegister UserData { get; private set; }
 
         c_user controller = new c_user();
 
@@ -19,7 +19,7 @@ namespace WinFormsApp1
             TbNomorTelepon.MaxLength = 13;
         }
 
-        public FormRegistrasi(usersData user) : this()
+        public FormRegistrasi(usersDataRegister user) : this()
         {
             UserData = user;
 
@@ -76,7 +76,7 @@ namespace WinFormsApp1
             {
                 if (UserData == null)
                 {
-                    UserData = new usersData(TbNama.Text, TbEmail.Text, TbNomorTelepon.Text, TbAlamat.Text,
+                    UserData = new usersDataRegister(TbNama.Text, TbEmail.Text, TbNomorTelepon.Text, TbAlamat.Text,
                         TbKecamatan.Text, TbDesa.Text, TbUsername.Text, TbPassword.Text);
 
 
@@ -94,7 +94,7 @@ namespace WinFormsApp1
                 }
                 else
                 {
-                    UserData = new usersData(TbNama.Text, TbEmail.Text, TbNomorTelepon.Text, TbAlamat.Text,
+                    UserData = new usersDataRegister(TbNama.Text, TbEmail.Text, TbNomorTelepon.Text, TbAlamat.Text,
                         TbKecamatan.Text, TbDesa.Text, TbUsername.Text, TbPassword.Text);
                 }
             }

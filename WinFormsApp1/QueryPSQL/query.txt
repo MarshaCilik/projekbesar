@@ -36,9 +36,64 @@ BEGIN
 END;
 $$;
 
-create view v_SemuaDataUser as
-select u.users_id, u.nama, u.no_telp, u.email, u.username, u.passwords, u.isactive
-, u.alamat, u.created_at, u.update_at, r.roles, d.nama_desa
-from users u
-join roles r using(roles_id)
-join desa d using(desa_id);
+CREATE OR REPLACE VIEW public.v_petanidatauser
+ AS
+ SELECT u.users_id,
+    u.nama,
+    u.no_telp,
+    u.email,
+    u.username,
+    u.passwords,
+    u.alamat,
+    u.created_at,
+    u.update_at,
+    r.roles,
+    d.nama_desa,
+    k.nama_kecamatan,
+    u.isactive
+   FROM users u
+     JOIN roles r USING (roles_id)
+     JOIN desa d USING (desa_id)
+     JOIN kecamatan k USING (kecamatan_id)
+	 WHERE u.roles_id = 1;
+
+CREATE OR REPLACE VIEW public.v_karyawandatauser
+ AS
+ SELECT u.users_id,
+    u.nama,
+    u.no_telp,
+    u.email,
+    u.username,
+    u.passwords,
+    u.alamat,
+    u.created_at,
+    u.update_at,
+    r.roles,
+    d.nama_desa,
+    k.nama_kecamatan,
+    u.isactive
+   FROM users u
+     JOIN roles r USING (roles_id)
+     JOIN desa d USING (desa_id)
+     JOIN kecamatan k USING (kecamatan_id)
+	 WHERE u.roles_id = 2;
+
+CREATE OR REPLACE VIEW public.v_semuadatauser
+ AS
+ SELECT u.users_id,
+    u.nama,
+    u.no_telp,
+    u.email,
+    u.username,
+    u.passwords,
+    u.alamat,
+    u.created_at,
+    u.update_at,
+    r.roles,
+    d.nama_desa,
+    k.nama_kecamatan,
+    u.isactive
+   FROM users u
+     JOIN roles r USING (roles_id)
+     JOIN desa d USING (desa_id)
+     JOIN kecamatan k USING (kecamatan_id);
