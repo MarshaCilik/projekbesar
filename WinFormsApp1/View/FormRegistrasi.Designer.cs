@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
+            label10 = new Label();
             TbNomorTelepon = new TextBox();
             label11 = new Label();
             label9 = new Label();
@@ -48,7 +49,6 @@
             TbNama = new TextBox();
             label2 = new Label();
             label1 = new Label();
-            label10 = new Label();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -80,6 +80,16 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(619, 814);
             panel1.TabIndex = 0;
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label10.Location = new Point(102, 88);
+            label10.Name = "label10";
+            label10.Size = new Size(417, 42);
+            label10.TabIndex = 20;
+            label10.Text = "Lengkapi informasi di bawah ini untuk memulai perjalanan\r\nAnda bersama PASTANI.";
             // 
             // TbNomorTelepon
             // 
@@ -249,16 +259,6 @@
             label1.Size = new Size(325, 50);
             label1.TabIndex = 0;
             label1.Text = "Daftar Akun Baru";
-            // 
-            // label10
-            // 
-            label10.AutoSize = true;
-            label10.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label10.Location = new Point(102, 88);
-            label10.Name = "label10";
-            label10.Size = new Size(417, 42);
-            label10.TabIndex = 20;
-            label10.Text = "Lengkapi informasi di bawah ini untuk memulai perjalanan\r\nAnda bersama PASTANI.";
             // 
             // FormRegistrasi
             // 

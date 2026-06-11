@@ -103,6 +103,16 @@ namespace WinFormsApp1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Container__1_ {
+            get {
+                object obj = ResourceManager.GetObject("Container (1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap CRUDProduk {
             get {
                 object obj = ResourceManager.GetObject("CRUDProduk", resourceCulture);
@@ -303,9 +313,39 @@ namespace WinFormsApp1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Shopping_Bag__1_ {
+            get {
+                object obj = ResourceManager.GetObject("Shopping Bag (1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Shopping_Bag__5_ {
+            get {
+                object obj = ResourceManager.GetObject("Shopping Bag (5)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap TambahKaryawan {
             get {
                 object obj = ResourceManager.GetObject("TambahKaryawan", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap User_Add {
+            get {
+                object obj = ResourceManager.GetObject("User Add", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
