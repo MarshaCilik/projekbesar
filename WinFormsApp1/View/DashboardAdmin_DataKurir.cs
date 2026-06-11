@@ -10,35 +10,32 @@ using WinFormsApp1.Models;
 
 namespace WinFormsApp1.View
 {
-    public partial class Dashboard_admin : Form
+    public partial class DashboardAdmin_DataKurir : Form
     {
+        public List<Kurir> list;
         c_user controller = new c_user();
-
-        public string Username;
-
-        private List<Users> list;
-
-        public Dashboard_admin(string username)
+        private string Username;
+        public DashboardAdmin_DataKurir(string username)
         {
-            this.Username = username;
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
-            dgv_AllUser.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            Load();
+            Dgv_Karyawan.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            this.Username = Username;
             Lbl_UsernameAtas.Text = $"{Username}";
+            Load();
         }
 
         public void Load()
         {
-            list = controller.ReadAllUser("semua");
+            list = controller.ReadKurir();
 
-            dgv_AllUser.DataSource = null;
-            dgv_AllUser.DataSource = list;
+            Dgv_Karyawan.DataSource = null;
+            Dgv_Karyawan.DataSource = list;
         }
 
-        private void Btn_Karyawan_Click(object sender, EventArgs e)
+        private void Btn_SeluruhUser_Click(object sender, EventArgs e)
         {
-            DashboardAdmin_DataKaryawan form = new DashboardAdmin_DataKaryawan(Username);
+            Dashboard_admin form = new Dashboard_admin(Username);
             form.Show();
             this.Hide();
         }
@@ -50,9 +47,9 @@ namespace WinFormsApp1.View
             this.Hide();
         }
 
-        private void Btn_Kurir_Click(object sender, EventArgs e)
+        private void Btn_Karyawan_Click(object sender, EventArgs e)
         {
-            DashboardAdmin_DataKurir form = new DashboardAdmin_DataKurir(Username);
+            DashboardAdmin_DataKaryawan form = new DashboardAdmin_DataKaryawan(Username);
             form.Show();
             this.Hide();
         }

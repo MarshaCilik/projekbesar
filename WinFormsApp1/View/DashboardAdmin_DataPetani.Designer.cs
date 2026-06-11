@@ -56,6 +56,7 @@
             dgv_AllUser = new DataGridView();
             label6 = new Label();
             Dgv_Karyawan = new DataGridView();
+            Btn_Kurir = new Button();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)Dgv_UserPetani).BeginInit();
             panel1.SuspendLayout();
@@ -111,7 +112,7 @@
             // 
             // Dgv_UserPetani
             // 
-            Dgv_UserPetani.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            Dgv_UserPetani.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             Dgv_UserPetani.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             Dgv_UserPetani.Location = new Point(13, 7);
             Dgv_UserPetani.Margin = new Padding(2);
@@ -333,7 +334,7 @@
             Btn_SeluruhUser.ForeColor = Color.Black;
             Btn_SeluruhUser.Location = new Point(273, 271);
             Btn_SeluruhUser.Name = "Btn_SeluruhUser";
-            Btn_SeluruhUser.Size = new Size(204, 45);
+            Btn_SeluruhUser.Size = new Size(145, 45);
             Btn_SeluruhUser.TabIndex = 39;
             Btn_SeluruhUser.Text = "Seluruh User";
             Btn_SeluruhUser.UseVisualStyleBackColor = false;
@@ -344,9 +345,9 @@
             Btn_Petani.BackColor = Color.FromArgb(49, 106, 14);
             Btn_Petani.Font = new Font("Rockwell", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Btn_Petani.ForeColor = SystemColors.ButtonHighlight;
-            Btn_Petani.Location = new Point(693, 271);
+            Btn_Petani.Location = new Point(575, 271);
             Btn_Petani.Name = "Btn_Petani";
-            Btn_Petani.Size = new Size(204, 45);
+            Btn_Petani.Size = new Size(145, 45);
             Btn_Petani.TabIndex = 38;
             Btn_Petani.Text = "Petani";
             Btn_Petani.UseVisualStyleBackColor = false;
@@ -356,9 +357,9 @@
             Btn_Karyawan.BackColor = Color.FromArgb(217, 217, 217);
             Btn_Karyawan.Font = new Font("Rockwell", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Btn_Karyawan.ForeColor = SystemColors.ActiveCaptionText;
-            Btn_Karyawan.Location = new Point(483, 271);
+            Btn_Karyawan.Location = new Point(424, 271);
             Btn_Karyawan.Name = "Btn_Karyawan";
-            Btn_Karyawan.Size = new Size(204, 45);
+            Btn_Karyawan.Size = new Size(145, 45);
             Btn_Karyawan.TabIndex = 37;
             Btn_Karyawan.Text = "Karyawan";
             Btn_Karyawan.UseVisualStyleBackColor = false;
@@ -395,11 +396,24 @@
             Dgv_Karyawan.Size = new Size(930, 612);
             Dgv_Karyawan.TabIndex = 33;
             // 
+            // Btn_Kurir
+            // 
+            Btn_Kurir.BackColor = Color.FromArgb(217, 217, 217);
+            Btn_Kurir.Font = new Font("Rockwell", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Btn_Kurir.Location = new Point(726, 271);
+            Btn_Kurir.Name = "Btn_Kurir";
+            Btn_Kurir.Size = new Size(145, 45);
+            Btn_Kurir.TabIndex = 47;
+            Btn_Kurir.Text = "Kurir";
+            Btn_Kurir.UseVisualStyleBackColor = false;
+            Btn_Kurir.Click += Btn_Kurir_Click;
+            // 
             // DashboardAdmin_DataPetani
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1260, 999);
+            Controls.Add(Btn_Kurir);
             Controls.Add(Lbl_UsernameAtas);
             Controls.Add(panel2);
             Controls.Add(panel1);
@@ -468,5 +482,6 @@
         private Label label6;
         private DataGridView Dgv_Karyawan;
         private DataGridView Dgv_UserPetani;
+        private Button Btn_Kurir;
     }
 }

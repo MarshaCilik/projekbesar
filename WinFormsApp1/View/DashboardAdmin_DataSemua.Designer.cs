@@ -52,6 +52,7 @@
             panel4 = new Panel();
             label4 = new Label();
             pictureBox6 = new PictureBox();
+            Btn_Kurir = new Button();
             ((System.ComponentModel.ISupportInitialize)dgv_AllUser).BeginInit();
             panel1.SuspendLayout();
             panel3.SuspendLayout();
@@ -129,9 +130,9 @@
             // 
             Btn_Karyawan.BackColor = Color.FromArgb(217, 217, 217);
             Btn_Karyawan.Font = new Font("Rockwell", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Btn_Karyawan.Location = new Point(485, 272);
+            Btn_Karyawan.Location = new Point(426, 272);
             Btn_Karyawan.Name = "Btn_Karyawan";
-            Btn_Karyawan.Size = new Size(204, 45);
+            Btn_Karyawan.Size = new Size(145, 45);
             Btn_Karyawan.TabIndex = 5;
             Btn_Karyawan.Text = "Karyawan";
             Btn_Karyawan.UseVisualStyleBackColor = false;
@@ -141,12 +142,13 @@
             // 
             Btn_Petani.BackColor = Color.FromArgb(217, 217, 217);
             Btn_Petani.Font = new Font("Rockwell", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Btn_Petani.Location = new Point(695, 272);
+            Btn_Petani.Location = new Point(577, 272);
             Btn_Petani.Name = "Btn_Petani";
-            Btn_Petani.Size = new Size(204, 45);
+            Btn_Petani.Size = new Size(145, 45);
             Btn_Petani.TabIndex = 6;
             Btn_Petani.Text = "Petani";
             Btn_Petani.UseVisualStyleBackColor = false;
+            Btn_Petani.Click += Btn_Petani_Click;
             // 
             // Btn_SeluruhUser
             // 
@@ -155,7 +157,7 @@
             Btn_SeluruhUser.ForeColor = Color.White;
             Btn_SeluruhUser.Location = new Point(275, 272);
             Btn_SeluruhUser.Name = "Btn_SeluruhUser";
-            Btn_SeluruhUser.Size = new Size(204, 45);
+            Btn_SeluruhUser.Size = new Size(145, 45);
             Btn_SeluruhUser.TabIndex = 7;
             Btn_SeluruhUser.Text = "Seluruh User";
             Btn_SeluruhUser.UseVisualStyleBackColor = false;
@@ -341,11 +343,24 @@
             pictureBox6.TabIndex = 15;
             pictureBox6.TabStop = false;
             // 
+            // Btn_Kurir
+            // 
+            Btn_Kurir.BackColor = Color.FromArgb(217, 217, 217);
+            Btn_Kurir.Font = new Font("Rockwell", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Btn_Kurir.Location = new Point(728, 272);
+            Btn_Kurir.Name = "Btn_Kurir";
+            Btn_Kurir.Size = new Size(145, 45);
+            Btn_Kurir.TabIndex = 34;
+            Btn_Kurir.Text = "Kurir";
+            Btn_Kurir.UseVisualStyleBackColor = false;
+            Btn_Kurir.Click += Btn_Kurir_Click;
+            // 
             // Dashboard_admin
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1247, 999);
+            Controls.Add(Btn_Kurir);
             Controls.Add(pictureBox6);
             Controls.Add(Btn_Edit);
             Controls.Add(Btn_SeluruhUser);
@@ -405,5 +420,6 @@
         private Label label5;
         private PictureBox pictureBox6;
         private PictureBox pictureBox7;
+        private Button Btn_Kurir;
     }
 }

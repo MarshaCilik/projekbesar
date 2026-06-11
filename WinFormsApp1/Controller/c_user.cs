@@ -27,6 +27,11 @@ namespace WinFormsApp1.Controller
             return null;
         }
 
+        public List<Kurir> ReadKurir()
+        {
+            return context.ReadKurir();
+        }
+
         public string Validation(usersDataRegister user) //Method validasi Register
         {
             if (string.IsNullOrWhiteSpace(user.nama) ||

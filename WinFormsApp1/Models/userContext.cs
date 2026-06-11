@@ -80,6 +80,30 @@ namespace WinFormsApp1.Models
             }
             return list;
         }
+
+        public List<Kurir> ReadKurir()
+        {
+            List<Kurir> list = new List<Kurir>();
+            using(NpgsqlConnection conn = connectDB.GetConnection())
+            {
+                string sql = "SELECT * FROM Kurir";
+                using(NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
+                {
+                    using(NpgsqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            list.Add(new Kurir(Convert.ToInt32(dr["kurir_id"]),
+                                               dr["nama_kurir"].ToString(),
+                                               dr["no_telp"].ToString(),
+                                               dr["alamat"].ToString()
+                                                ));
+                        }
+                    }
+                }
+            }
+            return list;
+        }
         public void Create(usersDataRegister user)
         {
             using (NpgsqlConnection conn = connectDB.GetConnection())

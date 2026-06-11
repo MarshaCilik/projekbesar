@@ -19,6 +19,7 @@ namespace WinFormsApp1.View
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
+            Dgv_UserPetani.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             Lbl_UsernameAtas.Text = Username;
             Load();
         }
@@ -41,6 +42,13 @@ namespace WinFormsApp1.View
         private void Btn_SeluruhUser_Click(object sender, EventArgs e)
         {
             Dashboard_admin form = new Dashboard_admin(Username);
+            form.Show();
+            this.Hide();
+        }
+
+        private void Btn_Kurir_Click(object sender, EventArgs e)
+        {
+            DashboardAdmin_DataKurir form = new DashboardAdmin_DataKurir(Username);
             form.Show();
             this.Hide();
         }
