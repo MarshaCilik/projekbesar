@@ -31,21 +31,21 @@
             Btn_Kurir = new Button();
             Lbl_UsernameAtas = new Label();
             panel3 = new Panel();
-            label10 = new Label();
-            panel2 = new Panel();
-            label7 = new Label();
             pictureBox7 = new PictureBox();
-            label3 = new Label();
-            pictureBox2 = new PictureBox();
-            pictureBox3 = new PictureBox();
-            pictureBox4 = new PictureBox();
-            pictureBox5 = new PictureBox();
+            label7 = new Label();
+            label10 = new Label();
             label5 = new Label();
+            pictureBox5 = new PictureBox();
+            pictureBox4 = new PictureBox();
+            pictureBox3 = new PictureBox();
+            pictureBox2 = new PictureBox();
+            pictureBox1 = new PictureBox();
+            panel4 = new Panel();
+            label4 = new Label();
+            panel2 = new Panel();
+            label3 = new Label();
             dataGridView1 = new DataGridView();
             Btn_Edit = new Button();
-            label4 = new Label();
-            panel4 = new Panel();
-            pictureBox1 = new PictureBox();
             pictureBox6 = new PictureBox();
             label6 = new Label();
             dgv_AllUser = new DataGridView();
@@ -58,13 +58,13 @@
             panel1 = new Panel();
             panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox7).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
-            panel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            panel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgv_AllUser).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Dgv_Karyawan).BeginInit();
@@ -114,27 +114,15 @@
             panel3.Size = new Size(256, 1005);
             panel3.TabIndex = 31;
             // 
-            // label10
+            // pictureBox7
             // 
-            label10.AutoSize = true;
-            label10.BackColor = Color.Transparent;
-            label10.Font = new Font("Rockwell", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label10.ForeColor = Color.FromArgb(49, 106, 14);
-            label10.Location = new Point(65, 271);
-            label10.Margin = new Padding(2, 0, 2, 0);
-            label10.Name = "label10";
-            label10.Size = new Size(172, 21);
-            label10.TabIndex = 13;
-            label10.Text = "Tambah Karyawan";
-            // 
-            // panel2
-            // 
-            panel2.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            panel2.BackColor = Color.FromArgb(122, 148, 114);
-            panel2.Location = new Point(280, 344);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(958, 643);
-            panel2.TabIndex = 30;
+            pictureBox7.BackgroundImage = Properties.Resources.Group_5;
+            pictureBox7.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox7.Location = new Point(23, 925);
+            pictureBox7.Name = "pictureBox7";
+            pictureBox7.Size = new Size(147, 61);
+            pictureBox7.TabIndex = 15;
+            pictureBox7.TabStop = false;
             // 
             // label7
             // 
@@ -149,64 +137,18 @@
             label7.TabIndex = 14;
             label7.Text = "Profil";
             // 
-            // pictureBox7
+            // label10
             // 
-            pictureBox7.BackgroundImage = Properties.Resources.Group_5;
-            pictureBox7.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox7.Location = new Point(23, 925);
-            pictureBox7.Name = "pictureBox7";
-            pictureBox7.Size = new Size(147, 61);
-            pictureBox7.TabIndex = 15;
-            pictureBox7.TabStop = false;
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(0, 0);
-            label3.Margin = new Padding(2, 0, 2, 0);
-            label3.Name = "label3";
-            label3.Size = new Size(0, 15);
-            label3.TabIndex = 22;
-            // 
-            // pictureBox2
-            // 
-            pictureBox2.BackgroundImage = Properties.Resources.BerandaIcon1;
-            pictureBox2.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox2.Location = new Point(11, 128);
-            pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(41, 36);
-            pictureBox2.TabIndex = 1;
-            pictureBox2.TabStop = false;
-            // 
-            // pictureBox3
-            // 
-            pictureBox3.BackgroundImage = Properties.Resources.CRUDProduk1;
-            pictureBox3.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox3.Location = new Point(11, 197);
-            pictureBox3.Name = "pictureBox3";
-            pictureBox3.Size = new Size(41, 36);
-            pictureBox3.TabIndex = 2;
-            pictureBox3.TabStop = false;
-            // 
-            // pictureBox4
-            // 
-            pictureBox4.BackgroundImage = Properties.Resources.TambahKaryawan;
-            pictureBox4.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox4.Location = new Point(11, 267);
-            pictureBox4.Name = "pictureBox4";
-            pictureBox4.Size = new Size(41, 36);
-            pictureBox4.TabIndex = 3;
-            pictureBox4.TabStop = false;
-            // 
-            // pictureBox5
-            // 
-            pictureBox5.BackgroundImage = Properties.Resources.Proifl;
-            pictureBox5.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox5.Location = new Point(11, 343);
-            pictureBox5.Name = "pictureBox5";
-            pictureBox5.Size = new Size(41, 36);
-            pictureBox5.TabIndex = 4;
-            pictureBox5.TabStop = false;
+            label10.AutoSize = true;
+            label10.BackColor = Color.Transparent;
+            label10.Font = new Font("Rockwell", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label10.ForeColor = Color.FromArgb(49, 106, 14);
+            label10.Location = new Point(65, 271);
+            label10.Margin = new Padding(2, 0, 2, 0);
+            label10.Name = "label10";
+            label10.Size = new Size(172, 21);
+            label10.TabIndex = 13;
+            label10.Text = "Tambah Karyawan";
             // 
             // label5
             // 
@@ -220,6 +162,96 @@
             label5.Size = new Size(131, 21);
             label5.TabIndex = 12;
             label5.Text = "CRUD Produk";
+            // 
+            // pictureBox5
+            // 
+            pictureBox5.BackgroundImage = Properties.Resources.Proifl;
+            pictureBox5.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox5.Location = new Point(11, 343);
+            pictureBox5.Name = "pictureBox5";
+            pictureBox5.Size = new Size(41, 36);
+            pictureBox5.TabIndex = 4;
+            pictureBox5.TabStop = false;
+            // 
+            // pictureBox4
+            // 
+            pictureBox4.BackgroundImage = Properties.Resources.TambahKaryawan;
+            pictureBox4.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox4.Location = new Point(11, 267);
+            pictureBox4.Name = "pictureBox4";
+            pictureBox4.Size = new Size(41, 36);
+            pictureBox4.TabIndex = 3;
+            pictureBox4.TabStop = false;
+            // 
+            // pictureBox3
+            // 
+            pictureBox3.BackgroundImage = Properties.Resources.CRUDProduk1;
+            pictureBox3.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox3.Location = new Point(11, 197);
+            pictureBox3.Name = "pictureBox3";
+            pictureBox3.Size = new Size(41, 36);
+            pictureBox3.TabIndex = 2;
+            pictureBox3.TabStop = false;
+            // 
+            // pictureBox2
+            // 
+            pictureBox2.BackgroundImage = Properties.Resources.BerandaIcon1;
+            pictureBox2.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox2.Location = new Point(11, 128);
+            pictureBox2.Name = "pictureBox2";
+            pictureBox2.Size = new Size(41, 36);
+            pictureBox2.TabIndex = 1;
+            pictureBox2.TabStop = false;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.BackgroundImage = Properties.Resources.PASTANI_DASHBOARD1;
+            pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox1.Location = new Point(22, 11);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(246, 76);
+            pictureBox1.TabIndex = 0;
+            pictureBox1.TabStop = false;
+            // 
+            // panel4
+            // 
+            panel4.BackColor = Color.FromArgb(49, 106, 14);
+            panel4.Controls.Add(label4);
+            panel4.Location = new Point(3, 120);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(241, 55);
+            panel4.TabIndex = 10;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.BackColor = Color.Transparent;
+            label4.Font = new Font("Rockwell", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label4.ForeColor = SystemColors.ButtonHighlight;
+            label4.Location = new Point(60, 16);
+            label4.Margin = new Padding(2, 0, 2, 0);
+            label4.Name = "label4";
+            label4.Size = new Size(107, 21);
+            label4.TabIndex = 11;
+            label4.Text = "Dashboard";
+            // 
+            // panel2
+            // 
+            panel2.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            panel2.BackColor = Color.FromArgb(122, 148, 114);
+            panel2.Location = new Point(280, 344);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(958, 643);
+            panel2.TabIndex = 30;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(0, 0);
+            label3.Margin = new Padding(2, 0, 2, 0);
+            label3.Name = "label3";
+            label3.Size = new Size(0, 15);
+            label3.TabIndex = 22;
             // 
             // dataGridView1
             // 
@@ -243,38 +275,6 @@
             Btn_Edit.TabIndex = 28;
             Btn_Edit.Text = "Edit Data";
             Btn_Edit.UseVisualStyleBackColor = false;
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.BackColor = Color.Transparent;
-            label4.Font = new Font("Rockwell", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label4.ForeColor = SystemColors.ButtonHighlight;
-            label4.Location = new Point(60, 16);
-            label4.Margin = new Padding(2, 0, 2, 0);
-            label4.Name = "label4";
-            label4.Size = new Size(107, 21);
-            label4.TabIndex = 11;
-            label4.Text = "Dashboard";
-            // 
-            // panel4
-            // 
-            panel4.BackColor = Color.FromArgb(49, 106, 14);
-            panel4.Controls.Add(label4);
-            panel4.Location = new Point(3, 120);
-            panel4.Name = "panel4";
-            panel4.Size = new Size(241, 55);
-            panel4.TabIndex = 10;
-            // 
-            // pictureBox1
-            // 
-            pictureBox1.BackgroundImage = Properties.Resources.PASTANI_DASHBOARD1;
-            pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox1.Location = new Point(27, 3);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(246, 76);
-            pictureBox1.TabIndex = 0;
-            pictureBox1.TabStop = false;
             // 
             // pictureBox6
             // 
@@ -417,14 +417,14 @@
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox7).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel4.ResumeLayout(false);
             panel4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgv_AllUser).EndInit();
             ((System.ComponentModel.ISupportInitialize)Dgv_Karyawan).EndInit();
