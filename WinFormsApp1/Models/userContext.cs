@@ -13,6 +13,22 @@ namespace WinFormsApp1.Models
 {
     public class userContext
     {
+        public void Update()
+        {
+            using (NpgsqlConnection conn = connectDB.GetConnection())
+            {
+                string sql = "";
+                using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("nama", user.nama);
+                    cmd.Parameters.AddWithValue("umur", user.umur);
+                    cmd.Parameters.AddWithValue("asal", user.asal);
+                    cmd.Parameters.AddWithValue("id", user.id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
         public List<Users> ReadUserDataForAdmin(string DataUser)
         {
             if (DataUser == "semua")

@@ -119,7 +119,7 @@
             Lbl_UsernameAtas.BackColor = Color.Transparent;
             Lbl_UsernameAtas.Font = new Font("Rockwell", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Lbl_UsernameAtas.ForeColor = SystemColors.ActiveCaptionText;
-            Lbl_UsernameAtas.Location = new Point(318, 19);
+            Lbl_UsernameAtas.Location = new Point(326, 26);
             Lbl_UsernameAtas.Margin = new Padding(2, 0, 2, 0);
             Lbl_UsernameAtas.Name = "Lbl_UsernameAtas";
             Lbl_UsernameAtas.Size = new Size(22, 23);
@@ -337,7 +337,7 @@
             // 
             pictureBox6.BackgroundImage = Properties.Resources.Proifl;
             pictureBox6.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox6.Location = new Point(275, 13);
+            pictureBox6.Location = new Point(280, 13);
             pictureBox6.Name = "pictureBox6";
             pictureBox6.Size = new Size(41, 36);
             pictureBox6.TabIndex = 15;
