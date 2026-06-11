@@ -7,32 +7,16 @@ using WinFormsApp1.Models;
 
 namespace WinFormsApp1.Controller
 {
-    class c_user
+    public class c_user
     {
-        userContext context = new userContext();
-        public List<Users> ReadAllUser(string DataUser) //method read
-        {
-            if (DataUser == "karyawan")
-            {
-                return context.ReadUserDataForAdmin("karyawan");
-            }
-            else if (DataUser == "petani")
-            {
-                return context.ReadUserDataForAdmin("petani");
-            }
-            else if (DataUser == "semua")
-            {
-                return context.ReadUserDataForAdmin("semua");
-            }
-            return null;
-        }
+        protected userContext context = new userContext();
 
         public List<Kurir> ReadKurir()
         {
             return context.ReadKurir();
         }
 
-        public string Validation(usersDataRegister user) //Method validasi Register
+        public virtual string Validation(usersDataRegister user) //Method validasi Register
         {
             if (string.IsNullOrWhiteSpace(user.nama) ||
                 string.IsNullOrWhiteSpace(user.alamat) ||

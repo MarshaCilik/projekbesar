@@ -13,17 +13,22 @@ namespace WinFormsApp1.Models
 {
     public class userContext
     {
-        public void Update()
+        public void Update(Users user)
         {
+            List<Users> list = new List<Users>();
             using (NpgsqlConnection conn = connectDB.GetConnection())
             {
-                string sql = "";
+                string sql = "CALL update_users(@nama, @notelp, @email, @username, @password, @status, @alamat, @desa, @kecamatan)";
                 using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                 {
-                    cmd.Parameters.AddWithValue("nama", user.nama);
-                    cmd.Parameters.AddWithValue("umur", user.umur);
-                    cmd.Parameters.AddWithValue("asal", user.asal);
-                    cmd.Parameters.AddWithValue("id", user.id);
+                    cmd.Parameters.AddWithValue("nama", user.Nama);
+                    cmd.Parameters.AddWithValue("notelp", user.NoTelp);
+                    cmd.Parameters.AddWithValue("username", user.Username);
+                    cmd.Parameters.AddWithValue("password", user.Password);
+                    cmd.Parameters.AddWithValue("status", user.IsActive);
+                    cmd.Parameters.AddWithValue("alamat", user.Alamat);
+                    cmd.Parameters.AddWithValue("desa", user.NamaDesa);
+                    cmd.Parameters.AddWithValue("kecamatan", user.NamaKecamatan);
 
                     cmd.ExecuteNonQuery();
                 }

@@ -7,38 +7,35 @@ using System.Text;
 using System.Windows.Forms;
 using WinFormsApp1.Controller;
 using WinFormsApp1.Models;
-
 namespace WinFormsApp1.View
 {
-    public partial class Dashboard_admin : Form
+    public partial class DashboardAdmin_DataKaryawan : Form
     {
-        c_user controller = new c_user();
-
-        public string Username;
-
-        private List<Users> list;
-
-        public Dashboard_admin(string username)
+        public List<Users> list;
+        c_admin controller = new c_admin();
+        private string Username;
+        public DashboardAdmin_DataKaryawan(string Username)
         {
-            this.Username = username;
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
-            dgv_AllUser.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            Load();
+            Dgv_Karyawan.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            this.Username = Username;
             Lbl_UsernameAtas.Text = $"{Username}";
+            Load();
+
         }
 
         public void Load()
         {
-            list = controller.ReadAllUser("semua");
+            list = controller.ReadAllUser("karyawan");
 
-            dgv_AllUser.DataSource = null;
-            dgv_AllUser.DataSource = list;
+            Dgv_Karyawan.DataSource = null;
+            Dgv_Karyawan.DataSource = list;
         }
 
-        private void Btn_Karyawan_Click(object sender, EventArgs e)
+        private void Btn_SeluruhUser_Click(object sender, EventArgs e)
         {
-            DashboardAdmin_DataKaryawan form = new DashboardAdmin_DataKaryawan(Username);
+            Dashboard_admin form = new Dashboard_admin(Username);
             form.Show();
             this.Hide();
         }

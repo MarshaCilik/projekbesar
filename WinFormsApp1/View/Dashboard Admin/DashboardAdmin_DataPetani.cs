@@ -13,7 +13,7 @@ namespace WinFormsApp1.View
     public partial class DashboardAdmin_DataPetani : Form
     {
         public List<Users> list;
-        c_user controller = new c_user();
+        c_admin controller = new c_admin();
         private string Username;
         public DashboardAdmin_DataPetani(string Username)
         {

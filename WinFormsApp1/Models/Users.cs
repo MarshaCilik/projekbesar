@@ -16,6 +16,7 @@ namespace WinFormsApp1.Models
         public bool IsActive { get; set; }
         public DateOnly? CreatedAt { get; set; }
         public DateOnly? UpdateAt { get; set; }
+        public string Roles { get; set; }
 
         public string Alamat { get; set; }
 
@@ -24,7 +25,8 @@ namespace WinFormsApp1.Models
 
         // Constructor Induk (Menerima semua data termasuk wilayah)
         public Users(int id, string username, string password, string nama, string noTelp, string email,
-                    bool isActive, DateOnly? createdAt, DateOnly? updateAt, string alamat, string namaDesa, string namaKecamatan)
+                    bool isActive, DateOnly? createdAt, DateOnly? updateAt, string alamat, string namaDesa, 
+                    string namaKecamatan)
         {
             UsersId = id;
             Username = username;

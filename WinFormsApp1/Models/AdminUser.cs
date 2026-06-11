@@ -9,7 +9,10 @@ namespace WinFormsApp1.Models
     {
         public AdminUser(int id, string username, string password, string nama, string noTelp, string email,
                          bool isActive, DateOnly? createdAt, DateOnly? updateAt, string alamat, string namaDesa, string namaKecamatan)
-                         : base(id, username, password, nama, noTelp, email, isActive, createdAt, updateAt, alamat, namaDesa, namaKecamatan) { }
+                         : base(id, username, password, nama, noTelp, email, isActive, createdAt, updateAt, alamat, namaDesa, namaKecamatan) 
+        {
+            Roles = "admin";
+        }
 
         public override void BukaDashboard()
         {

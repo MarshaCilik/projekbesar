@@ -173,6 +173,7 @@
             Btn_Edit.TabIndex = 8;
             Btn_Edit.Text = "Edit Data";
             Btn_Edit.UseVisualStyleBackColor = false;
+            Btn_Edit.Click += Btn_Edit_Click;
             // 
             // panel1
             // 

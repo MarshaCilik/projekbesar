@@ -1,6 +1,6 @@
 ﻿namespace WinFormsApp1.View
 {
-    partial class EditDataUser
+    partial class EditDataUserPetani
     {
         /// <summary>
         /// Required designer variable.
@@ -43,7 +43,9 @@
             panel7 = new Panel();
             Tb_Alamat = new TextBox();
             panel8 = new Panel();
+            Tb_Desa = new TextBox();
             panel9 = new Panel();
+            Tb_Kecamatan = new TextBox();
             panel10 = new Panel();
             label2 = new Label();
             label3 = new Label();
@@ -54,15 +56,9 @@
             label8 = new Label();
             label9 = new Label();
             label10 = new Label();
-            checkBox1 = new CheckBox();
-            panel11 = new Panel();
-            label11 = new Label();
-            panel12 = new Panel();
-            panel13 = new Panel();
-            label12 = new Label();
-            panel14 = new Panel();
-            Tb_Desa = new TextBox();
-            Tb_Kecamatan = new TextBox();
+            Cbx_Status = new CheckBox();
+            button1 = new Button();
+            button2 = new Button();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             panel3.SuspendLayout();
@@ -72,8 +68,6 @@
             panel7.SuspendLayout();
             panel8.SuspendLayout();
             panel9.SuspendLayout();
-            panel11.SuspendLayout();
-            panel13.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -90,11 +84,11 @@
             label1.AutoSize = true;
             label1.Font = new Font("Elephant", 20.2499962F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.ForeColor = SystemColors.ButtonFace;
-            label1.Location = new Point(48, 19);
+            label1.Location = new Point(84, 18);
             label1.Name = "label1";
-            label1.Size = new Size(308, 35);
+            label1.Size = new Size(245, 35);
             label1.TabIndex = 0;
-            label1.Text = "DATA KARYAWAN";
+            label1.Text = "DATA PETANI";
             // 
             // panel2
             // 
@@ -109,6 +103,7 @@
             // 
             Tb_Nama.BackColor = Color.FromArgb(74, 103, 65);
             Tb_Nama.BorderStyle = BorderStyle.FixedSingle;
+            Tb_Nama.ForeColor = Color.White;
             Tb_Nama.Location = new Point(12, 7);
             Tb_Nama.Name = "Tb_Nama";
             Tb_Nama.Size = new Size(521, 23);
@@ -127,6 +122,7 @@
             // 
             Tb_NoTelp.BackColor = Color.FromArgb(74, 103, 65);
             Tb_NoTelp.BorderStyle = BorderStyle.FixedSingle;
+            Tb_NoTelp.ForeColor = Color.White;
             Tb_NoTelp.Location = new Point(13, 9);
             Tb_NoTelp.Name = "Tb_NoTelp";
             Tb_NoTelp.Size = new Size(521, 23);
@@ -145,6 +141,7 @@
             // 
             Tb_Email.BackColor = Color.FromArgb(74, 103, 65);
             Tb_Email.BorderStyle = BorderStyle.FixedSingle;
+            Tb_Email.ForeColor = Color.White;
             Tb_Email.Location = new Point(11, 8);
             Tb_Email.Name = "Tb_Email";
             Tb_Email.Size = new Size(521, 23);
@@ -163,6 +160,7 @@
             // 
             Tb_Username.BackColor = Color.FromArgb(74, 103, 65);
             Tb_Username.BorderStyle = BorderStyle.FixedSingle;
+            Tb_Username.ForeColor = Color.White;
             Tb_Username.Location = new Point(10, 8);
             Tb_Username.Name = "Tb_Username";
             Tb_Username.Size = new Size(521, 23);
@@ -181,6 +179,7 @@
             // 
             Tb_Password.BackColor = Color.FromArgb(74, 103, 65);
             Tb_Password.BorderStyle = BorderStyle.FixedSingle;
+            Tb_Password.ForeColor = Color.White;
             Tb_Password.Location = new Point(10, 8);
             Tb_Password.Name = "Tb_Password";
             Tb_Password.Size = new Size(521, 23);
@@ -199,6 +198,7 @@
             // 
             Tb_Alamat.BackColor = Color.FromArgb(74, 103, 65);
             Tb_Alamat.BorderStyle = BorderStyle.FixedSingle;
+            Tb_Alamat.ForeColor = Color.White;
             Tb_Alamat.Location = new Point(11, 9);
             Tb_Alamat.Name = "Tb_Alamat";
             Tb_Alamat.Size = new Size(521, 23);
@@ -213,6 +213,16 @@
             panel8.Size = new Size(549, 38);
             panel8.TabIndex = 7;
             // 
+            // Tb_Desa
+            // 
+            Tb_Desa.BackColor = Color.FromArgb(74, 103, 65);
+            Tb_Desa.BorderStyle = BorderStyle.FixedSingle;
+            Tb_Desa.ForeColor = Color.White;
+            Tb_Desa.Location = new Point(11, 8);
+            Tb_Desa.Name = "Tb_Desa";
+            Tb_Desa.Size = new Size(521, 23);
+            Tb_Desa.TabIndex = 6;
+            // 
             // panel9
             // 
             panel9.BackColor = Color.FromArgb(74, 103, 65);
@@ -222,6 +232,16 @@
             panel9.Name = "panel9";
             panel9.Size = new Size(549, 38);
             panel9.TabIndex = 8;
+            // 
+            // Tb_Kecamatan
+            // 
+            Tb_Kecamatan.BackColor = Color.FromArgb(74, 103, 65);
+            Tb_Kecamatan.BorderStyle = BorderStyle.FixedSingle;
+            Tb_Kecamatan.ForeColor = Color.White;
+            Tb_Kecamatan.Location = new Point(12, 7);
+            Tb_Kecamatan.Name = "Tb_Kecamatan";
+            Tb_Kecamatan.Size = new Size(521, 23);
+            Tb_Kecamatan.TabIndex = 7;
             // 
             // panel10
             // 
@@ -320,97 +340,48 @@
             label10.TabIndex = 18;
             label10.Text = "STATUS:";
             // 
-            // checkBox1
+            // Cbx_Status
             // 
-            checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(98, 718);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(57, 19);
-            checkBox1.TabIndex = 19;
-            checkBox1.Text = "AKTIF";
-            checkBox1.UseVisualStyleBackColor = true;
+            Cbx_Status.AutoSize = true;
+            Cbx_Status.Location = new Point(98, 718);
+            Cbx_Status.Name = "Cbx_Status";
+            Cbx_Status.Size = new Size(57, 19);
+            Cbx_Status.TabIndex = 19;
+            Cbx_Status.Text = "AKTIF";
+            Cbx_Status.UseVisualStyleBackColor = true;
             // 
-            // panel11
+            // button1
             // 
-            panel11.BackColor = Color.FromArgb(102, 250, 79);
-            panel11.Controls.Add(label11);
-            panel11.Controls.Add(panel12);
-            panel11.Location = new Point(85, 760);
-            panel11.Name = "panel11";
-            panel11.Size = new Size(156, 38);
-            panel11.TabIndex = 21;
+            button1.BackColor = Color.FromArgb(168, 197, 152);
+            button1.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button1.Location = new Point(38, 746);
+            button1.Name = "button1";
+            button1.Size = new Size(550, 49);
+            button1.TabIndex = 20;
+            button1.Text = "SIMPAN";
+            button1.UseVisualStyleBackColor = false;
+            button1.Click += Btn_Simpan_Click;
             // 
-            // label11
+            // button2
             // 
-            label11.AutoSize = true;
-            label11.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label11.Location = new Point(51, 13);
-            label11.Name = "label11";
-            label11.Size = new Size(52, 15);
-            label11.TabIndex = 23;
-            label11.Text = "SIMPAN";
+            button2.BackColor = SystemColors.ButtonHighlight;
+            button2.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button2.Location = new Point(37, 801);
+            button2.Name = "button2";
+            button2.Size = new Size(550, 49);
+            button2.TabIndex = 21;
+            button2.Text = "BATAL";
+            button2.UseVisualStyleBackColor = false;
             // 
-            // panel12
-            // 
-            panel12.Location = new Point(0, 83);
-            panel12.Name = "panel12";
-            panel12.Size = new Size(203, 38);
-            panel12.TabIndex = 20;
-            // 
-            // panel13
-            // 
-            panel13.BackColor = Color.FromArgb(234, 13, 13);
-            panel13.Controls.Add(label12);
-            panel13.Controls.Add(panel14);
-            panel13.Location = new Point(396, 760);
-            panel13.Name = "panel13";
-            panel13.Size = new Size(156, 38);
-            panel13.TabIndex = 22;
-            // 
-            // label12
-            // 
-            label12.AutoSize = true;
-            label12.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label12.Location = new Point(55, 11);
-            label12.Name = "label12";
-            label12.Size = new Size(42, 15);
-            label12.TabIndex = 24;
-            label12.Text = "BATAL";
-            // 
-            // panel14
-            // 
-            panel14.Location = new Point(0, 83);
-            panel14.Name = "panel14";
-            panel14.Size = new Size(203, 38);
-            panel14.TabIndex = 20;
-            // 
-            // Tb_Desa
-            // 
-            Tb_Desa.BackColor = Color.FromArgb(74, 103, 65);
-            Tb_Desa.BorderStyle = BorderStyle.FixedSingle;
-            Tb_Desa.Location = new Point(11, 8);
-            Tb_Desa.Name = "Tb_Desa";
-            Tb_Desa.Size = new Size(521, 23);
-            Tb_Desa.TabIndex = 6;
-            // 
-            // Tb_Kecamatan
-            // 
-            Tb_Kecamatan.BackColor = Color.FromArgb(74, 103, 65);
-            Tb_Kecamatan.BorderStyle = BorderStyle.FixedSingle;
-            Tb_Kecamatan.Location = new Point(12, 7);
-            Tb_Kecamatan.Name = "Tb_Kecamatan";
-            Tb_Kecamatan.Size = new Size(521, 23);
-            Tb_Kecamatan.TabIndex = 7;
-            // 
-            // EditDataUser
+            // EditDataUserPetani
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveBorder;
-            ClientSize = new Size(629, 826);
-            Controls.Add(panel13);
-            Controls.Add(panel11);
-            Controls.Add(checkBox1);
+            ClientSize = new Size(629, 883);
+            Controls.Add(button2);
+            Controls.Add(button1);
+            Controls.Add(Cbx_Status);
             Controls.Add(label10);
             Controls.Add(label9);
             Controls.Add(label8);
@@ -429,7 +400,7 @@
             Controls.Add(panel3);
             Controls.Add(panel2);
             Controls.Add(panel1);
-            Name = "EditDataUser";
+            Name = "EditDataUserPetani";
             Text = "Form1";
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
@@ -449,10 +420,6 @@
             panel8.PerformLayout();
             panel9.ResumeLayout(false);
             panel9.PerformLayout();
-            panel11.ResumeLayout(false);
-            panel11.PerformLayout();
-            panel13.ResumeLayout(false);
-            panel13.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -478,14 +445,8 @@
         private Label label8;
         private Label label9;
         private Label label10;
-        private CheckBox checkBox1;
+        private CheckBox Cbx_Status;
         private Panel panel10;
-        private Panel panel11;
-        private Label label11;
-        private Panel panel12;
-        private Panel panel13;
-        private Label label12;
-        private Panel panel14;
         private TextBox Tb_Nama;
         private TextBox Tb_NoTelp;
         private TextBox Tb_Email;
@@ -494,5 +455,7 @@
         private TextBox Tb_Alamat;
         private TextBox Tb_Desa;
         private TextBox Tb_Kecamatan;
+        private Button button1;
+        private Button button2;
     }
 }
