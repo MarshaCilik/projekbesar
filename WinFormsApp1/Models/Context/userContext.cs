@@ -6,10 +6,11 @@ using System.Data;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using WinFormsApp1.Helpers;
+using WinFormsApp1.Models.User;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
-namespace WinFormsApp1.Models
+namespace WinFormsApp1.Models.Context
 {
     public class userContext
     {

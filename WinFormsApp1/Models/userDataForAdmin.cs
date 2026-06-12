@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.DirectoryServices;
 using System.Text;
+using WinFormsApp1.Models.User;
 
 namespace WinFormsApp1.Models
 {

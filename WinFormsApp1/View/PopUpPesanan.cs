@@ -16,6 +16,7 @@ namespace WinFormsApp1.View
     public partial class PopUpPesanan : Form
     {
         public barangTani barangTani;
+        public AlatTani alat_tani;
         public int stok;
 
         public PopUpPesanan()

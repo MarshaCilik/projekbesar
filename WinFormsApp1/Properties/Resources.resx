@@ -124,8 +124,8 @@
   <data name="alat sewa" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\alat sewa.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="dashboard" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\dashboard.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Dashboard" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Dashboard2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Group 5" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Group 5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -136,8 +136,11 @@
   <data name="logo produk tani" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\logo produk tani.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="riwayat" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\riwayat.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="BerandaIcon3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BerandaIcon3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Riwayat" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Riwayat.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="dashbord petani kiri" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\dashbord petani kiri.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -154,11 +157,17 @@
   <data name="Group 1 (1)1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Group 1 (1)1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Tagihan" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Tagihan.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="petanilogo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\petanilogo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="TambahKaryawan" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TambahKaryawan.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BerandaIcon2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BerandaIcon2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="fe3206811ece50e7f67e433999750266b64732d3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\fe3206811ece50e7f67e433999750266b64732d3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -168,6 +177,9 @@
   </data>
   <data name="Shopping Bag (1)" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Shopping Bag (1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="User Add" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\User Add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="CRUDProduk" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\CRUDProduk.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -190,6 +202,9 @@
   <data name="petanilogo1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\petanilogo1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Pesanan" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Pesanan.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Proifl" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Proifl.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -202,7 +217,10 @@
   <data name="Group 1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Group 1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="User Add" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\User Add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Profilee" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Profilee.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DashboardSelect" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DashboardSelect.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

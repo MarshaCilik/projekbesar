@@ -261,6 +261,7 @@
             label5.Size = new Size(131, 21);
             label5.TabIndex = 12;
             label5.Text = "CRUD Produk";
+            label5.Click += label5_Click;
             // 
             // pictureBox5
             // 

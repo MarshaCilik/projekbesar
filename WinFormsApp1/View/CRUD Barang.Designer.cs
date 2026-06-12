@@ -33,11 +33,11 @@
             label9 = new Label();
             pictureBox6 = new PictureBox();
             Btn_Edit = new Button();
-            dataGridView1 = new DataGridView();
+            Dgv_Barang = new DataGridView();
             label3 = new Label();
             panel2 = new Panel();
-            Btn_Petani = new Button();
-            Btn_Karyawan = new Button();
+            Btn_AlatSewa = new Button();
+            Btn_Barang = new Button();
             dgv_AllUser = new DataGridView();
             label6 = new Label();
             Dgv_Karyawan = new DataGridView();
@@ -58,7 +58,7 @@
             button1 = new Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)Dgv_Barang).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgv_AllUser).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Dgv_Karyawan).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox7).BeginInit();
@@ -132,16 +132,16 @@
             Btn_Edit.Text = "Edit Data";
             Btn_Edit.UseVisualStyleBackColor = false;
             // 
-            // dataGridView1
+            // Dgv_Barang
             // 
-            dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(293, 356);
-            dataGridView1.Margin = new Padding(2);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowHeadersWidth = 62;
-            dataGridView1.Size = new Size(930, 612);
-            dataGridView1.TabIndex = 42;
+            Dgv_Barang.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            Dgv_Barang.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            Dgv_Barang.Location = new Point(293, 356);
+            Dgv_Barang.Margin = new Padding(2);
+            Dgv_Barang.Name = "Dgv_Barang";
+            Dgv_Barang.RowHeadersWidth = 62;
+            Dgv_Barang.Size = new Size(930, 612);
+            Dgv_Barang.TabIndex = 42;
             // 
             // label3
             // 
@@ -161,28 +161,30 @@
             panel2.Size = new Size(958, 643);
             panel2.TabIndex = 45;
             // 
-            // Btn_Petani
+            // Btn_AlatSewa
             // 
-            Btn_Petani.BackColor = Color.FromArgb(217, 217, 217);
-            Btn_Petani.Font = new Font("Rockwell", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Btn_Petani.Location = new Point(430, 271);
-            Btn_Petani.Name = "Btn_Petani";
-            Btn_Petani.Size = new Size(145, 45);
-            Btn_Petani.TabIndex = 39;
-            Btn_Petani.Text = "Alat Sewa";
-            Btn_Petani.UseVisualStyleBackColor = false;
+            Btn_AlatSewa.BackColor = Color.FromArgb(217, 217, 217);
+            Btn_AlatSewa.Font = new Font("Rockwell", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Btn_AlatSewa.Location = new Point(430, 271);
+            Btn_AlatSewa.Name = "Btn_AlatSewa";
+            Btn_AlatSewa.Size = new Size(145, 45);
+            Btn_AlatSewa.TabIndex = 39;
+            Btn_AlatSewa.Text = "Alat Sewa";
+            Btn_AlatSewa.UseVisualStyleBackColor = false;
+            Btn_AlatSewa.Click += Btn_AlatSewa_Click;
             // 
-            // Btn_Karyawan
+            // Btn_Barang
             // 
-            Btn_Karyawan.BackColor = Color.FromArgb(49, 106, 14);
-            Btn_Karyawan.Font = new Font("Rockwell", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Btn_Karyawan.ForeColor = SystemColors.ButtonHighlight;
-            Btn_Karyawan.Location = new Point(279, 271);
-            Btn_Karyawan.Name = "Btn_Karyawan";
-            Btn_Karyawan.Size = new Size(145, 45);
-            Btn_Karyawan.TabIndex = 38;
-            Btn_Karyawan.Text = "Barang";
-            Btn_Karyawan.UseVisualStyleBackColor = false;
+            Btn_Barang.BackColor = Color.FromArgb(49, 106, 14);
+            Btn_Barang.Font = new Font("Rockwell", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Btn_Barang.ForeColor = SystemColors.ButtonHighlight;
+            Btn_Barang.Location = new Point(279, 271);
+            Btn_Barang.Name = "Btn_Barang";
+            Btn_Barang.Size = new Size(145, 45);
+            Btn_Barang.TabIndex = 38;
+            Btn_Barang.Text = "Barang";
+            Btn_Barang.UseVisualStyleBackColor = false;
+            Btn_Barang.Click += Btn_Barang_Click;
             // 
             // dgv_AllUser
             // 
@@ -399,11 +401,11 @@
             Controls.Add(panel1);
             Controls.Add(pictureBox6);
             Controls.Add(Btn_Edit);
-            Controls.Add(dataGridView1);
+            Controls.Add(Dgv_Barang);
             Controls.Add(label3);
             Controls.Add(panel2);
-            Controls.Add(Btn_Petani);
-            Controls.Add(Btn_Karyawan);
+            Controls.Add(Btn_AlatSewa);
+            Controls.Add(Btn_Barang);
             Controls.Add(dgv_AllUser);
             Controls.Add(label6);
             Controls.Add(Dgv_Karyawan);
@@ -414,7 +416,7 @@
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)Dgv_Barang).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgv_AllUser).EndInit();
             ((System.ComponentModel.ISupportInitialize)Dgv_Karyawan).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox7).EndInit();
@@ -440,11 +442,11 @@
         private Label label9;
         private PictureBox pictureBox6;
         private Button Btn_Edit;
-        private DataGridView dataGridView1;
+        private DataGridView Dgv_Barang;
         private Label label3;
         private Panel panel2;
-        private Button Btn_Petani;
-        private Button Btn_Karyawan;
+        private Button Btn_AlatSewa;
+        private Button Btn_Barang;
         private DataGridView dgv_AllUser;
         private Label label6;
         private DataGridView Dgv_Karyawan;

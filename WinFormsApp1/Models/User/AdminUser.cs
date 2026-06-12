@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using WinFormsApp1.View;
 
-namespace WinFormsApp1.Models
+namespace WinFormsApp1.Models.User
 {
     public class AdminUser : Users
     {

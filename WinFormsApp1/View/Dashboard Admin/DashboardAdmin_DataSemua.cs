@@ -7,7 +7,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using WinFormsApp1.Controller;
-using WinFormsApp1.Models;
+using WinFormsApp1.Models.User;
 
 namespace WinFormsApp1.View
 {
@@ -151,6 +151,14 @@ namespace WinFormsApp1.View
                 MessageBoxIcon.Information);
             }
 
+        }
+
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+            CRUD_Barang form = new CRUD_Barang();
+            form.Show();
+            this.Hide();
         }
     }
 }

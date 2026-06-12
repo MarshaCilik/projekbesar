@@ -1,7 +1,7 @@
 using Microsoft.VisualBasic.ApplicationServices;
 using System.Text.RegularExpressions;
 using WinFormsApp1.Controller;
-using WinFormsApp1.Models;
+using WinFormsApp1.Models.User;
 
 namespace WinFormsApp1
 {

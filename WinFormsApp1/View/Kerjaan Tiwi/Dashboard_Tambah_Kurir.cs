@@ -14,7 +14,5 @@ namespace WinFormsApp1.View
         {
             InitializeComponent();
         }
-
-        p
     }
 }
