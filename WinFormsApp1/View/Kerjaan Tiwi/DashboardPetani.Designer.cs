@@ -60,6 +60,7 @@
             tabPage3 = new TabPage();
             tabPage4 = new TabPage();
             tabPage5 = new TabPage();
+            Btn_Keluar = new Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel2.SuspendLayout();
@@ -76,6 +77,7 @@
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(184, 224, 162);
+            panel1.Controls.Add(Btn_Keluar);
             panel1.Controls.Add(Btn_Profil);
             panel1.Controls.Add(Btn_Riwayat);
             panel1.Controls.Add(Btn_Tagihan);
@@ -439,6 +441,23 @@
             tabPage5.Text = "tabPage5";
             tabPage5.UseVisualStyleBackColor = true;
             // 
+            // Btn_Keluar
+            // 
+            Btn_Keluar.BackColor = Color.FromArgb(184, 224, 162);
+            Btn_Keluar.FlatAppearance.BorderSize = 0;
+            Btn_Keluar.FlatAppearance.MouseDownBackColor = Color.Transparent;
+            Btn_Keluar.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            Btn_Keluar.FlatStyle = FlatStyle.Flat;
+            Btn_Keluar.Font = new Font("Arial Rounded MT Bold", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Btn_Keluar.ForeColor = Color.FromArgb(49, 106, 14);
+            Btn_Keluar.Location = new Point(25, 929);
+            Btn_Keluar.Name = "Btn_Keluar";
+            Btn_Keluar.Size = new Size(195, 49);
+            Btn_Keluar.TabIndex = 35;
+            Btn_Keluar.Text = "Keluar";
+            Btn_Keluar.UseVisualStyleBackColor = false;
+            Btn_Keluar.Click += Btn_Keluar_Click;
+            // 
             // DashboardPetani
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -499,5 +518,6 @@
         private DataGridView Dgv_Pesanan;
         private Button Btn_BelumCO;
         private Button Btn_SudahCO;
+        private Button Btn_Keluar;
     }
 }

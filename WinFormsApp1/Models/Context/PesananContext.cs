@@ -21,12 +21,13 @@ namespace WinFormsApp1.Models.Context
                     cmd.Parameters.AddWithValue("userid", user.UsersId);
                     int count = Convert.ToInt32(cmd.ExecuteScalar());
 
-                    // Jika count > 0, artinya user sudah punya pesanan aktif
                     if (count > 0) sudahAda = true;
                 }
             }
             return sudahAda;
         }
+
+        public 
 
         public List<Pesanan> ReadPesanan()
         {
@@ -66,11 +67,21 @@ namespace WinFormsApp1.Models.Context
                 using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                 {
                     cmd.Parameters.AddWithValue("userid", user.UsersId);
+                    cmd.Parameters.AddWithValue("opsi_pengiriman", opsiPengiriman);
                     cmd.Parameters.AddWithValue("alat_sewa_id", alat.Id);
                     cmd.Parameters.AddWithValue("quantity", quantity);
                     cmd.Parameters.AddWithValue("tanggal_pengembalian", tanggalPengembalian);
 
-                    cmd.ExecuteNonQuery();
+                    try
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                    catch (PostgresException ex)
+                    {
+                        // Menampilkan error spesifik dari PostgreSQL jika ada constraint yang melanggar
+                        MessageBox.Show("Gagal mengeksekusi stored procedure: " + ex.MessageText, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        throw;
+                    }
                 }
             }
         }

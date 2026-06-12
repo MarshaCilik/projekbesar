@@ -62,7 +62,7 @@ namespace WinFormsApp1
                 Dgv_Pesanan.DataSource = null;
                 Dgv_Pesanan.DataSource = listpesanan;
 
-                
+
             }
             else if (data == "pesanan_sudah_co")
             {
@@ -188,6 +188,13 @@ namespace WinFormsApp1
         private void Btn_BelumCO_Click(object sender, EventArgs e)
         {
             LoadData("pesanan_belum_co");
+        }
+
+        private void Btn_Keluar_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            LoginForm form = new LoginForm();
+            form.Show();
         }
     }
 }

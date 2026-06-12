@@ -1,13 +1,14 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.ApplicationServices;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using WinFormsApp1.Controller;
 using WinFormsApp1.Models;
 using WinFormsApp1.Models.Context;
-using WinFormsApp1.Controller;
 using WinFormsApp1.Models.User;
 
 namespace WinFormsApp1.View.Kerjaan_Tiwi
@@ -58,6 +59,11 @@ namespace WinFormsApp1.View.Kerjaan_Tiwi
             {
                 MessageBox.Show("Tanggal pengembalian tidak boleh kurang dari tanggal hari ini!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
+            }
+            else
+            {
+                string opsiPengiriman = cmbPengiriman.SelectedItem?.ToString() ?? "Diambil Sendiri";
+                controller.CreatePesananAlatSewa(User, Alat, opsiPengiriman, Convert.ToInt32(TbStok.Text), DateOnly.FromDateTime(Convert.ToDateTime(Dtp_TanggalSewa)));
             }
         }
     }
