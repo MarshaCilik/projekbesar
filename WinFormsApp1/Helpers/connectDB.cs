@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Data;
+using System.Windows.Forms;
 using Npgsql;
 
 namespace WinFormsApp1.Helpers
@@ -35,5 +37,10 @@ namespace WinFormsApp1.Helpers
 
             return conn;
         }
+
+
     }
 }
+
+
+   

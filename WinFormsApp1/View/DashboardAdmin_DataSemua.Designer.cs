@@ -293,6 +293,7 @@
             // 
             // pictureBox2
             // 
+            pictureBox2.BackColor = Color.FromArgb(49, 106, 14);
             pictureBox2.BackgroundImage = Properties.Resources.BerandaIcon1;
             pictureBox2.BackgroundImageLayout = ImageLayout.Zoom;
             pictureBox2.Location = new Point(11, 128);
