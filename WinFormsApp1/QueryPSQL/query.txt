@@ -143,3 +143,670 @@ CREATE OR REPLACE VIEW public.v_semuadatauser
      JOIN roles r USING (roles_id)
      JOIN desa d USING (desa_id)
      JOIN kecamatan k USING (kecamatan_id);
+
+-- DROP PROCEDURE IF EXISTS public.update_users(character varying, character varying, character varying, character varying, character varying, boolean, character varying, character varying, character varying, character varying);
+
+CREATE OR REPLACE PROCEDURE public.update_users(
+	IN p_nama character varying,
+	IN p_no_telp character varying,
+	IN p_email character varying,
+	IN p_username character varying,
+	IN p_password character varying,
+	IN p_isactive boolean,
+	IN p_alamat character varying,
+	IN p_roles character varying,
+	IN p_desa character varying,
+	IN p_kecamatan character varying)
+LANGUAGE 'plpgsql'
+AS $BODY$
+DECLARE
+	v_roles_Id int;
+	v_desa_id int;
+	v_kecamatan_id int;
+BEGIN
+	SELECT roles_id 
+	INTO v_roles_id
+	FROM roles
+	WHERE roles ilike p_roles;
+
+	SELECT desa_id 
+	INTO v_desa_id
+	FROM desa
+	WHERE nama_desa ilike p_desa;
+
+	SELECT kecamatan_id
+	INTO v_kecamatan_id
+	FROM kecamatan
+	WHERE nama_kecamatan ilike p_kecamatan;
+
+	IF v_kecamatan_id IS NULL THEN
+		INSERT INTO kecamatan
+		VALUES (p_kecamatan) RETURNING kecamatan_id INTO v_kecamatan_id;
+	ELSIF v_desa_id IS NULL THEN
+		INSERT INTO desa
+		VALUES (p_desa, v_kecamatan_id) RETURNING desa_id INTO v_desa_id;
+	END IF;
+
+	UPDATE users SET nama=p_nama, no_telp=p_no_telp, email=p_email, 
+	username=p_username, passwords=p_password, alamat=p_alamat, isactive=p_isactive,
+	roles=v_roles_id, desa=v_desa_id, update_at=now();
+END;
+$BODY$;
+ALTER PROCEDURE public.update_users(character varying, character varying, character varying, character varying, character varying, boolean, character varying, character varying, character varying, character varying)
+    OWNER TO postgres;
+
+-- DROP PROCEDURE IF EXISTS public.update_users(character varying, character varying, character varying, character varying, character varying, boolean, character varying, character varying, character varying);
+
+CREATE OR REPLACE PROCEDURE public.update_users(
+	IN p_nama character varying,
+	IN p_no_telp character varying,
+	IN p_email character varying,
+	IN p_username character varying,
+	IN p_password character varying,
+	IN p_isactive boolean,
+	IN p_alamat character varying,
+	IN p_desa character varying,
+	IN p_kecamatan character varying)
+LANGUAGE 'plpgsql'
+AS $BODY$
+DECLARE
+	v_desa_id int;
+	v_kecamatan_id int;
+BEGIN
+	SELECT desa_id 
+	INTO v_desa_id
+	FROM desa
+	WHERE nama_desa ilike p_desa;
+
+	SELECT kecamatan_id
+	INTO v_kecamatan_id
+	FROM kecamatan
+	WHERE nama_kecamatan ilike p_kecamatan;
+
+	IF v_kecamatan_id IS NULL THEN
+		INSERT INTO kecamatan
+		VALUES (p_kecamatan) RETURNING kecamatan_id INTO v_kecamatan_id;
+	ELSIF v_desa_id IS NULL THEN
+		INSERT INTO desa
+		VALUES (p_desa, v_kecamatan_id) RETURNING desa_id INTO v_desa_id;
+	END IF;
+
+	UPDATE users SET nama=p_nama, no_telp=p_no_telp, email=p_email, 
+	username=p_username, passwords=p_password, alamat=p_alamat, isactive=p_isactive,
+	desa=v_desa_id, update_at=now();
+END;
+$BODY$;
+ALTER PROCEDURE public.update_users(character varying, character varying, character varying, character varying, character varying, boolean, character varying, character varying, character varying)
+    OWNER TO postgres;
+
+-- PROCEDURE: public.add_pesanan_alat_sewa(integer, character varying, integer, integer, date)
+
+-- DROP PROCEDURE IF EXISTS public.add_pesanan_alat_sewa(integer, character varying, integer, integer, date);
+
+CREATE OR REPLACE PROCEDURE public.add_pesanan_alat_sewa(
+	IN p_users_id integer,
+	IN p_opsi_pengiriman character varying,
+	IN p_alat_sewa_id integer,
+	IN p_quantity integer,
+	IN p_tanggal_pengembalian date)
+LANGUAGE 'plpgsql'
+AS $BODY$
+DECLARE
+    v_pesanan_id INT;
+    v_status_pesanan VARCHAR;
+    v_harga_sewa_perhari NUMERIC;
+BEGIN    
+    -- 1. Mengambil harga sewa per hari dari tabel alat_sewa
+    SELECT harga_sewa_perhari 
+    INTO v_harga_sewa_perhari
+    FROM alat_sewa
+    WHERE alat_sewa_id = p_alat_sewa_id;
+
+    -- Validasi jika alat sewa tidak ditemukan
+    IF v_harga_sewa_perhari IS NULL THEN
+        RAISE EXCEPTION 'Alat sewa dengan ID % tidak ditemukan.', p_alat_sewa_id;
+    END IF;
+
+    -- 2. Mencari apakah user memiliki pesanan yang berstatus 'Belum Checkout'
+    SELECT status_pesanan, pesanan_id
+    INTO v_status_pesanan, v_pesanan_id
+    FROM pesanan
+    WHERE users_id = p_users_id AND status_pesanan = 'Belum Checkout'
+    LIMIT 1;
+
+    -- 3. Jika TIDAK ADA pesanan dengan status 'Belum Checkout', buat pesanan baru
+    IF v_pesanan_id IS NULL THEN
+        INSERT INTO pesanan(tanggal_pesanan, users_id, status_pesanan, opsi_pengiriman)
+        VALUES (CURRENT_DATE, p_users_id, 'Belum Checkout', p_opsi_pengiriman) 
+        RETURNING pesanan_id INTO v_pesanan_id;
+    END IF;
+
+    -- 4. Masukkan item sewa ke dalam detail_pesanan_sewa
+    -- tgl_sewa otomatis diset hari ini (CURRENT_DATE)
+    INSERT INTO detail_pesanan_sewa(quantity, harga_sewa_perhari, tgl_sewa, tgl_pengembalian, pesanan_id, alat_sewa_id)
+    VALUES (p_quantity, v_harga_sewa_perhari, CURRENT_DATE, p_tanggal_pengembalian, v_pesanan_id, p_alat_sewa_id);
+
+END;
+$BODY$;
+ALTER PROCEDURE public.add_pesanan_alat_sewa(integer, character varying, integer, integer, date)
+    OWNER TO postgres;
+
+-- PROCEDURE: public.add_new_users_petani(character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying)
+
+-- DROP PROCEDURE IF EXISTS public.add_new_users_petani(character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying);
+
+CREATE OR REPLACE PROCEDURE public.add_new_users_petani(
+	IN p_nama character varying,
+	IN p_email character varying,
+	IN p_no_telp character varying,
+	IN p_username character varying,
+	IN p_password character varying,
+	IN p_alamat character varying,
+	IN p_kecamatan character varying,
+	IN p_desa character varying)
+LANGUAGE 'plpgsql'
+AS $BODY$
+DECLARE
+	v_kecamatan_id INT;
+	v_desa_id INT;
+BEGIN
+	SELECT kecamatan_id 
+	INTO v_kecamatan_id
+	FROM kecamatan WHERE nama_kecamatan ilike p_kecamatan;
+
+	SELECT desa_id
+	INTO v_desa_id
+	FROM desa WHERE nama_desa ilike p_desa;
+
+	IF v_kecamatan_id IS NULL THEN
+		INSERT INTO kecamatan (nama_kecamatan)
+		VALUES (p_kecamatan)
+		RETURNING kecamatan_id INTO v_kecamatan_id;
+	END IF;
+
+	IF v_desa_Id IS NULL THEN
+		INSERT INTO desa (nama_desa, kecamatan_id) 
+		VALUES (p_desa, v_kecamatan_id)
+		RETURNING desa_id INTO v_desa_id;
+	END IF;
+
+    INSERT INTO users (nama, no_telp, email, username, passwords, isActive, alamat, created_at, roles_id, desa_id)
+    VALUES (p_nama, p_no_telp, p_email, p_username, p_password, true, p_alamat, now(), 1, v_desa_id);
+END;
+$BODY$;
+ALTER PROCEDURE public.add_new_users_petani(character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying)
+    OWNER TO postgres;
+
+
+-- DROP VIEW public.lihat_alat;
+
+CREATE OR REPLACE VIEW public.lihat_alat
+ AS
+ SELECT a.alat_sewa_id,
+    a.nama_alat,
+    a.stok,
+    a.harga_sewa_perhari,
+    a.harga_denda_perhari,
+    k.kategori,
+    a.added_at
+   FROM alat_sewa a
+     JOIN kategori k USING (kategori_id);
+
+ALTER TABLE public.lihat_alat
+    OWNER TO postgres;
+
+-- View: public.lihat_barang_petani
+
+-- DROP VIEW public.lihat_barang_petani;
+
+CREATE OR REPLACE VIEW public.lihat_barang_petani
+ AS
+ SELECT b.barang_id,
+    b.nama_barang AS "nama barang",
+    b.stok,
+    b.harga_per_item AS "harga per unit",
+    k.kategori
+   FROM barang b
+     JOIN kategori k USING (kategori_id);
+
+ALTER TABLE public.lihat_barang_petani
+    OWNER TO postgres;
+
+-- View: public.lihatbarangpetani
+
+-- DROP VIEW public.lihatbarangpetani;
+
+CREATE OR REPLACE VIEW public.lihatbarangpetani
+ AS
+ SELECT b.nama_barang AS "naam barang",
+    b.stok,
+    b.harga_per_item AS "harga per unit",
+    k.kategori
+   FROM barang b
+     JOIN kategori k USING (kategori_id);
+
+ALTER TABLE public.lihatbarangpetani
+    OWNER TO postgres;
+
+-- View: public.v_karyawandatauser
+
+-- DROP VIEW public.v_karyawandatauser;
+
+CREATE OR REPLACE VIEW public.v_karyawandatauser
+ AS
+ SELECT u.users_id,
+    u.nama,
+    u.no_telp,
+    u.email,
+    u.username,
+    u.passwords,
+    u.alamat,
+    u.created_at,
+    u.update_at,
+    r.roles,
+    d.nama_desa,
+    k.nama_kecamatan,
+    u.isactive
+   FROM users u
+     JOIN roles r USING (roles_id)
+     JOIN desa d USING (desa_id)
+     JOIN kecamatan k USING (kecamatan_id)
+  WHERE u.roles_id = 2;
+
+ALTER TABLE public.v_karyawandatauser
+    OWNER TO postgres;
+
+-- View: public.v_pesanan_for_user
+
+-- DROP VIEW public.v_pesanan_for_user;
+
+CREATE OR REPLACE VIEW public.v_pesanan_for_user
+ AS
+ SELECT p.pesanan_id AS "ID",
+    'Pembelian'::text AS "Jenis Pesanan",
+    b.nama_barang AS "Nama Item",
+    dpb.harga_per_item AS "Harga Satuan",
+    dpb.quantity AS "Jumlah",
+    NULL::integer AS "Lama Sewa (Hari)",
+    p.tanggal_pesanan AS "Tanggal Pemesanan",
+    p.status_pesanan AS "Status"
+   FROM pesanan p
+     JOIN detail_pesanan_pembelian dpb USING (pesanan_id)
+     JOIN barang b USING (barang_id)
+UNION ALL
+ SELECT p.pesanan_id AS "ID",
+    'Penyewaan'::text AS "Jenis Pesanan",
+    a.nama_alat AS "Nama Item",
+    dps.harga_sewa_perhari AS "Harga Satuan",
+    dps.quantity AS "Jumlah",
+    dps.tgl_pengembalian - dps.tgl_sewa AS "Lama Sewa (Hari)",
+    p.tanggal_pesanan AS "Tanggal Pemesanan",
+    p.status_pesanan AS "Status"
+   FROM pesanan p
+     JOIN detail_pesanan_sewa dps USING (pesanan_id)
+     JOIN alat_sewa a USING (alat_sewa_id);
+
+ALTER TABLE public.v_pesanan_for_user
+    OWNER TO postgres;
+
+
+-- View: public.v_petanidatauser
+
+-- DROP VIEW public.v_petanidatauser;
+
+CREATE OR REPLACE VIEW public.v_petanidatauser
+ AS
+ SELECT u.users_id,
+    u.nama,
+    u.no_telp,
+    u.email,
+    u.username,
+    u.passwords,
+    u.alamat,
+    u.created_at,
+    u.update_at,
+    r.roles,
+    d.nama_desa,
+    k.nama_kecamatan,
+    u.isactive
+   FROM users u
+     JOIN roles r USING (roles_id)
+     JOIN desa d USING (desa_id)
+     JOIN kecamatan k USING (kecamatan_id)
+  WHERE u.roles_id = 1;
+
+ALTER TABLE public.v_petanidatauser
+    OWNER TO postgres;
+
+-- View: public.v_semuadatauser
+
+-- DROP VIEW public.v_semuadatauser;
+
+CREATE OR REPLACE VIEW public.v_semuadatauser
+ AS
+ SELECT u.users_id,
+    u.nama,
+    u.no_telp,
+    u.email,
+    u.username,
+    u.passwords,
+    u.alamat,
+    u.created_at,
+    u.update_at,
+    r.roles,
+    d.nama_desa,
+    k.nama_kecamatan,
+    u.isactive
+   FROM users u
+     JOIN roles r USING (roles_id)
+     JOIN desa d USING (desa_id)
+     JOIN kecamatan k USING (kecamatan_id);
+
+ALTER TABLE public.v_semuadatauser
+    OWNER TO postgres;
+
+
+
+BARANG TANI !
+DROP VIEW public.lihat_barang_petani;
+
+CREATE OR REPLACE VIEW public.lihat_barang_petani
+ AS
+ SELECT 
+ 	b.barang_id,
+ 	b.nama_barang AS "nama barang",
+    b.stok,
+    b.harga_per_item AS "harga per unit",
+    k.kategori
+   FROM barang b
+     JOIN kategori k USING (kategori_id);
+
+
+
+CREATE OR REPLACE PROCEDURE public.add_alat_sewa(
+    IN p_nama_alat VARCHAR,
+    IN p_stok INTEGER,
+    IN p_harga_sewa_perhari NUMERIC,
+    IN p_harga_denda_perhari NUMERIC,
+    IN p_nama_kategori VARCHAR
+)
+LANGUAGE 'plpgsql'
+AS $BODY$
+DECLARE
+    v_kategori_id INTEGER;
+BEGIN
+    -- 1. Cari tahu apakah kategori tersebut sudah terdaftar (gunakan LOWER/ILIKE agar tidak sensitif huruf besar/kecil)
+    SELECT kategori_id 
+    INTO v_kategori_id
+    FROM kategori
+    WHERE LOWER(kategori) = LOWER(p_nama_kategori)
+    LIMIT 1;
+
+    -- 2. JIKA KATEGORI BELUM ADA (v_kategori_id IS NULL), maka buat baru secara otomatis
+    IF v_kategori_id IS NULL THEN
+        INSERT INTO kategori (kategori, deskripsi)
+        VALUES (p_nama_kategori, 'Kategori otomatis dibuat saat menambahkan alat ' || p_nama_alat)
+        RETURNING kategori_id INTO v_kategori_id; -- Langsung ambil ID baru yang terbuat
+    END IF;
+
+    -- 3. Masukkan data alat sewa baru menggunakan v_kategori_id yang sudah didapatkan
+    INSERT INTO alat_sewa (nama_alat, stok, harga_sewa_perhari, harga_denda_perhari, kategori_id, added_at)
+    VALUES (p_nama_alat, p_stok, p_harga_sewa_perhari, p_harga_denda_perhari, v_kategori_id, CURRENT_TIMESTAMP);
+
+END;
+$BODY$;
+
+-- Berikan hak akses ke user postgres
+ALTER PROCEDURE public.add_alat_sewa_dengan_kategori(VARCHAR, INTEGER, NUMERIC, NUMERIC, VARCHAR)
+    OWNER TO postgres;
+
+CREATE OR REPLACE PROCEDURE public.add_pesanan_barang(
+    IN p_users_id integer,
+    IN p_opsi_pengiriman character varying,
+    IN p_barang_id integer,
+    IN p_quantity integer
+)
+LANGUAGE 'plpgsql'
+AS $BODY$
+DECLARE
+    v_pesanan_id int;
+    v_harga_per_item numeric;
+BEGIN   
+    -- 1. Ambil harga per item dari tabel barang
+    SELECT harga_per_item 
+    INTO v_harga_per_item
+    FROM barang
+    WHERE barang_id = p_barang_id;
+
+    -- Validasi jika barang ternyata tidak ditemukan di database
+    IF v_harga_per_item IS NULL THEN
+        RAISE EXCEPTION 'Barang dengan ID % tidak ditemukan.', p_barang_id;
+    END IF;
+
+    -- 2. KUNCI UTAMA: Cari apakah user punya keranjang aktif ('Belum Checkout')
+    SELECT pesanan_id
+    INTO v_pesanan_id
+    FROM pesanan
+    WHERE users_id = p_users_id AND status_pesanan = 'Belum Checkout'
+    LIMIT 1;
+
+    -- 3. JIKA TIDAK ADA keranjang aktif, buatkan NOTA PESANAN baru terlebih dahulu
+    IF v_pesanan_id IS NULL THEN
+        INSERT INTO pesanan(tanggal_pesanan, users_id, status_pesanan, opsi_pengiriman)
+        VALUES (CURRENT_DATE, p_users_id, 'Belum Checkout', p_opsi_pengiriman) 
+        RETURNING pesanan_id INTO v_pesanan_id;
+    END IF;
+
+    -- 4. Masukkan item barang ke detail pesanan (Cukup tulis 1 kali di sini)
+    INSERT INTO detail_pesanan_pembelian(quantity, harga_per_item, pesanan_id, barang_id)
+    VALUES (p_quantity, v_harga_per_item, v_pesanan_id, p_barang_id);
+
+END;
+$BODY$;
+
+ALTER PROCEDURE public.add_pesanan_barang(integer, character varying, integer, integer)
+    OWNER TO postgres
+
+CREATE OR REPLACE FUNCTION public.get_pesanan_by_user(p_users_id integer)
+RETURNS TABLE (
+    "ID" integer,
+    "Jenis Pesanan" text,
+    "Nama Item" varchar,
+    "Harga Satuan" numeric,
+    "Jumlah" integer,
+    "Lama Sewa (Hari)" integer,
+    "Tanggal Pemesanan" date,
+    "Status" varchar
+) 
+LANGUAGE 'plpgsql'
+AS $BODY$
+BEGIN
+    RETURN QUERY
+    SELECT p.pesanan_id AS "ID",
+        'Pembelian'::text AS "Jenis Pesanan",
+        b.nama_barang AS "Nama Item",
+        dpb.harga_per_item AS "Harga Satuan",
+        dpb.quantity AS "Jumlah",
+        NULL::integer AS "Lama Sewa (Hari)",
+        p.tanggal_pesanan AS "Tanggal Pemesanan",
+        p.status_pesanan AS "Status"
+       FROM pesanan p
+         JOIN detail_pesanan_pembelian dpb USING (pesanan_id)
+         JOIN barang b USING (barang_id)
+       WHERE p.users_id = p_users_id AND p.status_pesanan = 'Belum Checkout' -- <--- FILTER DI SINI
+
+    UNION ALL
+
+    SELECT p.pesanan_id AS "ID",
+        'Penyewaan'::text AS "Jenis Pesanan",
+        a.nama_alat AS "Nama Item",
+        dps.harga_sewa_perhari AS "Harga Satuan",
+        dps.quantity AS "Jumlah",
+        (dps.tgl_pengembalian - dps.tgl_sewa)::integer AS "Lama Sewa (Hari)",
+        p.tanggal_pesanan AS "Tanggal Pemesanan",
+        p.status_pesanan AS "Status"
+       FROM pesanan p
+         JOIN detail_pesanan_sewa dps USING (pesanan_id)
+         JOIN alat_sewa a USING (alat_sewa_id)
+       WHERE p.users_id = p_users_id AND p.status_pesanan = 'Belum Checkout'; -- <--- FILTER DI SINI
+END;
+$BODY$;
+
+CREATE OR REPLACE FUNCTION public.get_pesanan_by_user(p_users_id integer)
+RETURNS TABLE (
+    "ID" integer,
+    "Jenis Pesanan" text,
+    "Nama Item" varchar,
+    "Harga Satuan" numeric,
+    "Jumlah" integer,
+    "Lama Sewa (Hari)" integer, -- <--- Menuntut tipe integer
+    "Tanggal Pemesanan" date,
+    "Status" varchar
+) 
+LANGUAGE 'plpgsql'
+AS $BODY$
+BEGIN
+    RETURN QUERY
+    SELECT p.pesanan_id AS "ID",
+        'Pembelian'::text AS "Jenis Pesanan",
+        b.nama_barang AS "Nama Item",
+        dpb.harga_per_item AS "Harga Satuan",
+        dpb.quantity AS "Jumlah",
+        0::integer AS "Lama Sewa (Hari)", -- <--- GANTI NULL MENJADI 0 DI SINI!
+        p.tanggal_pesanan::date AS "Tanggal Pemesanan",
+        p.status_pesanan AS "Status"
+       FROM pesanan p
+         JOIN detail_pesanan_pembelian dpb USING (pesanan_id)
+         JOIN barang b USING (barang_id)
+       WHERE p.users_id = p_users_id AND p.status_pesanan = 'Belum Checkout'
+
+    UNION ALL
+
+    SELECT p.pesanan_id AS "ID",
+        'Penyewaan'::text AS "Jenis Pesanan",
+        a.nama_alat AS "Nama Item",
+        dps.harga_sewa_perhari AS "Harga Satuan",
+        dps.quantity AS "Jumlah",
+        (dps.tgl_pengembalian - dps.tgl_sewa)::integer AS "Lama Sewa (Hari)", -- Tetap menghitung hari sewa asli
+        p.tanggal_pesanan::date AS "Tanggal Pemesanan",
+        p.status_pesanan AS "Status"
+       FROM pesanan p
+         JOIN detail_pesanan_sewa dps USING (pesanan_id)
+         JOIN alat_sewa a USING (alat_sewa_id)
+       WHERE p.users_id = p_users_id AND p.status_pesanan = 'Belum Checkout';
+END;
+$BODY$
+
+CREATE OR REPLACE PROCEDURE public.checkout_pesanan(IN p_pesanan_id integer)
+LANGUAGE 'plpgsql'
+AS $BODY$
+BEGIN
+    -- Mengubah status pesanan dari 'Belum Checkout' menjadi 'Sudah Checkout'
+    UPDATE pesanan
+    SET status_pesanan = 'Sudah Checkout'
+    WHERE pesanan_id = p_pesanan_id AND status_pesanan = 'Belum Checkout';
+    
+    -- Validasi jika ternyata tidak ada baris yang berubah (ID tidak ditemukan / sudah CO)
+    IF NOT FOUND THEN
+        RAISE NOTICE 'Pesanan dengan ID % tidak ditemukan atau sudah di-checkout sebelumnya.', p_pesanan_id;
+    END IF;
+END;
+$BODY$;
+
+ALTER PROCEDURE public.checkout_pesanan(integer) OWNER TO postgres;
+
+CREATE OR REPLACE PROCEDURE public.batal_pesanan_item(
+	IN p_pesanan_id integer,
+	IN p_jenis_pesanan text,
+	IN p_nama_item character varying)
+LANGUAGE 'plpgsql'
+AS $BODY$
+DECLARE
+    v_total_item integer;
+BEGIN
+    -- 1. HAPUS DARI TABEL DETAIL BERDASARKAN JENISNYA
+    IF p_jenis_pesanan = 'Pembelian' THEN
+        DELETE FROM detail_pesanan_pembelian
+        WHERE pesanan_id = p_pesanan_id 
+          AND barang_id = (SELECT barang_id FROM barang WHERE nama_barang = p_nama_item LIMIT 1);
+          
+    ELSIF p_jenis_pesanan = 'Penyewaan' THEN
+        DELETE FROM detail_pesanan_sewa
+        WHERE pesanan_id = p_pesanan_id 
+          AND alat_sewa_id = (SELECT alat_sewa_id FROM alat_sewa WHERE nama_alat = p_nama_item LIMIT 1);
+    END IF;
+
+    -- 2. HITUNG SISA ITEM DI NOTA TERSEBUT
+    SELECT 
+        (SELECT COUNT(*) FROM detail_pesanan_pembelian WHERE pesanan_id = p_pesanan_id) +
+        (SELECT COUNT(*) FROM detail_pesanan_sewa WHERE pesanan_id = p_pesanan_id)
+    INTO v_total_item;
+
+    -- 3. JIKA NOTA SUDAH KOSONG (TIDAK ADA ITEM LAGI), HAPUS NOTA INDUKNYA
+    IF v_total_item = 0 THEN
+        DELETE FROM pesanan WHERE pesanan_id = p_pesanan_id;
+    END IF;
+END;
+$BODY$;
+
+ALTER PROCEDURE public.batal_pesanan_item(integer, text, character varying) OWNER TO postgres;
+
+CREATE OR REPLACE PROCEDURE public.update_users(
+	IN p_nama text,
+	IN p_no_telp text,
+	IN p_email text,
+	IN p_username_baru text, -- <--- Ganti jadi Username Baru
+	IN p_password text,
+	IN p_isactive boolean,
+	IN p_alamat text,
+	IN p_desa text,
+	IN p_kecamatan text,
+	IN p_username_lama text) -- <--- TAMBAHKAN PARAMETER KE-10 DI SINI!
+LANGUAGE 'plpgsql'
+AS $BODY$
+DECLARE
+	v_desa_id int;
+	v_kecamatan_id int;
+BEGIN
+	-- 1. Cari ID Desa berdasarkan nama teks
+	SELECT desa_id 
+	INTO v_desa_id
+	FROM desa
+	WHERE nama_desa ILIKE p_desa;
+
+	-- 2. Cari ID Kecamatan berdasarkan nama teks
+	SELECT kecamatan_id
+	INTO v_kecamatan_id
+	FROM kecamatan
+	WHERE nama_kecamatan ILIKE p_kecamatan;
+
+	-- 3. LOGIKA VALIDASI RELASI WILAYAH (DIPERBAIKI)
+	IF v_kecamatan_id IS NULL THEN
+		-- Wajib sebutkan nama kolom target (nama_kecamatan) agar tidak salah lempar parameter
+		INSERT INTO kecamatan (nama_kecamatan)
+		VALUES (p_kecamatan) 
+		RETURNING kecamatan_id INTO v_kecamatan_id;
+	END IF;
+
+	IF v_desa_id IS NULL THEN
+		-- Wajib sebutkan nama kolom target (nama_desa, kecamatan_id)
+		INSERT INTO desa (nama_desa, kecamatan_id)
+		VALUES (p_desa, v_kecamatan_id) 
+		RETURNING desa_id INTO v_desa_id;
+	END IF;
+
+	-- 4. PROSES UPDATE DATA USER UTAMA
+UPDATE users 
+	SET 
+		nama = p_nama, 
+		no_telp = p_no_telp, 
+		email = p_email, 
+		username = p_username_baru, -- <--- Set ke yang baru
+		passwords = p_password, 
+		alamat = p_alamat, 
+		isactive = p_isactive,
+		desa = v_desa_id, 
+		update_at = NOW()
+	WHERE username = p_username_lama; -- <--- Cari berdasarkan username yang LAMA!
+END;
+$BODY$;

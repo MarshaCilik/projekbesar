@@ -31,7 +31,7 @@
             label1 = new Label();
             TbStok = new TextBox();
             Btn_Tambah = new Button();
-            label2 = new Label();
+            Lbl_OpsiPengiriman = new Label();
             lbl_formbarang = new Label();
             cmbPengiriman = new ComboBox();
             SuspendLayout();
@@ -64,15 +64,15 @@
             Btn_Tambah.UseVisualStyleBackColor = true;
             Btn_Tambah.Click += Btn_Tambah_Click;
             // 
-            // label2
+            // Lbl_OpsiPengiriman
             // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(12, 107);
-            label2.Name = "label2";
-            label2.Size = new Size(117, 20);
-            label2.TabIndex = 3;
-            label2.Text = "Opsi Pengiriman";
+            Lbl_OpsiPengiriman.AutoSize = true;
+            Lbl_OpsiPengiriman.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Lbl_OpsiPengiriman.Location = new Point(12, 107);
+            Lbl_OpsiPengiriman.Name = "Lbl_OpsiPengiriman";
+            Lbl_OpsiPengiriman.Size = new Size(117, 20);
+            Lbl_OpsiPengiriman.TabIndex = 3;
+            Lbl_OpsiPengiriman.Text = "Opsi Pengiriman";
             // 
             // lbl_formbarang
             // 
@@ -100,7 +100,7 @@
             ClientSize = new Size(558, 231);
             Controls.Add(cmbPengiriman);
             Controls.Add(lbl_formbarang);
-            Controls.Add(label2);
+            Controls.Add(Lbl_OpsiPengiriman);
             Controls.Add(Btn_Tambah);
             Controls.Add(TbStok);
             Controls.Add(label1);
@@ -116,7 +116,7 @@
         private Label label1;
         private TextBox TbStok;
         private Button Btn_Tambah;
-        private Label label2;
+        private Label Lbl_OpsiPengiriman;
         private Label lbl_formbarang;
         private ComboBox cmbPengiriman;
     }

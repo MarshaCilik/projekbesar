@@ -14,6 +14,31 @@ namespace WinFormsApp1.Models.Context
 {
     public class userContext
     {
+        public void UpdateProfil(Users user, string usernameLama)
+        {
+            using (NpgsqlConnection conn = connectDB.GetConnection())
+            {
+                string sql = "CALL update_users(@p_nama, @p_no_telp, @p_email, @p_username, @p_password, @p_isactive, @p_alamat, @p_desa, @p_kecamatan, @p_username_lama)";
+
+                using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("p_nama", user.Nama);
+                    cmd.Parameters.AddWithValue("p_no_telp", user.NoTelp);
+                    cmd.Parameters.AddWithValue("p_email", user.Email);
+                    cmd.Parameters.AddWithValue("p_username", user.Username);
+                    cmd.Parameters.AddWithValue("p_password", user.Password);
+
+                    cmd.Parameters.AddWithValue("p_isactive", user.IsActive);
+
+                    cmd.Parameters.AddWithValue("p_alamat", user.Alamat);
+                    cmd.Parameters.AddWithValue("p_desa", user.NamaDesa);
+                    cmd.Parameters.AddWithValue("p_kecamatan", user.NamaKecamatan);
+                    cmd.Parameters.AddWithValue("p_username_lama", usernameLama);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
         public void Update(Users user)
         {
             List<Users> list = new List<Users>();

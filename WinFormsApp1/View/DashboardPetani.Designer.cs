@@ -30,6 +30,7 @@
         {
             components = new System.ComponentModel.Container();
             panel1 = new Panel();
+            Btn_Keluar = new Button();
             Btn_Profil = new Button();
             Btn_Riwayat = new Button();
             Btn_Tagihan = new Button();
@@ -50,9 +51,11 @@
             Tc_Petani = new TabControl();
             tabPage1 = new TabPage();
             tabPage2 = new TabPage();
+            Btn_BatalPesanan = new Button();
             Btn_SudahCO = new Button();
             Btn_CheckOut = new Button();
             panel4 = new Panel();
+            label2 = new Label();
             Lbl_Pesanan = new Label();
             panel5 = new Panel();
             Dgv_Pesanan = new DataGridView();
@@ -60,7 +63,38 @@
             tabPage3 = new TabPage();
             tabPage4 = new TabPage();
             tabPage5 = new TabPage();
-            Btn_Keluar = new Button();
+            panel15 = new Panel();
+            Btn_Simpan = new Button();
+            panel14 = new Panel();
+            Tb_Desa = new TextBox();
+            panel13 = new Panel();
+            Tb_Nama = new TextBox();
+            Btn_Batal = new Button();
+            panel12 = new Panel();
+            Tb_NoTelp = new TextBox();
+            panel11 = new Panel();
+            Tb_Email = new TextBox();
+            Lbl_Status = new Label();
+            panel8 = new Panel();
+            Tb_Username = new TextBox();
+            label9 = new Label();
+            panel6 = new Panel();
+            Tb_Password = new TextBox();
+            label8 = new Label();
+            panel7 = new Panel();
+            Tb_Alamat = new TextBox();
+            label7 = new Label();
+            panel9 = new Panel();
+            Tb_Kecamatan = new TextBox();
+            panel10 = new Panel();
+            label6 = new Label();
+            label11 = new Label();
+            label5 = new Label();
+            label3 = new Label();
+            label4 = new Label();
+            panel16 = new Panel();
+            label14 = new Label();
+            pictureBox2 = new PictureBox();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel2.SuspendLayout();
@@ -72,6 +106,18 @@
             panel4.SuspendLayout();
             panel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)Dgv_Pesanan).BeginInit();
+            tabPage5.SuspendLayout();
+            panel15.SuspendLayout();
+            panel14.SuspendLayout();
+            panel13.SuspendLayout();
+            panel12.SuspendLayout();
+            panel11.SuspendLayout();
+            panel8.SuspendLayout();
+            panel6.SuspendLayout();
+            panel7.SuspendLayout();
+            panel9.SuspendLayout();
+            panel16.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             SuspendLayout();
             // 
             // panel1
@@ -90,6 +136,23 @@
             panel1.Size = new Size(278, 1013);
             panel1.TabIndex = 0;
             // 
+            // Btn_Keluar
+            // 
+            Btn_Keluar.BackColor = Color.FromArgb(184, 224, 162);
+            Btn_Keluar.FlatAppearance.BorderSize = 0;
+            Btn_Keluar.FlatAppearance.MouseDownBackColor = Color.Transparent;
+            Btn_Keluar.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            Btn_Keluar.FlatStyle = FlatStyle.Flat;
+            Btn_Keluar.Font = new Font("Arial Rounded MT Bold", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Btn_Keluar.ForeColor = Color.FromArgb(49, 106, 14);
+            Btn_Keluar.Location = new Point(25, 929);
+            Btn_Keluar.Name = "Btn_Keluar";
+            Btn_Keluar.Size = new Size(195, 49);
+            Btn_Keluar.TabIndex = 35;
+            Btn_Keluar.Text = "Keluar";
+            Btn_Keluar.UseVisualStyleBackColor = false;
+            Btn_Keluar.Click += Btn_Keluar_Click;
+            // 
             // Btn_Profil
             // 
             Btn_Profil.BackColor = Color.FromArgb(184, 224, 162);
@@ -103,6 +166,7 @@
             Btn_Profil.TabIndex = 34;
             Btn_Profil.Text = "Profil";
             Btn_Profil.UseVisualStyleBackColor = false;
+            Btn_Profil.Click += Btn_Profil_Click;
             // 
             // Btn_Riwayat
             // 
@@ -300,7 +364,7 @@
             Tc_Petani.Controls.Add(tabPage4);
             Tc_Petani.Controls.Add(tabPage5);
             Tc_Petani.ItemSize = new Size(61, 20);
-            Tc_Petani.Location = new Point(264, -4);
+            Tc_Petani.Location = new Point(279, -4);
             Tc_Petani.Name = "Tc_Petani";
             Tc_Petani.SelectedIndex = 0;
             Tc_Petani.Size = new Size(1107, 1013);
@@ -323,6 +387,7 @@
             // 
             // tabPage2
             // 
+            tabPage2.Controls.Add(Btn_BatalPesanan);
             tabPage2.Controls.Add(Btn_SudahCO);
             tabPage2.Controls.Add(Btn_CheckOut);
             tabPage2.Controls.Add(panel4);
@@ -336,11 +401,25 @@
             tabPage2.Text = "tabPage2";
             tabPage2.UseVisualStyleBackColor = true;
             // 
+            // Btn_BatalPesanan
+            // 
+            Btn_BatalPesanan.Anchor = AnchorStyles.Right;
+            Btn_BatalPesanan.BackColor = Color.LightGray;
+            Btn_BatalPesanan.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Btn_BatalPesanan.ForeColor = Color.Black;
+            Btn_BatalPesanan.Location = new Point(729, 266);
+            Btn_BatalPesanan.Name = "Btn_BatalPesanan";
+            Btn_BatalPesanan.Size = new Size(130, 32);
+            Btn_BatalPesanan.TabIndex = 11;
+            Btn_BatalPesanan.Text = "Batalkan Pesanan";
+            Btn_BatalPesanan.UseVisualStyleBackColor = false;
+            Btn_BatalPesanan.Click += Btn_BatalPesanan_Click;
+            // 
             // Btn_SudahCO
             // 
-            Btn_SudahCO.BackColor = Color.FromArgb(49, 106, 14);
+            Btn_SudahCO.BackColor = Color.LightGray;
             Btn_SudahCO.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Btn_SudahCO.ForeColor = SystemColors.ButtonFace;
+            Btn_SudahCO.ForeColor = Color.Black;
             Btn_SudahCO.Location = new Point(147, 266);
             Btn_SudahCO.Name = "Btn_SudahCO";
             Btn_SudahCO.Size = new Size(130, 32);
@@ -351,6 +430,7 @@
             // 
             // Btn_CheckOut
             // 
+            Btn_CheckOut.Anchor = AnchorStyles.Right;
             Btn_CheckOut.BackColor = Color.LimeGreen;
             Btn_CheckOut.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Btn_CheckOut.ForeColor = Color.Black;
@@ -360,22 +440,36 @@
             Btn_CheckOut.TabIndex = 9;
             Btn_CheckOut.Text = "Check Out";
             Btn_CheckOut.UseVisualStyleBackColor = false;
+            Btn_CheckOut.Click += Btn_CheckOut_Click;
             // 
             // panel4
             // 
+            panel4.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             panel4.BackColor = Color.FromArgb(49, 106, 14);
+            panel4.Controls.Add(label2);
             panel4.Controls.Add(Lbl_Pesanan);
             panel4.Location = new Point(11, 16);
             panel4.Name = "panel4";
-            panel4.Size = new Size(1061, 89);
+            panel4.Size = new Size(1061, 220);
             panel4.TabIndex = 5;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.ForeColor = Color.White;
+            label2.Location = new Point(13, 193);
+            label2.Name = "label2";
+            label2.Size = new Size(334, 15);
+            label2.TabIndex = 2;
+            label2.Text = "* Pesanan tidak dapat dibatalkan setelah pesanan di checkout ";
             // 
             // Lbl_Pesanan
             // 
+            Lbl_Pesanan.Anchor = AnchorStyles.Top;
             Lbl_Pesanan.AutoSize = true;
             Lbl_Pesanan.Font = new Font("Segoe UI", 26.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             Lbl_Pesanan.ForeColor = SystemColors.ButtonFace;
-            Lbl_Pesanan.Location = new Point(355, 16);
+            Lbl_Pesanan.Location = new Point(340, 13);
             Lbl_Pesanan.Name = "Lbl_Pesanan";
             Lbl_Pesanan.Size = new Size(382, 47);
             Lbl_Pesanan.TabIndex = 1;
@@ -383,6 +477,7 @@
             // 
             // panel5
             // 
+            panel5.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             panel5.BackColor = Color.FromArgb(122, 148, 114);
             panel5.Controls.Add(Dgv_Pesanan);
             panel5.Location = new Point(11, 317);
@@ -392,6 +487,7 @@
             // 
             // Dgv_Pesanan
             // 
+            Dgv_Pesanan.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             Dgv_Pesanan.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             Dgv_Pesanan.Location = new Point(13, 15);
             Dgv_Pesanan.Name = "Dgv_Pesanan";
@@ -433,6 +529,9 @@
             // 
             // tabPage5
             // 
+            tabPage5.Controls.Add(panel15);
+            tabPage5.Controls.Add(panel16);
+            tabPage5.Controls.Add(pictureBox2);
             tabPage5.Location = new Point(4, 24);
             tabPage5.Name = "tabPage5";
             tabPage5.Padding = new Padding(3);
@@ -441,34 +540,350 @@
             tabPage5.Text = "tabPage5";
             tabPage5.UseVisualStyleBackColor = true;
             // 
-            // Btn_Keluar
+            // panel15
             // 
-            Btn_Keluar.BackColor = Color.FromArgb(184, 224, 162);
-            Btn_Keluar.FlatAppearance.BorderSize = 0;
-            Btn_Keluar.FlatAppearance.MouseDownBackColor = Color.Transparent;
-            Btn_Keluar.FlatAppearance.MouseOverBackColor = Color.Transparent;
-            Btn_Keluar.FlatStyle = FlatStyle.Flat;
-            Btn_Keluar.Font = new Font("Arial Rounded MT Bold", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Btn_Keluar.ForeColor = Color.FromArgb(49, 106, 14);
-            Btn_Keluar.Location = new Point(25, 929);
-            Btn_Keluar.Name = "Btn_Keluar";
-            Btn_Keluar.Size = new Size(195, 49);
-            Btn_Keluar.TabIndex = 35;
-            Btn_Keluar.Text = "Keluar";
-            Btn_Keluar.UseVisualStyleBackColor = false;
-            Btn_Keluar.Click += Btn_Keluar_Click;
+            panel15.BackColor = Color.FromArgb(122, 148, 114);
+            panel15.Controls.Add(Btn_Simpan);
+            panel15.Controls.Add(panel14);
+            panel15.Controls.Add(panel13);
+            panel15.Controls.Add(Btn_Batal);
+            panel15.Controls.Add(panel12);
+            panel15.Controls.Add(panel11);
+            panel15.Controls.Add(Lbl_Status);
+            panel15.Controls.Add(panel8);
+            panel15.Controls.Add(label9);
+            panel15.Controls.Add(panel6);
+            panel15.Controls.Add(label8);
+            panel15.Controls.Add(panel7);
+            panel15.Controls.Add(label7);
+            panel15.Controls.Add(panel9);
+            panel15.Controls.Add(label6);
+            panel15.Controls.Add(label11);
+            panel15.Controls.Add(label5);
+            panel15.Controls.Add(label3);
+            panel15.Controls.Add(label4);
+            panel15.Location = new Point(231, 132);
+            panel15.Name = "panel15";
+            panel15.Size = new Size(827, 819);
+            panel15.TabIndex = 45;
+            // 
+            // Btn_Simpan
+            // 
+            Btn_Simpan.BackColor = Color.FromArgb(168, 197, 152);
+            Btn_Simpan.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Btn_Simpan.Location = new Point(29, 659);
+            Btn_Simpan.Name = "Btn_Simpan";
+            Btn_Simpan.Size = new Size(761, 49);
+            Btn_Simpan.TabIndex = 41;
+            Btn_Simpan.Text = "SIMPAN";
+            Btn_Simpan.UseVisualStyleBackColor = false;
+            Btn_Simpan.Click += Btn_Simpan_Click;
+            // 
+            // panel14
+            // 
+            panel14.BackColor = Color.FromArgb(74, 103, 65);
+            panel14.Controls.Add(Tb_Desa);
+            panel14.Location = new Point(29, 495);
+            panel14.Name = "panel14";
+            panel14.Size = new Size(760, 38);
+            panel14.TabIndex = 29;
+            // 
+            // Tb_Desa
+            // 
+            Tb_Desa.BackColor = Color.FromArgb(74, 103, 65);
+            Tb_Desa.BorderStyle = BorderStyle.FixedSingle;
+            Tb_Desa.ForeColor = Color.White;
+            Tb_Desa.Location = new Point(11, 8);
+            Tb_Desa.Name = "Tb_Desa";
+            Tb_Desa.Size = new Size(521, 23);
+            Tb_Desa.TabIndex = 6;
+            // 
+            // panel13
+            // 
+            panel13.BackColor = Color.FromArgb(74, 103, 65);
+            panel13.Controls.Add(Tb_Nama);
+            panel13.Location = new Point(29, 57);
+            panel13.Name = "panel13";
+            panel13.Size = new Size(760, 38);
+            panel13.TabIndex = 23;
+            // 
+            // Tb_Nama
+            // 
+            Tb_Nama.BackColor = Color.FromArgb(74, 103, 65);
+            Tb_Nama.BorderStyle = BorderStyle.FixedSingle;
+            Tb_Nama.ForeColor = Color.White;
+            Tb_Nama.Location = new Point(12, 7);
+            Tb_Nama.Name = "Tb_Nama";
+            Tb_Nama.Size = new Size(521, 23);
+            Tb_Nama.TabIndex = 0;
+            // 
+            // Btn_Batal
+            // 
+            Btn_Batal.BackColor = SystemColors.ButtonHighlight;
+            Btn_Batal.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Btn_Batal.Location = new Point(28, 714);
+            Btn_Batal.Name = "Btn_Batal";
+            Btn_Batal.Size = new Size(761, 49);
+            Btn_Batal.TabIndex = 42;
+            Btn_Batal.Text = "BATAL";
+            Btn_Batal.UseVisualStyleBackColor = false;
+            // 
+            // panel12
+            // 
+            panel12.BackColor = Color.FromArgb(74, 103, 65);
+            panel12.Controls.Add(Tb_NoTelp);
+            panel12.Location = new Point(29, 129);
+            panel12.Name = "panel12";
+            panel12.Size = new Size(760, 38);
+            panel12.TabIndex = 24;
+            // 
+            // Tb_NoTelp
+            // 
+            Tb_NoTelp.BackColor = Color.FromArgb(74, 103, 65);
+            Tb_NoTelp.BorderStyle = BorderStyle.FixedSingle;
+            Tb_NoTelp.ForeColor = Color.White;
+            Tb_NoTelp.Location = new Point(13, 9);
+            Tb_NoTelp.Name = "Tb_NoTelp";
+            Tb_NoTelp.Size = new Size(521, 23);
+            Tb_NoTelp.TabIndex = 1;
+            // 
+            // panel11
+            // 
+            panel11.BackColor = Color.FromArgb(74, 103, 65);
+            panel11.Controls.Add(Tb_Email);
+            panel11.Location = new Point(29, 201);
+            panel11.Name = "panel11";
+            panel11.Size = new Size(760, 38);
+            panel11.TabIndex = 25;
+            // 
+            // Tb_Email
+            // 
+            Tb_Email.BackColor = Color.FromArgb(74, 103, 65);
+            Tb_Email.BorderStyle = BorderStyle.FixedSingle;
+            Tb_Email.ForeColor = Color.White;
+            Tb_Email.Location = new Point(11, 8);
+            Tb_Email.Name = "Tb_Email";
+            Tb_Email.Size = new Size(521, 23);
+            Tb_Email.TabIndex = 2;
+            // 
+            // Lbl_Status
+            // 
+            Lbl_Status.AutoSize = true;
+            Lbl_Status.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            Lbl_Status.Location = new Point(30, 632);
+            Lbl_Status.Name = "Lbl_Status";
+            Lbl_Status.Size = new Size(56, 15);
+            Lbl_Status.TabIndex = 39;
+            Lbl_Status.Text = "STATUS: ";
+            // 
+            // panel8
+            // 
+            panel8.BackColor = Color.FromArgb(74, 103, 65);
+            panel8.Controls.Add(Tb_Username);
+            panel8.Location = new Point(30, 277);
+            panel8.Name = "panel8";
+            panel8.Size = new Size(760, 38);
+            panel8.TabIndex = 26;
+            // 
+            // Tb_Username
+            // 
+            Tb_Username.BackColor = Color.FromArgb(74, 103, 65);
+            Tb_Username.BorderStyle = BorderStyle.FixedSingle;
+            Tb_Username.ForeColor = Color.White;
+            Tb_Username.Location = new Point(10, 8);
+            Tb_Username.Name = "Tb_Username";
+            Tb_Username.Size = new Size(521, 23);
+            Tb_Username.TabIndex = 3;
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label9.Location = new Point(30, 555);
+            label9.Name = "label9";
+            label9.Size = new Size(80, 15);
+            label9.TabIndex = 38;
+            label9.Text = "KECAMATAN:";
+            // 
+            // panel6
+            // 
+            panel6.BackColor = Color.FromArgb(74, 103, 65);
+            panel6.Controls.Add(Tb_Password);
+            panel6.Location = new Point(29, 350);
+            panel6.Name = "panel6";
+            panel6.Size = new Size(760, 38);
+            panel6.TabIndex = 27;
+            // 
+            // Tb_Password
+            // 
+            Tb_Password.BackColor = Color.FromArgb(74, 103, 65);
+            Tb_Password.BorderStyle = BorderStyle.FixedSingle;
+            Tb_Password.ForeColor = Color.White;
+            Tb_Password.Location = new Point(10, 8);
+            Tb_Password.Name = "Tb_Password";
+            Tb_Password.Size = new Size(521, 23);
+            Tb_Password.TabIndex = 4;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label8.Location = new Point(30, 477);
+            label8.Name = "label8";
+            label8.Size = new Size(40, 15);
+            label8.TabIndex = 37;
+            label8.Text = "DESA:";
+            // 
+            // panel7
+            // 
+            panel7.BackColor = Color.FromArgb(74, 103, 65);
+            panel7.Controls.Add(Tb_Alamat);
+            panel7.Location = new Point(30, 422);
+            panel7.Name = "panel7";
+            panel7.Size = new Size(760, 38);
+            panel7.TabIndex = 28;
+            // 
+            // Tb_Alamat
+            // 
+            Tb_Alamat.BackColor = Color.FromArgb(74, 103, 65);
+            Tb_Alamat.BorderStyle = BorderStyle.FixedSingle;
+            Tb_Alamat.ForeColor = Color.White;
+            Tb_Alamat.Location = new Point(11, 9);
+            Tb_Alamat.Name = "Tb_Alamat";
+            Tb_Alamat.Size = new Size(521, 23);
+            Tb_Alamat.TabIndex = 5;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label7.Location = new Point(30, 404);
+            label7.Name = "label7";
+            label7.Size = new Size(101, 15);
+            label7.TabIndex = 36;
+            label7.Text = "ALAMAT(JALAN):";
+            // 
+            // panel9
+            // 
+            panel9.BackColor = Color.FromArgb(74, 103, 65);
+            panel9.Controls.Add(Tb_Kecamatan);
+            panel9.Controls.Add(panel10);
+            panel9.Location = new Point(29, 573);
+            panel9.Name = "panel9";
+            panel9.Size = new Size(760, 38);
+            panel9.TabIndex = 30;
+            // 
+            // Tb_Kecamatan
+            // 
+            Tb_Kecamatan.BackColor = Color.FromArgb(74, 103, 65);
+            Tb_Kecamatan.BorderStyle = BorderStyle.FixedSingle;
+            Tb_Kecamatan.ForeColor = Color.White;
+            Tb_Kecamatan.Location = new Point(12, 7);
+            Tb_Kecamatan.Name = "Tb_Kecamatan";
+            Tb_Kecamatan.Size = new Size(521, 23);
+            Tb_Kecamatan.TabIndex = 7;
+            // 
+            // panel10
+            // 
+            panel10.Location = new Point(0, 83);
+            panel10.Name = "panel10";
+            panel10.Size = new Size(203, 38);
+            panel10.TabIndex = 20;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label6.Location = new Point(29, 332);
+            label6.Name = "label6";
+            label6.Size = new Size(76, 15);
+            label6.TabIndex = 35;
+            label6.Text = "PASSWORD:";
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label11.Location = new Point(29, 39);
+            label11.Name = "label11";
+            label11.Size = new Size(46, 15);
+            label11.TabIndex = 31;
+            label11.Text = "NAMA:";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label5.Location = new Point(29, 259);
+            label5.Name = "label5";
+            label5.Size = new Size(74, 15);
+            label5.TabIndex = 34;
+            label5.Text = "USERNAME:";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label3.Location = new Point(29, 111);
+            label3.Name = "label3";
+            label3.Size = new Size(60, 15);
+            label3.TabIndex = 32;
+            label3.Text = "NO. TELP:";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label4.Location = new Point(30, 183);
+            label4.Name = "label4";
+            label4.Size = new Size(45, 15);
+            label4.TabIndex = 33;
+            label4.Text = "EMAIL:";
+            // 
+            // panel16
+            // 
+            panel16.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            panel16.BackColor = Color.FromArgb(49, 106, 14);
+            panel16.Controls.Add(label14);
+            panel16.Location = new Point(28, 12);
+            panel16.Name = "panel16";
+            panel16.Size = new Size(1044, 87);
+            panel16.TabIndex = 44;
+            // 
+            // label14
+            // 
+            label14.Anchor = AnchorStyles.Top;
+            label14.AutoSize = true;
+            label14.Font = new Font("Segoe UI", 26.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label14.ForeColor = SystemColors.ButtonFace;
+            label14.Location = new Point(419, 15);
+            label14.Name = "label14";
+            label14.Size = new Size(206, 47);
+            label14.TabIndex = 1;
+            label14.Text = "Profil Anda";
+            // 
+            // pictureBox2
+            // 
+            pictureBox2.BackgroundImage = Properties.Resources.Profil;
+            pictureBox2.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox2.Location = new Point(41, 132);
+            pictureBox2.Name = "pictureBox2";
+            pictureBox2.Size = new Size(153, 132);
+            pictureBox2.TabIndex = 43;
+            pictureBox2.TabStop = false;
             // 
             // DashboardPetani
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(1367, 1005);
+            ClientSize = new Size(1367, 976);
             Controls.Add(Tc_Petani);
             Controls.Add(panel1);
             Name = "DashboardPetani";
             Text = "DashboardPetani";
             WindowState = FormWindowState.Maximized;
+            FormClosed += DashboardPetani_FormClosed;
             panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel2.ResumeLayout(false);
@@ -482,6 +897,28 @@
             panel4.PerformLayout();
             panel5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)Dgv_Pesanan).EndInit();
+            tabPage5.ResumeLayout(false);
+            panel15.ResumeLayout(false);
+            panel15.PerformLayout();
+            panel14.ResumeLayout(false);
+            panel14.PerformLayout();
+            panel13.ResumeLayout(false);
+            panel13.PerformLayout();
+            panel12.ResumeLayout(false);
+            panel12.PerformLayout();
+            panel11.ResumeLayout(false);
+            panel11.PerformLayout();
+            panel8.ResumeLayout(false);
+            panel8.PerformLayout();
+            panel6.ResumeLayout(false);
+            panel6.PerformLayout();
+            panel7.ResumeLayout(false);
+            panel7.PerformLayout();
+            panel9.ResumeLayout(false);
+            panel9.PerformLayout();
+            panel16.ResumeLayout(false);
+            panel16.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ResumeLayout(false);
         }
 
@@ -519,5 +956,39 @@
         private Button Btn_BelumCO;
         private Button Btn_SudahCO;
         private Button Btn_Keluar;
+        private Button Btn_BatalPesanan;
+        private Label label2;
+        private Button Btn_Batal;
+        private Label Lbl_Status;
+        private Label label9;
+        private Label label8;
+        private Label label7;
+        private Label label6;
+        private Label label5;
+        private Label label4;
+        private Label label3;
+        private Label label11;
+        private Button Btn_Simpan;
+        private Panel panel9;
+        private TextBox Tb_Kecamatan;
+        private Panel panel10;
+        private Panel panel7;
+        private TextBox Tb_Alamat;
+        private Panel panel6;
+        private TextBox Tb_Password;
+        private Panel panel8;
+        private TextBox Tb_Username;
+        private Panel panel11;
+        private TextBox Tb_Email;
+        private Panel panel12;
+        private TextBox Tb_NoTelp;
+        private Panel panel13;
+        private TextBox Tb_Nama;
+        private Panel panel14;
+        private TextBox Tb_Desa;
+        private Panel panel16;
+        private Label label14;
+        private PictureBox pictureBox2;
+        private Panel panel15;
     }
 }

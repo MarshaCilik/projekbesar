@@ -25,25 +25,12 @@ namespace WinFormsApp1
 
             var hasilLogin = aut.Login(TbUsername.Text, TbPassword.Text);
 
+            Users sessionUser = hasilLogin.user;
+
             if (!hasilLogin.IsSukses)
             {
                 MessageBox.Show(hasilLogin.Pesan, "Peringatan!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
-            }
-
-            Users sessionUser = null;
-
-            if (hasilLogin.Role == 1)
-            {
-                sessionUser = new PetaniUser(0, TbUsername.Text, "", "", "", "", true, null, null, "", "", "");
-            }
-            else if (hasilLogin.Role == 2)
-            {
-                sessionUser = new KaryawanUser(0, TbUsername.Text, "", "", "", "", true, null, null,"", "", "");
-            }
-            else if (hasilLogin.Role == 3)
-            {
-                sessionUser = new AdminUser(0, TbUsername.Text, "", "", "", "", true, null, null,"", "", "");
             }
             else if (hasilLogin.Pesan == "Username atau Password tidak boleh kosong!")
             {

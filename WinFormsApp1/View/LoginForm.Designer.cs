@@ -28,36 +28,45 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoginForm));
             panel1 = new Panel();
+            pictureBox1 = new PictureBox();
             btn_BuatAkun = new Button();
             button1 = new Button();
             TbPassword = new TextBox();
             label4 = new Label();
             TbUsername = new TextBox();
             label3 = new Label();
-            label2 = new Label();
             label1 = new Label();
-            pictureBox1 = new PictureBox();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // panel1
             // 
+            panel1.Anchor = AnchorStyles.None;
+            panel1.Controls.Add(pictureBox1);
             panel1.Controls.Add(btn_BuatAkun);
             panel1.Controls.Add(button1);
             panel1.Controls.Add(TbPassword);
             panel1.Controls.Add(label4);
             panel1.Controls.Add(TbUsername);
             panel1.Controls.Add(label3);
-            panel1.Controls.Add(label2);
             panel1.Controls.Add(label1);
-            panel1.Controls.Add(pictureBox1);
             panel1.Location = new Point(182, 12);
             panel1.Name = "panel1";
             panel1.Size = new Size(549, 490);
             panel1.TabIndex = 0;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.BackColor = Color.Transparent;
+            pictureBox1.BackgroundImage = Properties.Resources.PASTANI_DASHBOARD1;
+            pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox1.Location = new Point(157, 26);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(278, 81);
+            pictureBox1.TabIndex = 9;
+            pictureBox1.TabStop = false;
             // 
             // btn_BuatAkun
             // 
@@ -117,36 +126,15 @@
             label3.TabIndex = 3;
             label3.Text = "Username";
             // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(230, 144);
-            label2.Name = "label2";
-            label2.Size = new Size(98, 32);
-            label2.TabIndex = 2;
-            label2.Text = "PETANI";
-            // 
             // label1
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(186, 19);
+            label1.Location = new Point(236, 110);
             label1.Name = "label1";
-            label1.Size = new Size(194, 32);
+            label1.Size = new Size(87, 32);
             label1.TabIndex = 1;
-            label1.Text = "LOGIN SEBAGAI";
-            // 
-            // pictureBox1
-            // 
-            pictureBox1.BackColor = Color.Transparent;
-            pictureBox1.BackgroundImage = (Image)resources.GetObject("pictureBox1.BackgroundImage");
-            pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox1.Location = new Point(211, 39);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(140, 102);
-            pictureBox1.TabIndex = 0;
-            pictureBox1.TabStop = false;
+            label1.Text = "LOGIN";
             // 
             // LoginForm
             // 
@@ -167,14 +155,13 @@
         #endregion
 
         private Panel panel1;
-        private Label label2;
         private Label label1;
-        private PictureBox pictureBox1;
         private TextBox TbPassword;
         private Label label4;
         private TextBox TbUsername;
         private Label label3;
         private Button button1;
         private Button btn_BuatAkun;
+        private PictureBox pictureBox1;
     }
 }

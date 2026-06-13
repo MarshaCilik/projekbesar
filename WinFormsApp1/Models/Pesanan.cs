@@ -12,10 +12,10 @@ namespace WinFormsApp1.Models
         public decimal Harga_Satuan { get; set; }
         public int Jumlah { get; set; }
         public int Lama_Sewa_Hari { get; set; }
-        public DateTime Tanggal_Pemesanan { get; set; }
+        public DateOnly Tanggal_Pemesanan { get; set; }
         public string Status { get; set; }
 
-        public Pesanan(int id, string jenis_pesanan, string nama, decimal harga, int jumlah, int lama_sewa, DateTime tanggal_pesan, string status)
+        public Pesanan(int id, string jenis_pesanan, string nama, decimal harga, int jumlah, int lama_sewa, DateOnly tanggal_pesan, string status)
         {
             Id = id;
             Jenis_Pesanan = jenis_pesanan;

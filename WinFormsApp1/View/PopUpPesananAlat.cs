@@ -39,7 +39,7 @@ namespace WinFormsApp1.View.Kerjaan_Tiwi
             if (pesananSudahAda)
             {
                 Lbl_OpsiPengiriman.Visible = false;
-                Lbl_OpsiPengiriman.Visible = false;
+                cmbPengiriman.Visible = false;
             }
             else
             {
@@ -62,9 +62,12 @@ namespace WinFormsApp1.View.Kerjaan_Tiwi
             }
             else
             {
+                DateOnly tanggalPilihan = DateOnly.FromDateTime(Dtp_TanggalSewa.Value);
                 string opsiPengiriman = cmbPengiriman.SelectedItem?.ToString() ?? "Diambil Sendiri";
-                controller.CreatePesananAlatSewa(User, Alat, opsiPengiriman, Convert.ToInt32(TbStok.Text), DateOnly.FromDateTime(Convert.ToDateTime(Dtp_TanggalSewa)));
+                controller.CreatePesananAlatSewa(User, Alat, opsiPengiriman, Convert.ToInt32(TbStok.Text), tanggalPilihan);
             }
         }
+
+        
     }
 }
