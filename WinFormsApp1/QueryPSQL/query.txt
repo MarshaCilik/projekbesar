@@ -750,7 +750,6 @@ END;
 $BODY$;
 
 ALTER PROCEDURE public.batal_pesanan_item(integer, text, character varying) OWNER TO postgres;
-
 CREATE OR REPLACE PROCEDURE public.update_users(
 	IN p_nama text,
 	IN p_no_telp text,
@@ -805,8 +804,65 @@ UPDATE users
 		passwords = p_password, 
 		alamat = p_alamat, 
 		isactive = p_isactive,
-		desa = v_desa_id, 
+		desa_id = v_desa_id, 
 		update_at = NOW()
 	WHERE username = p_username_lama; -- <--- Cari berdasarkan username yang LAMA!
 END;
 $BODY$;
+
+CREATE OR REPLACE FUNCTION public.get_pesanan_already_by_user(
+	p_users_id integer)
+    RETURNS TABLE(
+        "ID" integer, 
+        "Jenis Pesanan" text, 
+        "Nama Item" character varying, 
+        "Harga Satuan" numeric, 
+        "Jumlah" integer, 
+        "Lama Sewa (Hari)" integer, 
+        "Tanggal Pemesanan" date, 
+        "Status" character varying
+    ) 
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+    ROWS 1000
+AS $BODY$
+BEGIN
+    RETURN QUERY
+    -- === SEKSI 1: AMBIL DATA PEMBELIAN BARANG ===
+    SELECT 
+        p.pesanan_id AS "ID",
+        'Pembelian'::text AS "Jenis Pesanan",
+        b.nama_barang AS "Nama Item",
+        dpb.harga_per_item AS "Harga Satuan",
+        dpb.quantity AS "Jumlah",
+        0::integer AS "Lama Sewa (Hari)", -- Pembelian default 0 hari
+        p.tanggal_pesanan::date AS "Tanggal Pemesanan",
+        p.status_pesanan AS "Status"
+    FROM pesanan p
+    JOIN detail_pesanan_pembelian dpb USING (pesanan_id)
+    JOIN barang b USING (barang_id)
+    WHERE p.users_id = p_users_id AND p.status_pesanan = 'Sudah Checkout'
+
+    UNION ALL
+
+    -- === SEKSI 2: AMBIL DATA PENYEWAAN ALAT ===
+    SELECT 
+        p.pesanan_id AS "ID",
+        'Penyewaan'::text AS "Jenis Pesanan",
+        a.nama_alat AS "Nama Item",
+        dps.harga_sewa_perhari AS "Harga Satuan",
+        dps.quantity AS "Jumlah",
+        -- KARENA TIPE DATA DATE: Cukup kurangkan langsung tanpa casting ribet!
+        (dps.tgl_pengembalian - dps.tgl_sewa)::integer AS "Lama Sewa (Hari)",
+        p.tanggal_pesanan::date AS "Tanggal Pemesanan",
+        p.status_pesanan AS "Status"
+    FROM pesanan p
+    JOIN detail_pesanan_sewa dps USING (pesanan_id)
+    JOIN alat_sewa a USING (alat_sewa_id)
+    WHERE p.users_id = p_users_id AND p.status_pesanan = 'Sudah Checkout';
+END;
+$BODY$;
+
+-- Mengatur hak akses kepemilikan fungsi ke user postgres
+ALTER FUNCTION public.get_pesanan_already_by_user(integer) OWNER TO postgres;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.ApplicationServices;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -34,11 +35,16 @@ namespace WinFormsApp1
             InitializeComponent();
             this.User = user;
             this.username = user.Username;
-            usernameShow.Text = $"Selamat Datang! {username} ID : {User.UsersId}";
+            LoadUsernameDinamis(user);
             this.StartPosition = FormStartPosition.CenterScreen;
             Dgv_BarangTani.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             Dgv_Pesanan.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             LoadData("barang");
+        }
+
+        public void LoadUsernameDinamis(Users user)
+        {
+            usernameShow.Text = $"Selamat Datang! {username} ID : {User.UsersId}";
         }
         public void LoadData(string data)
         {
@@ -76,8 +82,6 @@ namespace WinFormsApp1
                     Dgv_Pesanan.DataSource = null;
 
                     Dgv_Pesanan.DataSource = listRiwayat;
-
-                    Btn_CheckOut.Enabled = false;
                 }
                 catch (Exception ex)
                 {
@@ -172,8 +176,12 @@ namespace WinFormsApp1
 
         private void Btn_Dashboard_Click(object sender, EventArgs e)
         {
+            this.username = this.User.Username;
+            LoadUsernameDinamis(this.User);
             SetMenuAktif(Btn_Dashboard, "dashboard");
             Tc_Petani.SelectedIndex = 0;
+
+            this.Refresh();
         }
 
         private void SetMenuAktif(Button tombolAktif, string pilihan)
@@ -200,12 +208,14 @@ namespace WinFormsApp1
         private void Btn_SudahCO_Click(object sender, EventArgs e)
         {
             SetSubMenuAktif(Btn_SudahCO, "pesanan_sudah_co");
+            Btn_CheckOut.Enabled = false;
             LoadData("pesanan_sudah_co");
         }
 
         private void Btn_BelumCO_Click(object sender, EventArgs e)
         {
             SetSubMenuAktif(Btn_BelumCO, "pesanan_belum_co");
+            Btn_CheckOut.Enabled = true;
             LoadData("pesanan_belum_co");
         }
 
@@ -354,6 +364,9 @@ namespace WinFormsApp1
                 this.User.Alamat = alamat;
                 this.User.NamaDesa = desa;
                 this.User.NamaKecamatan = kecamatan;
+
+                LoadUsernameDinamis(this.User);
+
             }
         }
     }

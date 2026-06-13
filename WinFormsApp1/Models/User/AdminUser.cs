@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using WinFormsApp1.View;
+using WinFormsApp1.View.Dashboard_Admin;
 
 namespace WinFormsApp1.Models.User
 {
@@ -16,7 +17,7 @@ namespace WinFormsApp1.Models.User
 
         public override void BukaDashboard()
         {
-            new Dashboard_admin(Username).Show();
+            new Dashboard_admin(this).Show();
         }
     }
 }
