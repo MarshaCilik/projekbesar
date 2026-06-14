@@ -195,9 +195,6 @@ namespace WinFormsApp1
             Btn_Riwayat.BackColor = Color.FromArgb(184, 224, 162);
             Btn_Riwayat.ForeColor = Color.Black;
 
-            Btn_Tagihan.BackColor = Color.FromArgb(184, 224, 162);
-            Btn_Tagihan.ForeColor = Color.Black;
-
             Btn_Dashboard.BackColor = Color.FromArgb(184, 224, 162);
             Btn_Dashboard.ForeColor = Color.Black;
 

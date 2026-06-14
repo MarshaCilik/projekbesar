@@ -33,7 +33,6 @@
             Btn_Keluar = new Button();
             Btn_Profil = new Button();
             Btn_Riwayat = new Button();
-            Btn_Tagihan = new Button();
             Btn_Pesanan = new Button();
             Btn_Dashboard = new Button();
             pictureBox1 = new PictureBox();
@@ -126,7 +125,6 @@
             panel1.Controls.Add(Btn_Keluar);
             panel1.Controls.Add(Btn_Profil);
             panel1.Controls.Add(Btn_Riwayat);
-            panel1.Controls.Add(Btn_Tagihan);
             panel1.Controls.Add(Btn_Pesanan);
             panel1.Controls.Add(Btn_Dashboard);
             panel1.Controls.Add(pictureBox1);
@@ -160,7 +158,7 @@
             Btn_Profil.FlatStyle = FlatStyle.Flat;
             Btn_Profil.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             Btn_Profil.ForeColor = Color.FromArgb(49, 106, 14);
-            Btn_Profil.Location = new Point(25, 403);
+            Btn_Profil.Location = new Point(25, 327);
             Btn_Profil.Name = "Btn_Profil";
             Btn_Profil.Size = new Size(216, 44);
             Btn_Profil.TabIndex = 34;
@@ -175,26 +173,12 @@
             Btn_Riwayat.FlatStyle = FlatStyle.Flat;
             Btn_Riwayat.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             Btn_Riwayat.ForeColor = Color.FromArgb(49, 106, 14);
-            Btn_Riwayat.Location = new Point(25, 342);
+            Btn_Riwayat.Location = new Point(25, 266);
             Btn_Riwayat.Name = "Btn_Riwayat";
             Btn_Riwayat.Size = new Size(216, 44);
             Btn_Riwayat.TabIndex = 33;
-            Btn_Riwayat.Text = "Riwayat";
+            Btn_Riwayat.Text = "Riwayat dan Tagihan";
             Btn_Riwayat.UseVisualStyleBackColor = false;
-            // 
-            // Btn_Tagihan
-            // 
-            Btn_Tagihan.BackColor = Color.FromArgb(184, 224, 162);
-            Btn_Tagihan.FlatAppearance.BorderSize = 0;
-            Btn_Tagihan.FlatStyle = FlatStyle.Flat;
-            Btn_Tagihan.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            Btn_Tagihan.ForeColor = Color.FromArgb(49, 106, 14);
-            Btn_Tagihan.Location = new Point(23, 279);
-            Btn_Tagihan.Name = "Btn_Tagihan";
-            Btn_Tagihan.Size = new Size(216, 44);
-            Btn_Tagihan.TabIndex = 32;
-            Btn_Tagihan.Text = "Tagihan";
-            Btn_Tagihan.UseVisualStyleBackColor = false;
             // 
             // Btn_Pesanan
             // 
@@ -947,7 +931,6 @@
         private Button Btn_Dashboard;
         private Button Btn_Profil;
         private Button Btn_Riwayat;
-        private Button Btn_Tagihan;
         private Button Btn_CheckOut;
         private Panel panel4;
         private Label Lbl_Pesanan;
