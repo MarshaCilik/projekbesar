@@ -339,6 +339,8 @@ namespace WinFormsApp1
 
         private void Btn_Simpan_Click(object sender, EventArgs e)
         {
+            string usernameLamaAsli = this.User.Username;
+
             string nama = Tb_Nama.Text;
             string noTelp = Tb_NoTelp.Text;
             string email = Tb_Email.Text;
@@ -349,7 +351,8 @@ namespace WinFormsApp1
             string kecamatan = Tb_Kecamatan.Text;
 
 
-            bool suksesUpdate = controllerUser.ProsesUpdateProfil(this.User, nama, noTelp, email, username, password, alamat, desa, kecamatan);
+            bool suksesUpdate = controllerUser.ProsesUpdateProfil(this.User, nama, noTelp, email, 
+                username, password, alamat, desa, kecamatan, usernameLamaAsli);
 
             if (suksesUpdate)
             {

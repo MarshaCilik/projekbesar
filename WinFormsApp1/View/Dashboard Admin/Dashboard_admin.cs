@@ -27,6 +27,8 @@ namespace WinFormsApp1.View.Dashboard_Admin
         private List<Kurir> listKurir;
         private List<Users> list;
 
+        public Users user;
+
         public Dashboard_admin(Users user)
         {
             InitializeComponent();
@@ -162,6 +164,12 @@ namespace WinFormsApp1.View.Dashboard_Admin
 
             Users dataYangMauDiedit = null;
 
+            string statusKondisiLoad = "semua";
+
+            if (Btn_SeluruhUser.BackColor == warnaHijauPastani) statusKondisiLoad = "semua";
+            else if (Btn_Karyawan.BackColor == warnaHijauPastani) statusKondisiLoad = "karyawan";
+            else if (Btn_Petani.BackColor == warnaHijauPastani) statusKondisiLoad = "petani";
+
             int id = Convert.ToInt32(dgv_AllUser.CurrentRow.Cells["UsersId"].Value);
             string username = dgv_AllUser.CurrentRow.Cells["Username"].Value.ToString();
             string password = dgv_AllUser.CurrentRow.Cells["Password"].Value.ToString();
@@ -203,6 +211,15 @@ namespace WinFormsApp1.View.Dashboard_Admin
                         "Informasi",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
+
+                        if (statusKondisiLoad == "semua")
+                        {
+                            Load("semua");
+                        }
+                        else
+                        {
+                            Load("karyawan");
+                        }
                     }
 
                 }
@@ -228,13 +245,20 @@ namespace WinFormsApp1.View.Dashboard_Admin
                     EditDataUserPetani form = new EditDataUserPetani(selecteduser);
                     if (form.ShowDialog() == DialogResult.OK)
                     {
-                        string result = controller.Update(form.UserData);
-
                         MessageBox.Show(
-                        result,
+                        "Data berhasil update",
                         "Informasi",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
+
+                        if (statusKondisiLoad == "semua")
+                        {
+                            Load("semua");
+                        }
+                        else
+                        {
+                            Load("petani");
+                        }
                     }
                 }
             }
