@@ -37,30 +37,8 @@
             Btn_Dashboard = new Button();
             pictureBox1 = new PictureBox();
             btn_Logout = new Button();
-            usernameShow = new Label();
-            panel2 = new Panel();
-            label1 = new Label();
-            btn_LihatProdukTani = new Button();
-            btn_LihatAlatSewa = new Button();
             npgsqlDataAdapter1 = new Npgsql.NpgsqlDataAdapter();
-            panel3 = new Panel();
-            Dgv_BarangTani = new DataGridView();
-            btn_PesanProduk = new Button();
             imageList1 = new ImageList(components);
-            Tc_Petani = new TabControl();
-            tabPage1 = new TabPage();
-            tabPage2 = new TabPage();
-            Btn_BatalPesanan = new Button();
-            Btn_SudahCO = new Button();
-            Btn_CheckOut = new Button();
-            panel4 = new Panel();
-            label2 = new Label();
-            Lbl_Pesanan = new Label();
-            panel5 = new Panel();
-            Dgv_Pesanan = new DataGridView();
-            Btn_BelumCO = new Button();
-            tabPage3 = new TabPage();
-            tabPage4 = new TabPage();
             tabPage5 = new TabPage();
             panel15 = new Panel();
             Btn_Simpan = new Button();
@@ -94,17 +72,38 @@
             panel16 = new Panel();
             label14 = new Label();
             pictureBox2 = new PictureBox();
+            tabPage4 = new TabPage();
+            tabPage3 = new TabPage();
+            btn_TransaksiBerlangsung = new Button();
+            btn_TagihanDenda = new Button();
+            btn_RiwayatTransaksi = new Button();
+            panel18 = new Panel();
+            dgv_RiwayatDanTagihan = new DataGridView();
+            panel17 = new Panel();
+            label10 = new Label();
+            label12 = new Label();
+            tabPage2 = new TabPage();
+            Btn_BatalPesanan = new Button();
+            Btn_SudahCO = new Button();
+            Btn_CheckOut = new Button();
+            panel4 = new Panel();
+            label2 = new Label();
+            Lbl_Pesanan = new Label();
+            panel5 = new Panel();
+            Dgv_Pesanan = new DataGridView();
+            Btn_BelumCO = new Button();
+            tabPage1 = new TabPage();
+            btn_PesanProduk = new Button();
+            panel2 = new Panel();
+            label1 = new Label();
+            usernameShow = new Label();
+            panel3 = new Panel();
+            Dgv_BarangTani = new DataGridView();
+            btn_LihatProdukTani = new Button();
+            btn_LihatAlatSewa = new Button();
+            Tc_Petani = new TabControl();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
-            panel2.SuspendLayout();
-            panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)Dgv_BarangTani).BeginInit();
-            Tc_Petani.SuspendLayout();
-            tabPage1.SuspendLayout();
-            tabPage2.SuspendLayout();
-            panel4.SuspendLayout();
-            panel5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)Dgv_Pesanan).BeginInit();
             tabPage5.SuspendLayout();
             panel15.SuspendLayout();
             panel14.SuspendLayout();
@@ -117,6 +116,19 @@
             panel9.SuspendLayout();
             panel16.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            tabPage3.SuspendLayout();
+            panel18.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgv_RiwayatDanTagihan).BeginInit();
+            panel17.SuspendLayout();
+            tabPage2.SuspendLayout();
+            panel4.SuspendLayout();
+            panel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)Dgv_Pesanan).BeginInit();
+            tabPage1.SuspendLayout();
+            panel2.SuspendLayout();
+            panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)Dgv_BarangTani).BeginInit();
+            Tc_Petani.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -179,6 +191,7 @@
             Btn_Riwayat.TabIndex = 33;
             Btn_Riwayat.Text = "Riwayat dan Tagihan";
             Btn_Riwayat.UseVisualStyleBackColor = false;
+            Btn_Riwayat.Click += Btn_Riwayat_Click;
             // 
             // Btn_Pesanan
             // 
@@ -234,65 +247,6 @@
             btn_Logout.UseVisualStyleBackColor = false;
             btn_Logout.Click += btn_Logout_Click;
             // 
-            // usernameShow
-            // 
-            usernameShow.AutoSize = true;
-            usernameShow.Font = new Font("Segoe UI", 26.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            usernameShow.ForeColor = SystemColors.ButtonFace;
-            usernameShow.Location = new Point(26, 50);
-            usernameShow.Name = "usernameShow";
-            usernameShow.Size = new Size(573, 47);
-            usernameShow.TabIndex = 1;
-            usernameShow.Text = "Selamat Datang! UsernamePetani";
-            // 
-            // panel2
-            // 
-            panel2.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            panel2.BackColor = Color.FromArgb(49, 106, 14);
-            panel2.Controls.Add(label1);
-            panel2.Controls.Add(usernameShow);
-            panel2.Location = new Point(11, 17);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(1061, 180);
-            panel2.TabIndex = 1;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI Light", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.ForeColor = SystemColors.ButtonFace;
-            label1.Location = new Point(26, 97);
-            label1.Name = "label1";
-            label1.Size = new Size(774, 30);
-            label1.TabIndex = 2;
-            label1.Text = "Pantau stok produk koperasi dan atur penyewaan alat tani dengan lebih mudah hari ini.";
-            // 
-            // btn_LihatProdukTani
-            // 
-            btn_LihatProdukTani.BackColor = Color.FromArgb(49, 106, 14);
-            btn_LihatProdukTani.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btn_LihatProdukTani.ForeColor = SystemColors.ButtonFace;
-            btn_LihatProdukTani.Location = new Point(11, 267);
-            btn_LihatProdukTani.Name = "btn_LihatProdukTani";
-            btn_LihatProdukTani.Size = new Size(130, 32);
-            btn_LihatProdukTani.TabIndex = 1;
-            btn_LihatProdukTani.Text = "Produk";
-            btn_LihatProdukTani.UseVisualStyleBackColor = false;
-            btn_LihatProdukTani.Click += btn_LihatProdukTani_Click;
-            // 
-            // btn_LihatAlatSewa
-            // 
-            btn_LihatAlatSewa.BackColor = SystemColors.InactiveCaption;
-            btn_LihatAlatSewa.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btn_LihatAlatSewa.ForeColor = Color.Black;
-            btn_LihatAlatSewa.Location = new Point(147, 267);
-            btn_LihatAlatSewa.Name = "btn_LihatAlatSewa";
-            btn_LihatAlatSewa.Size = new Size(130, 32);
-            btn_LihatAlatSewa.TabIndex = 2;
-            btn_LihatAlatSewa.Text = "Alat Sewa";
-            btn_LihatAlatSewa.UseVisualStyleBackColor = false;
-            btn_LihatAlatSewa.Click += btn_LihatAlatSewa_Click;
-            // 
             // npgsqlDataAdapter1
             // 
             npgsqlDataAdapter1.DeleteCommand = null;
@@ -300,216 +254,11 @@
             npgsqlDataAdapter1.SelectCommand = null;
             npgsqlDataAdapter1.UpdateCommand = null;
             // 
-            // panel3
-            // 
-            panel3.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            panel3.BackColor = Color.FromArgb(122, 148, 114);
-            panel3.Controls.Add(Dgv_BarangTani);
-            panel3.Location = new Point(11, 318);
-            panel3.Name = "panel3";
-            panel3.Size = new Size(1061, 653);
-            panel3.TabIndex = 3;
-            // 
-            // Dgv_BarangTani
-            // 
-            Dgv_BarangTani.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            Dgv_BarangTani.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            Dgv_BarangTani.Location = new Point(13, 15);
-            Dgv_BarangTani.Name = "Dgv_BarangTani";
-            Dgv_BarangTani.Size = new Size(1032, 621);
-            Dgv_BarangTani.TabIndex = 1;
-            // 
-            // btn_PesanProduk
-            // 
-            btn_PesanProduk.Anchor = AnchorStyles.Right;
-            btn_PesanProduk.BackColor = Color.LimeGreen;
-            btn_PesanProduk.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btn_PesanProduk.ForeColor = Color.Black;
-            btn_PesanProduk.Location = new Point(865, 267);
-            btn_PesanProduk.Name = "btn_PesanProduk";
-            btn_PesanProduk.Size = new Size(191, 32);
-            btn_PesanProduk.TabIndex = 4;
-            btn_PesanProduk.Text = "Pesan Produk";
-            btn_PesanProduk.UseVisualStyleBackColor = false;
-            btn_PesanProduk.Click += btn_PesanProduk_Click;
-            // 
             // imageList1
             // 
             imageList1.ColorDepth = ColorDepth.Depth32Bit;
             imageList1.ImageSize = new Size(16, 16);
             imageList1.TransparentColor = Color.Transparent;
-            // 
-            // Tc_Petani
-            // 
-            Tc_Petani.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            Tc_Petani.Controls.Add(tabPage1);
-            Tc_Petani.Controls.Add(tabPage2);
-            Tc_Petani.Controls.Add(tabPage3);
-            Tc_Petani.Controls.Add(tabPage4);
-            Tc_Petani.Controls.Add(tabPage5);
-            Tc_Petani.ItemSize = new Size(61, 20);
-            Tc_Petani.Location = new Point(279, -4);
-            Tc_Petani.Name = "Tc_Petani";
-            Tc_Petani.SelectedIndex = 0;
-            Tc_Petani.Size = new Size(1107, 1013);
-            Tc_Petani.TabIndex = 5;
-            // 
-            // tabPage1
-            // 
-            tabPage1.Controls.Add(btn_PesanProduk);
-            tabPage1.Controls.Add(panel2);
-            tabPage1.Controls.Add(panel3);
-            tabPage1.Controls.Add(btn_LihatProdukTani);
-            tabPage1.Controls.Add(btn_LihatAlatSewa);
-            tabPage1.Location = new Point(4, 24);
-            tabPage1.Name = "tabPage1";
-            tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(1099, 985);
-            tabPage1.TabIndex = 0;
-            tabPage1.Text = "tabPage1";
-            tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            tabPage2.Controls.Add(Btn_BatalPesanan);
-            tabPage2.Controls.Add(Btn_SudahCO);
-            tabPage2.Controls.Add(Btn_CheckOut);
-            tabPage2.Controls.Add(panel4);
-            tabPage2.Controls.Add(panel5);
-            tabPage2.Controls.Add(Btn_BelumCO);
-            tabPage2.Location = new Point(4, 24);
-            tabPage2.Name = "tabPage2";
-            tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(1099, 985);
-            tabPage2.TabIndex = 1;
-            tabPage2.Text = "tabPage2";
-            tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // Btn_BatalPesanan
-            // 
-            Btn_BatalPesanan.Anchor = AnchorStyles.Right;
-            Btn_BatalPesanan.BackColor = Color.LightGray;
-            Btn_BatalPesanan.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Btn_BatalPesanan.ForeColor = Color.Black;
-            Btn_BatalPesanan.Location = new Point(729, 266);
-            Btn_BatalPesanan.Name = "Btn_BatalPesanan";
-            Btn_BatalPesanan.Size = new Size(130, 32);
-            Btn_BatalPesanan.TabIndex = 11;
-            Btn_BatalPesanan.Text = "Batalkan Pesanan";
-            Btn_BatalPesanan.UseVisualStyleBackColor = false;
-            Btn_BatalPesanan.Click += Btn_BatalPesanan_Click;
-            // 
-            // Btn_SudahCO
-            // 
-            Btn_SudahCO.BackColor = Color.LightGray;
-            Btn_SudahCO.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Btn_SudahCO.ForeColor = Color.Black;
-            Btn_SudahCO.Location = new Point(147, 266);
-            Btn_SudahCO.Name = "Btn_SudahCO";
-            Btn_SudahCO.Size = new Size(130, 32);
-            Btn_SudahCO.TabIndex = 10;
-            Btn_SudahCO.Text = "Sudah Check Out";
-            Btn_SudahCO.UseVisualStyleBackColor = false;
-            Btn_SudahCO.Click += Btn_SudahCO_Click;
-            // 
-            // Btn_CheckOut
-            // 
-            Btn_CheckOut.Anchor = AnchorStyles.Right;
-            Btn_CheckOut.BackColor = Color.LimeGreen;
-            Btn_CheckOut.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Btn_CheckOut.ForeColor = Color.Black;
-            Btn_CheckOut.Location = new Point(865, 266);
-            Btn_CheckOut.Name = "Btn_CheckOut";
-            Btn_CheckOut.Size = new Size(191, 32);
-            Btn_CheckOut.TabIndex = 9;
-            Btn_CheckOut.Text = "Check Out";
-            Btn_CheckOut.UseVisualStyleBackColor = false;
-            Btn_CheckOut.Click += Btn_CheckOut_Click;
-            // 
-            // panel4
-            // 
-            panel4.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            panel4.BackColor = Color.FromArgb(49, 106, 14);
-            panel4.Controls.Add(label2);
-            panel4.Controls.Add(Lbl_Pesanan);
-            panel4.Location = new Point(11, 16);
-            panel4.Name = "panel4";
-            panel4.Size = new Size(1061, 220);
-            panel4.TabIndex = 5;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.ForeColor = Color.White;
-            label2.Location = new Point(13, 193);
-            label2.Name = "label2";
-            label2.Size = new Size(334, 15);
-            label2.TabIndex = 2;
-            label2.Text = "* Pesanan tidak dapat dibatalkan setelah pesanan di checkout ";
-            // 
-            // Lbl_Pesanan
-            // 
-            Lbl_Pesanan.Anchor = AnchorStyles.Top;
-            Lbl_Pesanan.AutoSize = true;
-            Lbl_Pesanan.Font = new Font("Segoe UI", 26.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            Lbl_Pesanan.ForeColor = SystemColors.ButtonFace;
-            Lbl_Pesanan.Location = new Point(340, 13);
-            Lbl_Pesanan.Name = "Lbl_Pesanan";
-            Lbl_Pesanan.Size = new Size(382, 47);
-            Lbl_Pesanan.TabIndex = 1;
-            Lbl_Pesanan.Text = "Berikut Pesanan Anda";
-            // 
-            // panel5
-            // 
-            panel5.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            panel5.BackColor = Color.FromArgb(122, 148, 114);
-            panel5.Controls.Add(Dgv_Pesanan);
-            panel5.Location = new Point(11, 317);
-            panel5.Name = "panel5";
-            panel5.Size = new Size(1061, 653);
-            panel5.TabIndex = 8;
-            // 
-            // Dgv_Pesanan
-            // 
-            Dgv_Pesanan.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            Dgv_Pesanan.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            Dgv_Pesanan.Location = new Point(13, 15);
-            Dgv_Pesanan.Name = "Dgv_Pesanan";
-            Dgv_Pesanan.Size = new Size(1032, 621);
-            Dgv_Pesanan.TabIndex = 1;
-            // 
-            // Btn_BelumCO
-            // 
-            Btn_BelumCO.BackColor = Color.FromArgb(49, 106, 14);
-            Btn_BelumCO.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Btn_BelumCO.ForeColor = SystemColors.ButtonFace;
-            Btn_BelumCO.Location = new Point(11, 266);
-            Btn_BelumCO.Name = "Btn_BelumCO";
-            Btn_BelumCO.Size = new Size(130, 32);
-            Btn_BelumCO.TabIndex = 6;
-            Btn_BelumCO.Text = "Belum Check Out";
-            Btn_BelumCO.UseVisualStyleBackColor = false;
-            Btn_BelumCO.Click += Btn_BelumCO_Click;
-            // 
-            // tabPage3
-            // 
-            tabPage3.Location = new Point(4, 24);
-            tabPage3.Name = "tabPage3";
-            tabPage3.Padding = new Padding(3);
-            tabPage3.Size = new Size(1099, 985);
-            tabPage3.TabIndex = 2;
-            tabPage3.Text = "tabPage3";
-            tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // tabPage4
-            // 
-            tabPage4.Location = new Point(4, 24);
-            tabPage4.Name = "tabPage4";
-            tabPage4.Padding = new Padding(3);
-            tabPage4.Size = new Size(1099, 985);
-            tabPage4.TabIndex = 3;
-            tabPage4.Text = "tabPage4";
-            tabPage4.UseVisualStyleBackColor = true;
             // 
             // tabPage5
             // 
@@ -856,6 +605,363 @@
             pictureBox2.TabIndex = 43;
             pictureBox2.TabStop = false;
             // 
+            // tabPage4
+            // 
+            tabPage4.Location = new Point(4, 24);
+            tabPage4.Name = "tabPage4";
+            tabPage4.Padding = new Padding(3);
+            tabPage4.Size = new Size(1099, 985);
+            tabPage4.TabIndex = 3;
+            tabPage4.Text = "tabPage4";
+            tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // tabPage3
+            // 
+            tabPage3.Controls.Add(btn_TransaksiBerlangsung);
+            tabPage3.Controls.Add(btn_TagihanDenda);
+            tabPage3.Controls.Add(btn_RiwayatTransaksi);
+            tabPage3.Controls.Add(panel18);
+            tabPage3.Controls.Add(panel17);
+            tabPage3.Location = new Point(4, 24);
+            tabPage3.Name = "tabPage3";
+            tabPage3.Padding = new Padding(3);
+            tabPage3.Size = new Size(1099, 985);
+            tabPage3.TabIndex = 2;
+            tabPage3.Text = "tabPage3";
+            tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // btn_TransaksiBerlangsung
+            // 
+            btn_TransaksiBerlangsung.BackColor = Color.LightGray;
+            btn_TransaksiBerlangsung.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btn_TransaksiBerlangsung.ForeColor = Color.Black;
+            btn_TransaksiBerlangsung.Location = new Point(14, 274);
+            btn_TransaksiBerlangsung.Name = "btn_TransaksiBerlangsung";
+            btn_TransaksiBerlangsung.Size = new Size(149, 32);
+            btn_TransaksiBerlangsung.TabIndex = 13;
+            btn_TransaksiBerlangsung.Text = "Transaksi Berlangsung";
+            btn_TransaksiBerlangsung.UseVisualStyleBackColor = false;
+            // 
+            // btn_TagihanDenda
+            // 
+            btn_TagihanDenda.BackColor = Color.LightGray;
+            btn_TagihanDenda.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btn_TagihanDenda.ForeColor = Color.Black;
+            btn_TagihanDenda.Location = new Point(169, 274);
+            btn_TagihanDenda.Name = "btn_TagihanDenda";
+            btn_TagihanDenda.Size = new Size(149, 32);
+            btn_TagihanDenda.TabIndex = 12;
+            btn_TagihanDenda.Text = "Tagihan Denda";
+            btn_TagihanDenda.UseVisualStyleBackColor = false;
+            // 
+            // btn_RiwayatTransaksi
+            // 
+            btn_RiwayatTransaksi.BackColor = Color.LightGray;
+            btn_RiwayatTransaksi.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btn_RiwayatTransaksi.ForeColor = Color.Black;
+            btn_RiwayatTransaksi.Location = new Point(324, 274);
+            btn_RiwayatTransaksi.Name = "btn_RiwayatTransaksi";
+            btn_RiwayatTransaksi.Size = new Size(149, 32);
+            btn_RiwayatTransaksi.TabIndex = 11;
+            btn_RiwayatTransaksi.Text = "Riwayat Transaksi";
+            btn_RiwayatTransaksi.UseVisualStyleBackColor = false;
+            // 
+            // panel18
+            // 
+            panel18.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            panel18.BackColor = Color.FromArgb(122, 148, 114);
+            panel18.Controls.Add(dgv_RiwayatDanTagihan);
+            panel18.Location = new Point(11, 312);
+            panel18.Name = "panel18";
+            panel18.Size = new Size(1061, 653);
+            panel18.TabIndex = 9;
+            // 
+            // dgv_RiwayatDanTagihan
+            // 
+            dgv_RiwayatDanTagihan.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            dgv_RiwayatDanTagihan.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgv_RiwayatDanTagihan.Location = new Point(14, 17);
+            dgv_RiwayatDanTagihan.Name = "dgv_RiwayatDanTagihan";
+            dgv_RiwayatDanTagihan.Size = new Size(1031, 621);
+            dgv_RiwayatDanTagihan.TabIndex = 1;
+            // 
+            // panel17
+            // 
+            panel17.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            panel17.BackColor = Color.FromArgb(49, 106, 14);
+            panel17.Controls.Add(label10);
+            panel17.Controls.Add(label12);
+            panel17.Location = new Point(11, 16);
+            panel17.Name = "panel17";
+            panel17.Size = new Size(1061, 220);
+            panel17.TabIndex = 6;
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.ForeColor = Color.White;
+            label10.Location = new Point(12, 167);
+            label10.Name = "label10";
+            label10.Size = new Size(334, 15);
+            label10.TabIndex = 2;
+            label10.Text = "* Pesanan tidak dapat dibatalkan setelah pesanan di checkout ";
+            // 
+            // label12
+            // 
+            label12.Anchor = AnchorStyles.Top;
+            label12.AutoSize = true;
+            label12.Font = new Font("Segoe UI", 26.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label12.ForeColor = SystemColors.ButtonFace;
+            label12.Location = new Point(269, 14);
+            label12.Name = "label12";
+            label12.Size = new Size(525, 47);
+            label12.TabIndex = 1;
+            label12.Text = "Riwayat dan Tagihan Transaksi";
+            // 
+            // tabPage2
+            // 
+            tabPage2.Controls.Add(Btn_BatalPesanan);
+            tabPage2.Controls.Add(Btn_SudahCO);
+            tabPage2.Controls.Add(Btn_CheckOut);
+            tabPage2.Controls.Add(panel4);
+            tabPage2.Controls.Add(panel5);
+            tabPage2.Controls.Add(Btn_BelumCO);
+            tabPage2.Location = new Point(4, 24);
+            tabPage2.Name = "tabPage2";
+            tabPage2.Padding = new Padding(3);
+            tabPage2.Size = new Size(1099, 985);
+            tabPage2.TabIndex = 1;
+            tabPage2.Text = "tabPage2";
+            tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // Btn_BatalPesanan
+            // 
+            Btn_BatalPesanan.Anchor = AnchorStyles.Right;
+            Btn_BatalPesanan.BackColor = Color.LightGray;
+            Btn_BatalPesanan.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Btn_BatalPesanan.ForeColor = Color.Black;
+            Btn_BatalPesanan.Location = new Point(729, 266);
+            Btn_BatalPesanan.Name = "Btn_BatalPesanan";
+            Btn_BatalPesanan.Size = new Size(130, 32);
+            Btn_BatalPesanan.TabIndex = 11;
+            Btn_BatalPesanan.Text = "Batalkan Pesanan";
+            Btn_BatalPesanan.UseVisualStyleBackColor = false;
+            Btn_BatalPesanan.Click += Btn_BatalPesanan_Click;
+            // 
+            // Btn_SudahCO
+            // 
+            Btn_SudahCO.BackColor = Color.LightGray;
+            Btn_SudahCO.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Btn_SudahCO.ForeColor = Color.Black;
+            Btn_SudahCO.Location = new Point(147, 266);
+            Btn_SudahCO.Name = "Btn_SudahCO";
+            Btn_SudahCO.Size = new Size(130, 32);
+            Btn_SudahCO.TabIndex = 10;
+            Btn_SudahCO.Text = "Sudah Check Out";
+            Btn_SudahCO.UseVisualStyleBackColor = false;
+            Btn_SudahCO.Click += Btn_SudahCO_Click;
+            // 
+            // Btn_CheckOut
+            // 
+            Btn_CheckOut.Anchor = AnchorStyles.Right;
+            Btn_CheckOut.BackColor = Color.LimeGreen;
+            Btn_CheckOut.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Btn_CheckOut.ForeColor = Color.Black;
+            Btn_CheckOut.Location = new Point(865, 266);
+            Btn_CheckOut.Name = "Btn_CheckOut";
+            Btn_CheckOut.Size = new Size(191, 32);
+            Btn_CheckOut.TabIndex = 9;
+            Btn_CheckOut.Text = "Check Out";
+            Btn_CheckOut.UseVisualStyleBackColor = false;
+            Btn_CheckOut.Click += Btn_CheckOut_Click;
+            // 
+            // panel4
+            // 
+            panel4.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            panel4.BackColor = Color.FromArgb(49, 106, 14);
+            panel4.Controls.Add(label2);
+            panel4.Controls.Add(Lbl_Pesanan);
+            panel4.Location = new Point(11, 16);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(1061, 220);
+            panel4.TabIndex = 5;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.ForeColor = Color.White;
+            label2.Location = new Point(13, 193);
+            label2.Name = "label2";
+            label2.Size = new Size(334, 15);
+            label2.TabIndex = 2;
+            label2.Text = "* Pesanan tidak dapat dibatalkan setelah pesanan di checkout ";
+            // 
+            // Lbl_Pesanan
+            // 
+            Lbl_Pesanan.Anchor = AnchorStyles.Top;
+            Lbl_Pesanan.AutoSize = true;
+            Lbl_Pesanan.Font = new Font("Segoe UI", 26.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            Lbl_Pesanan.ForeColor = SystemColors.ButtonFace;
+            Lbl_Pesanan.Location = new Point(340, 13);
+            Lbl_Pesanan.Name = "Lbl_Pesanan";
+            Lbl_Pesanan.Size = new Size(382, 47);
+            Lbl_Pesanan.TabIndex = 1;
+            Lbl_Pesanan.Text = "Berikut Pesanan Anda";
+            // 
+            // panel5
+            // 
+            panel5.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            panel5.BackColor = Color.FromArgb(122, 148, 114);
+            panel5.Controls.Add(Dgv_Pesanan);
+            panel5.Location = new Point(11, 317);
+            panel5.Name = "panel5";
+            panel5.Size = new Size(1061, 653);
+            panel5.TabIndex = 8;
+            // 
+            // Dgv_Pesanan
+            // 
+            Dgv_Pesanan.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            Dgv_Pesanan.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            Dgv_Pesanan.Location = new Point(13, 15);
+            Dgv_Pesanan.Name = "Dgv_Pesanan";
+            Dgv_Pesanan.Size = new Size(1032, 621);
+            Dgv_Pesanan.TabIndex = 1;
+            // 
+            // Btn_BelumCO
+            // 
+            Btn_BelumCO.BackColor = Color.FromArgb(49, 106, 14);
+            Btn_BelumCO.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Btn_BelumCO.ForeColor = SystemColors.ButtonFace;
+            Btn_BelumCO.Location = new Point(11, 266);
+            Btn_BelumCO.Name = "Btn_BelumCO";
+            Btn_BelumCO.Size = new Size(130, 32);
+            Btn_BelumCO.TabIndex = 6;
+            Btn_BelumCO.Text = "Belum Check Out";
+            Btn_BelumCO.UseVisualStyleBackColor = false;
+            Btn_BelumCO.Click += Btn_BelumCO_Click;
+            // 
+            // tabPage1
+            // 
+            tabPage1.Controls.Add(btn_PesanProduk);
+            tabPage1.Controls.Add(panel2);
+            tabPage1.Controls.Add(panel3);
+            tabPage1.Controls.Add(btn_LihatProdukTani);
+            tabPage1.Controls.Add(btn_LihatAlatSewa);
+            tabPage1.Location = new Point(4, 24);
+            tabPage1.Name = "tabPage1";
+            tabPage1.Padding = new Padding(3);
+            tabPage1.Size = new Size(1099, 985);
+            tabPage1.TabIndex = 0;
+            tabPage1.Text = "tabPage1";
+            tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // btn_PesanProduk
+            // 
+            btn_PesanProduk.Anchor = AnchorStyles.Right;
+            btn_PesanProduk.BackColor = Color.LimeGreen;
+            btn_PesanProduk.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btn_PesanProduk.ForeColor = Color.Black;
+            btn_PesanProduk.Location = new Point(865, 267);
+            btn_PesanProduk.Name = "btn_PesanProduk";
+            btn_PesanProduk.Size = new Size(191, 32);
+            btn_PesanProduk.TabIndex = 4;
+            btn_PesanProduk.Text = "Pesan Produk";
+            btn_PesanProduk.UseVisualStyleBackColor = false;
+            btn_PesanProduk.Click += btn_PesanProduk_Click;
+            // 
+            // panel2
+            // 
+            panel2.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            panel2.BackColor = Color.FromArgb(49, 106, 14);
+            panel2.Controls.Add(label1);
+            panel2.Controls.Add(usernameShow);
+            panel2.Location = new Point(11, 17);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(1061, 180);
+            panel2.TabIndex = 1;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI Light", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.ForeColor = SystemColors.ButtonFace;
+            label1.Location = new Point(26, 97);
+            label1.Name = "label1";
+            label1.Size = new Size(774, 30);
+            label1.TabIndex = 2;
+            label1.Text = "Pantau stok produk koperasi dan atur penyewaan alat tani dengan lebih mudah hari ini.";
+            // 
+            // usernameShow
+            // 
+            usernameShow.AutoSize = true;
+            usernameShow.Font = new Font("Segoe UI", 26.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            usernameShow.ForeColor = SystemColors.ButtonFace;
+            usernameShow.Location = new Point(26, 50);
+            usernameShow.Name = "usernameShow";
+            usernameShow.Size = new Size(573, 47);
+            usernameShow.TabIndex = 1;
+            usernameShow.Text = "Selamat Datang! UsernamePetani";
+            // 
+            // panel3
+            // 
+            panel3.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            panel3.BackColor = Color.FromArgb(122, 148, 114);
+            panel3.Controls.Add(Dgv_BarangTani);
+            panel3.Location = new Point(11, 318);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(1061, 653);
+            panel3.TabIndex = 3;
+            // 
+            // Dgv_BarangTani
+            // 
+            Dgv_BarangTani.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            Dgv_BarangTani.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            Dgv_BarangTani.Location = new Point(13, 15);
+            Dgv_BarangTani.Name = "Dgv_BarangTani";
+            Dgv_BarangTani.Size = new Size(1032, 621);
+            Dgv_BarangTani.TabIndex = 1;
+            // 
+            // btn_LihatProdukTani
+            // 
+            btn_LihatProdukTani.BackColor = Color.FromArgb(49, 106, 14);
+            btn_LihatProdukTani.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btn_LihatProdukTani.ForeColor = SystemColors.ButtonFace;
+            btn_LihatProdukTani.Location = new Point(11, 267);
+            btn_LihatProdukTani.Name = "btn_LihatProdukTani";
+            btn_LihatProdukTani.Size = new Size(130, 32);
+            btn_LihatProdukTani.TabIndex = 1;
+            btn_LihatProdukTani.Text = "Produk";
+            btn_LihatProdukTani.UseVisualStyleBackColor = false;
+            btn_LihatProdukTani.Click += btn_LihatProdukTani_Click;
+            // 
+            // btn_LihatAlatSewa
+            // 
+            btn_LihatAlatSewa.BackColor = SystemColors.InactiveCaption;
+            btn_LihatAlatSewa.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btn_LihatAlatSewa.ForeColor = Color.Black;
+            btn_LihatAlatSewa.Location = new Point(147, 267);
+            btn_LihatAlatSewa.Name = "btn_LihatAlatSewa";
+            btn_LihatAlatSewa.Size = new Size(130, 32);
+            btn_LihatAlatSewa.TabIndex = 2;
+            btn_LihatAlatSewa.Text = "Alat Sewa";
+            btn_LihatAlatSewa.UseVisualStyleBackColor = false;
+            btn_LihatAlatSewa.Click += btn_LihatAlatSewa_Click;
+            // 
+            // Tc_Petani
+            // 
+            Tc_Petani.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            Tc_Petani.Controls.Add(tabPage1);
+            Tc_Petani.Controls.Add(tabPage2);
+            Tc_Petani.Controls.Add(tabPage3);
+            Tc_Petani.Controls.Add(tabPage4);
+            Tc_Petani.Controls.Add(tabPage5);
+            Tc_Petani.ItemSize = new Size(61, 20);
+            Tc_Petani.Location = new Point(279, -4);
+            Tc_Petani.Name = "Tc_Petani";
+            Tc_Petani.SelectedIndex = 0;
+            Tc_Petani.Size = new Size(1107, 1013);
+            Tc_Petani.TabIndex = 5;
+            // 
             // DashboardPetani
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -870,17 +976,6 @@
             FormClosed += DashboardPetani_FormClosed;
             panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
-            panel2.ResumeLayout(false);
-            panel2.PerformLayout();
-            panel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)Dgv_BarangTani).EndInit();
-            Tc_Petani.ResumeLayout(false);
-            tabPage1.ResumeLayout(false);
-            tabPage2.ResumeLayout(false);
-            panel4.ResumeLayout(false);
-            panel4.PerformLayout();
-            panel5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)Dgv_Pesanan).EndInit();
             tabPage5.ResumeLayout(false);
             panel15.ResumeLayout(false);
             panel15.PerformLayout();
@@ -903,75 +998,99 @@
             panel16.ResumeLayout(false);
             panel16.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            tabPage3.ResumeLayout(false);
+            panel18.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgv_RiwayatDanTagihan).EndInit();
+            panel17.ResumeLayout(false);
+            panel17.PerformLayout();
+            tabPage2.ResumeLayout(false);
+            panel4.ResumeLayout(false);
+            panel4.PerformLayout();
+            panel5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)Dgv_Pesanan).EndInit();
+            tabPage1.ResumeLayout(false);
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
+            panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)Dgv_BarangTani).EndInit();
+            Tc_Petani.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
 
         private Panel panel1;
-        private Panel panel2;
-        private Button btn_LihatProdukTani;
-        private Label usernameShow;
-        private Button btn_LihatAlatSewa;
         private Button btn_Logout;
-        private Label label1;
         private Npgsql.NpgsqlDataAdapter npgsqlDataAdapter1;
-        private Panel panel3;
-        private DataGridView Dgv_BarangTani;
-        private Button btn_PesanProduk;
         private PictureBox pictureBox1;
         private ImageList imageList1;
-        private TabControl Tc_Petani;
-        private TabPage tabPage1;
-        private TabPage tabPage2;
-        private TabPage tabPage3;
-        private TabPage tabPage4;
-        private TabPage tabPage5;
         private Button Btn_Pesanan;
         private Button Btn_Dashboard;
         private Button Btn_Profil;
         private Button Btn_Riwayat;
+        private Button Btn_Keluar;
+        private TabPage tabPage5;
+        private Panel panel15;
+        private Button Btn_Simpan;
+        private Panel panel14;
+        private TextBox Tb_Desa;
+        private Panel panel13;
+        private TextBox Tb_Nama;
+        private Button Btn_Batal;
+        private Panel panel12;
+        private TextBox Tb_NoTelp;
+        private Panel panel11;
+        private TextBox Tb_Email;
+        private Label Lbl_Status;
+        private Panel panel8;
+        private TextBox Tb_Username;
+        private Label label9;
+        private Panel panel6;
+        private TextBox Tb_Password;
+        private Label label8;
+        private Panel panel7;
+        private TextBox Tb_Alamat;
+        private Label label7;
+        private Panel panel9;
+        private TextBox Tb_Kecamatan;
+        private Panel panel10;
+        private Label label6;
+        private Label label11;
+        private Label label5;
+        private Label label3;
+        private Label label4;
+        private Panel panel16;
+        private Label label14;
+        private PictureBox pictureBox2;
+        private TabPage tabPage4;
+        private TabPage tabPage3;
+        private Panel panel18;
+        private DataGridView dgv_RiwayatDanTagihan;
+        private Panel panel17;
+        private Label label10;
+        private Label label12;
+        private TabPage tabPage2;
+        private Button Btn_BatalPesanan;
+        private Button Btn_SudahCO;
         private Button Btn_CheckOut;
         private Panel panel4;
+        private Label label2;
         private Label Lbl_Pesanan;
         private Panel panel5;
         private DataGridView Dgv_Pesanan;
         private Button Btn_BelumCO;
-        private Button Btn_SudahCO;
-        private Button Btn_Keluar;
-        private Button Btn_BatalPesanan;
-        private Label label2;
-        private Button Btn_Batal;
-        private Label Lbl_Status;
-        private Label label9;
-        private Label label8;
-        private Label label7;
-        private Label label6;
-        private Label label5;
-        private Label label4;
-        private Label label3;
-        private Label label11;
-        private Button Btn_Simpan;
-        private Panel panel9;
-        private TextBox Tb_Kecamatan;
-        private Panel panel10;
-        private Panel panel7;
-        private TextBox Tb_Alamat;
-        private Panel panel6;
-        private TextBox Tb_Password;
-        private Panel panel8;
-        private TextBox Tb_Username;
-        private Panel panel11;
-        private TextBox Tb_Email;
-        private Panel panel12;
-        private TextBox Tb_NoTelp;
-        private Panel panel13;
-        private TextBox Tb_Nama;
-        private Panel panel14;
-        private TextBox Tb_Desa;
-        private Panel panel16;
-        private Label label14;
-        private PictureBox pictureBox2;
-        private Panel panel15;
+        private TabPage tabPage1;
+        private Button btn_PesanProduk;
+        private Panel panel2;
+        private Label label1;
+        private Label usernameShow;
+        private Panel panel3;
+        private DataGridView Dgv_BarangTani;
+        private Button btn_LihatProdukTani;
+        private Button btn_LihatAlatSewa;
+        private TabControl Tc_Petani;
+        private Button btn_TransaksiBerlangsung;
+        private Button btn_TagihanDenda;
+        private Button btn_RiwayatTransaksi;
     }
 }

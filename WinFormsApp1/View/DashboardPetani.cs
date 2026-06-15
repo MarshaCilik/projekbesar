@@ -169,7 +169,7 @@ namespace WinFormsApp1
         private void Btn_Pesanan_Click(object sender, EventArgs e)
         {
             LoadData("pesanan_belum_co");
-            SetMenuAktif(Btn_Pesanan, "pesanan");
+            SetMenuAktif(Btn_Pesanan);
             Tc_Petani.SelectedIndex = 1;
 
         }
@@ -178,13 +178,13 @@ namespace WinFormsApp1
         {
             this.username = this.User.Username;
             LoadUsernameDinamis(this.User);
-            SetMenuAktif(Btn_Dashboard, "dashboard");
+            SetMenuAktif(Btn_Dashboard);
             Tc_Petani.SelectedIndex = 0;
 
             this.Refresh();
         }
 
-        private void SetMenuAktif(Button tombolAktif, string pilihan)
+        private void SetMenuAktif(Button tombolAktif)
         {
             Btn_Pesanan.BackColor = Color.FromArgb(184, 224, 162);
             Btn_Pesanan.ForeColor = Color.Black;
@@ -330,7 +330,7 @@ namespace WinFormsApp1
         private void Btn_Profil_Click(object sender, EventArgs e)
         {
             TampilkanProfilPetani();
-            SetMenuAktif(Btn_Profil, "profil");
+            SetMenuAktif(Btn_Profil);
             Tc_Petani.SelectedIndex = 4;
         }
 
@@ -348,7 +348,7 @@ namespace WinFormsApp1
             string kecamatan = Tb_Kecamatan.Text;
 
 
-            bool suksesUpdate = controllerUser.ProsesUpdateProfil(this.User, nama, noTelp, email, 
+            bool suksesUpdate = controllerUser.ProsesUpdateProfil(this.User, nama, noTelp, email,
                 username, password, alamat, desa, kecamatan, usernameLamaAsli);
 
             if (suksesUpdate)
@@ -369,5 +369,13 @@ namespace WinFormsApp1
 
             }
         }
+
+        private void Btn_Riwayat_Click(object sender, EventArgs e)
+        {
+            SetMenuAktif(Btn_Riwayat);
+            Tc_Petani.SelectedIndex = 2;
+        }
+
+
     }
 }

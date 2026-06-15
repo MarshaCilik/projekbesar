@@ -12,7 +12,7 @@ namespace WinFormsApp1.Helpers
           "Port=5432;" +  // port default PostgreSQL
           "Database=projek_semester2;" +  // nama database
           "Username=postgres;" +  // username
-          "Password=gabriela";  // password
+          "Password=devara2006";  // password
 
         public void TestKoneksi()
         {
