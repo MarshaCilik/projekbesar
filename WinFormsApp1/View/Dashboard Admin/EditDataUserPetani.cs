@@ -7,12 +7,17 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using WinFormsApp1.Models.User;
+using WinFormsApp1.Controller;
 
 namespace WinFormsApp1.View
 {
     public partial class EditDataUserPetani : Form
     {
         public Users UserData { get; private set; }
+
+        private string usernameLama;
+
+        c_admin controller = new c_admin();
         public EditDataUserPetani()
         {
             InitializeComponent();
@@ -23,6 +28,7 @@ namespace WinFormsApp1.View
         public EditDataUserPetani(Users user) : this()
         {
             UserData = user;
+            usernameLama = user.Username;
 
             Tb_Username.Text = user.Username;
             Tb_Password.Text = user.Password;
@@ -58,9 +64,13 @@ namespace WinFormsApp1.View
             MessageBoxIcon.Question);
             if (dr == DialogResult.Yes)
             {
+                string usernameLamaAsli = UserData.Username;
                 UserData = new PetaniUser(UserData.UsersId , Tb_Username.Text, Tb_Password.Text, 
                                             Tb_Nama.Text, Tb_NoTelp.Text, Tb_Email.Text, 
                                             Cbx_Status.Checked, UserData.CreatedAt, null, Tb_Alamat.Text, Tb_Desa.Text, Tb_Kecamatan.Text);
+
+                bool sukses = controller.ProsesUpdateProfil(UserData, Tb_Nama.Text, Tb_NoTelp.Text, Tb_Email.Text, Tb_Username.Text, 
+                    Tb_Password.Text, Tb_Alamat.Text, Tb_Desa.Text, Tb_Kecamatan.Text, usernameLamaAsli);
             }
 
             this.DialogResult = DialogResult.OK;

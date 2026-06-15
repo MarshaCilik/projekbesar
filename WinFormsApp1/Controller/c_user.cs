@@ -13,7 +13,7 @@ namespace WinFormsApp1.Controller
     {
         protected userContext context = new userContext();
 
-        public bool ProsesUpdateProfil(Users user, string nama, string noTelp, string email, string usernameBaru, string password, string alamat, string desa, string kecamatan)
+        public bool ProsesUpdateProfil(Users user, string nama, string noTelp, string email, string usernameBaru, string password, string alamat, string desa, string kecamatan, string usernameLamaAsli)
         {
             // --- 1. VALIDASI DATA KOSONG ---
             if (string.IsNullOrWhiteSpace(nama) || string.IsNullOrWhiteSpace(usernameBaru) || string.IsNullOrWhiteSpace(password))
@@ -21,8 +21,6 @@ namespace WinFormsApp1.Controller
                 MessageBox.Show("Nama, Username, dan Password wajib diisi!", "Validasi Gagal", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
-
-            string usernameLamaAsli = user.Username;
 
             // Timpa isi properti dengan data baru dari UI
             user.Nama = nama;
