@@ -866,3 +866,466 @@ $BODY$;
 
 -- Mengatur hak akses kepemilikan fungsi ke user postgres
 ALTER FUNCTION public.get_pesanan_already_by_user(integer) OWNER TO postgres;
+
+--dari antigravity marsha
+-- =========================================================================
+-- SCRIPT SETUP DATABASE PASTANI - FITUR KARYAWAN (VERSI PEMASUKAN SAJA)
+-- =========================================================================
+-- Cara Penggunaan:
+-- 1. Buka pgAdmin dan hubungkan ke server PostgreSQL Anda.
+-- 2. Pilih database "projek_semester2".
+-- 3. Buka Query Tool (Klik Kanan Database -> Query Tool).
+-- 4. Copy seluruh isi file ini, paste ke Query Tool, dan jalankan (F5).
+-- =========================================================================
+
+BEGIN;
+
+-- 1. Seeding data status_distribusi jika kosong (Menambahkan 'Ambil Sendiri' untuk NOT NULL constraint)
+INSERT INTO status_distribusi (status_distribusi_id, status_distribusi)
+VALUES 
+    (1, 'Diproses'),
+    (2, 'Dikirim'),
+    (3, 'Diterima'),
+    (4, 'Ambil Sendiri')
+ON CONFLICT (status_distribusi_id) DO NOTHING;
+
+-- 2. Prosedur untuk menyelesaikan checkout pesanan secara otomatis
+--    (Membuat data transaksi & detail transaksi pembelian/sewa)
+CREATE OR REPLACE PROCEDURE public.checkout_pesanan(IN p_pesanan_id integer)
+LANGUAGE 'plpgsql'
+AS $$
+DECLARE
+    v_transaksi_id int;
+    v_users_id int;
+    v_opsi varchar;
+    v_distribusi_id int;
+    r_detail_pembelian RECORD;
+    r_detail_sewa RECORD;
+BEGIN
+    -- Ambil info pesanan
+    SELECT users_id, opsi_pengiriman
+    INTO v_users_id, v_opsi
+    FROM pesanan
+    WHERE pesanan_id = p_pesanan_id AND status_pesanan = 'Belum Checkout';
+
+    IF v_users_id IS NULL THEN
+        RAISE EXCEPTION 'Pesanan tidak ditemukan atau sudah di-checkout.';
+    END IF;
+
+    -- Update status pesanan
+    UPDATE pesanan
+    SET status_pesanan = 'Sudah Checkout'
+    WHERE pesanan_id = p_pesanan_id;
+
+    -- Tentukan status distribusi awal (Mencegah null pada status_distribusi_id)
+    IF v_opsi = 'diantar' THEN
+        v_distribusi_id := 1; -- Diproses
+    ELSE
+        v_distribusi_id := 4; -- Ambil Sendiri
+    END IF;
+
+    -- Buat record transaksi utama
+    INSERT INTO transaksi (created_at, catatan, users_id, status_transaksi, status_distribusi_id, metode_pembayaran, status_pembayaran)
+    VALUES (NOW(), 'Checkout pesanan ID ' || p_pesanan_id, v_users_id, 'Diproses', v_distribusi_id, 'Cash', 'belum lunas')
+    RETURNING transaksi_id INTO v_transaksi_id;
+
+    -- Salin detail pembelian ke transaksi
+    FOR r_detail_pembelian IN 
+        SELECT quantity, harga_per_item, barang_id 
+        FROM detail_pesanan_pembelian 
+        WHERE pesanan_id = p_pesanan_id
+    LOOP
+        INSERT INTO detail_transaksi_pembelian (quantity, harga_per_item, transaksi_id, barang_id)
+        VALUES (r_detail_pembelian.quantity, r_detail_pembelian.harga_per_item, v_transaksi_id, r_detail_pembelian.barang_id);
+    END LOOP;
+
+    -- Salin detail sewa ke transaksi
+    FOR r_detail_sewa IN 
+        SELECT quantity, tgl_sewa, tgl_pengembalian, harga_sewa_perhari, alat_sewa_id 
+        FROM detail_pesanan_sewa 
+        WHERE pesanan_id = p_pesanan_id
+    LOOP
+        INSERT INTO detail_transaksi_sewa (quantity, tgl_sewa, tgl_pengembalian, harga_sewa_perhari, denda, status_sewa, transaksi_id, alat_sewa_id, opsi_pengembalian_id)
+        VALUES (r_detail_sewa.quantity, r_detail_sewa.tgl_sewa, r_detail_sewa.tgl_pengembalian, r_detail_sewa.harga_sewa_perhari, 0, 'Belum Kembali', v_transaksi_id, r_detail_sewa.alat_sewa_id, 1);
+    END LOOP;
+END;
+$$;
+
+-- 3. VIEW: Detail Transaksi Dashboard Karyawan
+CREATE OR REPLACE VIEW v_karyawan_dashboard_transaksi AS
+SELECT 
+    t.transaksi_id,
+    t.created_at,
+    t.catatan,
+    u.nama AS nama_user,
+    COALESCE(b.nama_barang, a.nama_alat) AS barang_atau_alat,
+    COALESCE(dp.quantity, ds.quantity) AS jumlah,
+    (COALESCE(dp.quantity, ds.quantity) * COALESCE(dp.harga_per_item, ds.harga_sewa_perhari))::numeric AS total,
+    CASE 
+        WHEN p.opsi_pengiriman = 'diantar' THEN COALESCE(k.nama_kurir, '-') 
+        ELSE '-' 
+    END AS nama_kurir,
+    t.status_transaksi,
+    COALESCE(sd.status_distribusi, '-') AS status_distribusi,
+    CASE 
+        WHEN ds.detail_transaksi_sewa_id IS NOT NULL THEN op.opsi_pengembalian 
+        ELSE '-' 
+    END AS opsi_pengembalian,
+    t.metode_pembayaran,
+    t.status_pembayaran
+FROM transaksi t
+LEFT JOIN users u ON t.users_id = u.users_id
+LEFT JOIN pesanan p ON t.users_id = p.users_id AND p.status_pesanan = 'Sudah Checkout'
+LEFT JOIN kurir k ON t.kurir_id = k.kurir_id
+LEFT JOIN status_distribusi sd ON t.status_distribusi_id = sd.status_distribusi_id
+LEFT JOIN detail_transaksi_pembelian dp ON t.transaksi_id = dp.transaksi_id
+LEFT JOIN barang b ON dp.barang_id = b.barang_id
+LEFT JOIN detail_transaksi_sewa ds ON t.transaksi_id = ds.transaksi_id
+LEFT JOIN alat_sewa a ON ds.alat_sewa_id = a.alat_sewa_id
+LEFT JOIN opsi_pengembalian op ON ds.opsi_pengembalian_id = op.opsi_pengembalian_id;
+
+-- 4. VIEW: Fitur Update Stok Barang & Alat (Tanpa kolom update_at/by di tabel utama)
+CREATE OR REPLACE VIEW v_update_stok_barang AS
+SELECT barang_id AS id, nama_barang AS nama, harga_per_item AS harga, stok FROM barang;
+
+CREATE OR REPLACE VIEW v_update_stok_alat AS
+SELECT alat_sewa_id AS id, nama_alat AS nama, harga_sewa_perhari AS harga, stok FROM alat_sewa;
+
+-- 5. VIEW: Manajemen Distribusi (khusus pengiriman 'diantar' status 1, 2, 3)
+CREATE OR REPLACE VIEW v_manajemen_distribusi AS
+SELECT 
+    t.transaksi_id,
+    u.nama AS nama_user,
+    COALESCE(b.nama_barang, a.nama_alat) AS nama_barang_alat,
+    COALESCE(dp.quantity, ds.quantity) AS jumlah,
+    (COALESCE(dp.quantity, ds.quantity) * COALESCE(dp.harga_per_item, ds.harga_sewa_perhari))::numeric AS total,
+    t.status_pembayaran,
+    COALESCE(sd.status_distribusi, '-') AS status_distribusi,
+    COALESCE(k.nama_kurir, '-') AS nama_kurir,
+    t.status_transaksi
+FROM transaksi t
+JOIN users u ON t.users_id = u.users_id
+LEFT JOIN kurir k ON t.kurir_id = k.kurir_id
+LEFT JOIN status_distribusi sd ON t.status_distribusi_id = sd.status_distribusi_id
+LEFT JOIN detail_transaksi_pembelian dp ON t.transaksi_id = dp.transaksi_id
+LEFT JOIN barang b ON dp.barang_id = b.barang_id
+LEFT JOIN detail_transaksi_sewa ds ON t.transaksi_id = ds.transaksi_id
+LEFT JOIN alat_sewa a ON ds.alat_sewa_id = a.alat_sewa_id
+WHERE t.status_distribusi_id IN (1, 2, 3);
+
+-- 6. VIEW: Rekap Denda Keterlambatan Sewa Alat
+CREATE OR REPLACE VIEW v_laporan_denda AS
+SELECT 
+    ds.detail_transaksi_sewa_id AS denda_id,
+    u.nama AS nama_petani,
+    a.nama_alat,
+    ds.tgl_pengembalian AS tgl_seharusnya_kembali,
+    CURRENT_DATE AS tgl_sekarang,
+    CASE 
+        WHEN CURRENT_DATE > ds.tgl_pengembalian THEN (CURRENT_DATE - ds.tgl_pengembalian)
+        ELSE 0 
+    END AS hari_keterlambatan,
+    a.harga_denda_perhari,
+    CASE 
+        WHEN CURRENT_DATE > ds.tgl_pengembalian THEN (CURRENT_DATE - ds.tgl_pengembalian) * a.harga_denda_perhari
+        ELSE 0::numeric
+    END AS total_denda,
+    ds.status_sewa AS status_pembayaran
+FROM detail_transaksi_sewa ds
+JOIN transaksi t ON ds.transaksi_id = t.transaksi_id
+JOIN users u ON t.users_id = u.users_id
+JOIN alat_sewa a ON ds.alat_sewa_id = a.alat_sewa_id;
+
+-- 7. VIEW: Laporan Rekap Keuangan (Pemasukan saja)
+CREATE OR REPLACE VIEW v_karyawan_keuangan AS
+SELECT 'Penjualan'::varchar AS tipe, b.nama_barang AS keterangan, (dp.quantity * dp.harga_per_item)::numeric AS jumlah, t.created_at, u.nama AS oleh 
+FROM detail_transaksi_pembelian dp 
+JOIN transaksi t ON dp.transaksi_id = t.transaksi_id 
+JOIN barang b ON dp.barang_id = b.barang_id 
+JOIN users u ON t.users_id = u.users_id 
+WHERE t.status_pembayaran = 'lunas'
+UNION ALL
+SELECT 'Sewa Alat'::varchar AS tipe, a.nama_alat AS keterangan, (ds.quantity * ds.harga_sewa_perhari * (ds.tgl_pengembalian - ds.tgl_sewa))::numeric AS jumlah, t.created_at, u.nama AS oleh 
+FROM detail_transaksi_sewa ds 
+JOIN transaksi t ON ds.transaksi_id = t.transaksi_id 
+JOIN alat_sewa a ON ds.alat_sewa_id = a.alat_sewa_id 
+JOIN users u ON t.users_id = u.users_id 
+WHERE t.status_pembayaran = 'lunas'
+UNION ALL
+SELECT 'Denda'::varchar AS tipe, 'Denda keterlambatan ' || a.nama_alat AS keterangan, ds.denda AS jumlah, t.created_at, u.nama AS oleh 
+FROM detail_transaksi_sewa ds 
+JOIN transaksi t ON ds.transaksi_id = t.transaksi_id 
+JOIN alat_sewa a ON ds.alat_sewa_id = a.alat_sewa_id 
+JOIN users u ON t.users_id = u.users_id 
+WHERE ds.denda > 0 AND ds.status_sewa = 'Lunas';
+
+-- 8. FUNCTION: Hitung Statistik Dashboard Harian
+CREATE OR REPLACE FUNCTION f_get_dashboard_stats(p_tanggal date)
+RETURNS TABLE(total_transaksi bigint, barang_dikirim bigint) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        COUNT(DISTINCT t.transaksi_id)::bigint,
+        COALESCE(SUM(dp.quantity), 0)::bigint + COALESCE(SUM(ds.quantity), 0)::bigint
+    FROM transaksi t
+    LEFT JOIN detail_transaksi_pembelian dp ON t.transaksi_id = dp.transaksi_id
+    LEFT JOIN detail_transaksi_sewa ds ON t.transaksi_id = ds.transaksi_id
+    WHERE DATE(t.created_at) = p_tanggal;
+END;
+$$ LANGUAGE plpgsql;
+
+-- 9. PROCEDURE: Update Status Pembayaran (Lunas/belum lunas)
+-- Mengeset local session parameter untuk trigger audit_transaksi
+CREATE OR REPLACE PROCEDURE p_update_status_pembayaran(p_transaksi_id int, p_status varchar, p_karyawan_id int)
+AS $$
+BEGIN
+    PERFORM set_config('myapp.current_user_id', p_karyawan_id::varchar, true);
+    UPDATE transaksi SET status_pembayaran = p_status WHERE transaksi_id = p_transaksi_id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- 10. PROCEDURE: Update Status Transaksi (Selesai/Diproses/dll.)
+-- Mengeset local session parameter untuk trigger audit_transaksi
+CREATE OR REPLACE PROCEDURE p_update_status_transaksi(p_transaksi_id int, p_status varchar, p_karyawan_id int)
+AS $$
+DECLARE
+    v_pembayaran varchar;
+    v_distribusi varchar;
+    v_distribusi_id int;
+BEGIN
+    PERFORM set_config('myapp.current_user_id', p_karyawan_id::varchar, true);
+
+    SELECT t.status_pembayaran, sd.status_distribusi, t.status_distribusi_id
+    INTO v_pembayaran, v_distribusi, v_distribusi_id
+    FROM transaksi t
+    LEFT JOIN status_distribusi sd ON t.status_distribusi_id = sd.status_distribusi_id
+    WHERE t.transaksi_id = p_transaksi_id;
+
+    -- Validasi status_distribusi_id 4 ('Ambil Sendiri') diabaikan agar langsung diselesaikan
+    IF v_distribusi_id IS NOT NULL AND v_distribusi_id != 4 AND (v_pembayaran != 'lunas' OR v_distribusi != 'Diterima') THEN
+        RAISE EXCEPTION 'Transaksi opsi diantar hanya bisa diselesaikan jika pembayaran lunas dan distribusi Diterima!';
+    END IF;
+
+    UPDATE transaksi SET status_transaksi = p_status WHERE transaksi_id = p_transaksi_id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- 11. PROCEDURE: Update Stok Barang atau Alat Sewa
+-- Menggunakan set_config() untuk mencatat user sesi saat ini tanpa kolom updated_by/at di tabel utama
+CREATE OR REPLACE PROCEDURE p_update_stok(p_id int, p_stok_baru int, p_jenis varchar, p_karyawan_id int)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- Set local session parameter agar bisa dibaca trigger audit
+    PERFORM set_config('myapp.current_user_id', p_karyawan_id::varchar, true);
+
+    IF p_jenis = 'barang' THEN
+        UPDATE barang SET stok = p_stok_baru WHERE barang_id = p_id;
+    ELSE
+        UPDATE alat_sewa SET stok = p_stok_baru WHERE alat_sewa_id = p_id;
+    END IF;
+END;
+$$;
+
+-- 12. AUDIT LOG TRIGGER FUNCTION: Log Perubahan Stok Barang
+CREATE OR REPLACE FUNCTION log_audit_stok_barang() RETURNS trigger AS $$
+DECLARE
+    v_user_id int;
+BEGIN
+    v_user_id := NULLIF(current_setting('myapp.current_user_id', true), '')::int;
+    IF v_user_id IS NULL THEN
+        SELECT users_id INTO v_user_id FROM users LIMIT 1;
+    END IF;
+
+    INSERT INTO audit_stok_barang_alat(stok_awal, stok_akhir, keterangan, waktu_perubahan, users_id, barang_id, alat_sewa_id)
+    VALUES (OLD.stok, NEW.stok, 'Update stok barang ' || NEW.nama_barang, NOW(), v_user_id, NEW.barang_id, NULL);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- 13. AUDIT LOG TRIGGER FUNCTION: Log Perubahan Stok Alat
+CREATE OR REPLACE FUNCTION log_audit_stok_alat() RETURNS trigger AS $$
+DECLARE
+    v_user_id int;
+BEGIN
+    v_user_id := NULLIF(current_setting('myapp.current_user_id', true), '')::int;
+    IF v_user_id IS NULL THEN
+        SELECT users_id INTO v_user_id FROM users LIMIT 1;
+    END IF;
+
+    INSERT INTO audit_stok_barang_alat(stok_awal, stok_akhir, keterangan, waktu_perubahan, users_id, barang_id, alat_sewa_id)
+    VALUES (OLD.stok, NEW.stok, 'Update stok alat ' || NEW.nama_alat, NOW(), v_user_id, NULL, NEW.alat_sewa_id);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS t_audit_stok_barang ON barang;
+CREATE TRIGGER t_audit_stok_barang
+AFTER UPDATE OF stok ON barang
+FOR EACH ROW EXECUTE FUNCTION log_audit_stok_barang();
+
+DROP TRIGGER IF EXISTS t_audit_stok_alat ON alat_sewa;
+CREATE TRIGGER t_audit_stok_alat
+AFTER UPDATE OF stok ON alat_sewa
+FOR EACH ROW EXECUTE FUNCTION log_audit_stok_alat();
+
+-- 14. AUDIT LOG TRIGGER FUNCTION: Log Perubahan Status Pembayaran / Transaksi
+CREATE OR REPLACE FUNCTION log_audit_transaksi() RETURNS trigger AS $$
+DECLARE
+    v_user_id int;
+BEGIN
+    v_user_id := NULLIF(current_setting('myapp.current_user_id', true), '')::int;
+    IF v_user_id IS NULL THEN
+        v_user_id := NEW.users_id; -- fallback ke user pemilik transaksi
+    END IF;
+
+    INSERT INTO audit_transaksi(aksi, waktu_perubahan, kolom_perubahan, value_lama, value_baru, transaksi_id, users_id)
+    VALUES (
+        'UPDATE', 
+        NOW(), 
+        'status_pembayaran / status_transaksi', 
+        'Pembayaran: ' || OLD.status_pembayaran || ', Transaksi: ' || OLD.status_transaksi, 
+        'Pembayaran: ' || NEW.status_pembayaran || ', Transaksi: ' || NEW.status_transaksi,
+        NEW.transaksi_id,
+        v_user_id
+    );
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS t_audit_transaksi ON transaksi;
+CREATE TRIGGER t_audit_transaksi
+AFTER UPDATE OF status_pembayaran, status_transaksi ON transaksi
+FOR EACH ROW EXECUTE FUNCTION log_audit_transaksi();
+
+COMMIT;
+
+-- 1. VIEW untuk Menampilkan Pesanan yang Sudah Checkout beserta Stok Saat Ini
+CREATE OR REPLACE VIEW public.v_pesanan_checkout AS
+SELECT 
+    p.pesanan_id AS "ID Pesanan",
+    u.nama AS "Nama Petani",
+    p.tanggal_pesanan::date AS "Tanggal Pesanan",
+    p.opsi_pengiriman AS "Pengiriman",
+    b.nama_barang AS "Nama Item",
+    dp.quantity AS "Jumlah",
+    b.stok AS "Stok Sekarang",
+    'Pembelian'::text AS "Jenis",
+    b.barang_id AS "Item ID",
+    p.status_pesanan AS "Status"
+FROM pesanan p
+JOIN users u ON p.users_id = u.users_id
+JOIN detail_pesanan_pembelian dp ON p.pesanan_id = dp.pesanan_id
+JOIN barang b ON dp.barang_id = b.barang_id
+WHERE p.status_pesanan = 'Sudah Checkout'
+
+UNION ALL
+
+SELECT 
+    p.pesanan_id AS "ID Pesanan",
+    u.nama AS "Nama Petani",
+    p.tanggal_pesanan::date AS "Tanggal Pesanan",
+    p.opsi_pengiriman AS "Pengiriman",
+    a.nama_alat AS "Nama Item",
+    ds.quantity AS "Jumlah",
+    a.stok AS "Stok Sekarang",
+    'Penyewaan'::text AS "Jenis",
+    a.alat_sewa_id AS "Item ID",
+    p.status_pesanan AS "Status"
+FROM pesanan p
+JOIN users u ON p.users_id = u.users_id
+JOIN detail_pesanan_sewa ds ON p.pesanan_id = ds.pesanan_id
+JOIN alat_sewa a ON ds.alat_sewa_id = a.alat_sewa_id
+WHERE p.status_pesanan = 'Sudah Checkout';
+
+-- 2. PROSEDUR untuk Menerima Pesanan (Validasi & Kurangi Stok Otomatis, Kirim ke Transaksi)
+CREATE OR REPLACE PROCEDURE public.p_terima_pesanan(IN p_pesanan_id integer, IN p_karyawan_username varchar)
+LANGUAGE 'plpgsql'
+AS $$
+DECLARE
+    v_transaksi_id int;
+    v_users_id int;
+    v_opsi varchar;
+    v_distribusi_id int;
+    r_detail_pembelian RECORD;
+    r_detail_sewa RECORD;
+BEGIN
+    SELECT users_id, opsi_pengiriman
+    INTO v_users_id, v_opsi
+    FROM pesanan
+    WHERE pesanan_id = p_pesanan_id AND status_pesanan = 'Sudah Checkout';
+
+    IF v_users_id IS NULL THEN
+        RAISE EXCEPTION 'Pesanan dengan ID % tidak ditemukan atau statusnya bukan Sudah Checkout.', p_pesanan_id;
+    END IF;
+
+    -- Validasi & Pengurangan Stok Barang
+    FOR r_detail_pembelian IN 
+        SELECT dp.barang_id, dp.quantity, b.nama_barang, b.stok 
+        FROM detail_pesanan_pembelian dp
+        JOIN barang b ON dp.barang_id = b.barang_id
+        WHERE dp.pesanan_id = p_pesanan_id
+    LOOP
+        IF r_detail_pembelian.stok < r_detail_pembelian.quantity THEN
+            RAISE EXCEPTION 'Stok barang % tidak mencukupi! Stok saat ini: %, dipesan: %', 
+                r_detail_pembelian.nama_barang, r_detail_pembelian.stok, r_detail_pembelian.quantity;
+        END IF;
+        
+        UPDATE barang SET stok = stok - r_detail_pembelian.quantity WHERE barang_id = r_detail_pembelian.barang_id;
+    END LOOP;
+
+    -- Validasi & Pengurangan Stok Alat
+    FOR r_detail_sewa IN 
+        SELECT ds.alat_sewa_id, ds.quantity, a.nama_alat, a.stok 
+        FROM detail_pesanan_sewa ds
+        JOIN alat_sewa a ON ds.alat_sewa_id = a.alat_sewa_id
+        WHERE ds.pesanan_id = p_pesanan_id
+    LOOP
+        IF r_detail_sewa.stok < r_detail_sewa.quantity THEN
+            RAISE EXCEPTION 'Stok alat sewa % tidak mencukupi! Stok saat ini: %, dipesan: %', 
+                r_detail_sewa.nama_alat, r_detail_sewa.stok, r_detail_sewa.quantity;
+        END IF;
+        
+        UPDATE alat_sewa SET stok = stok - r_detail_sewa.quantity WHERE alat_sewa_id = r_detail_sewa.alat_sewa_id;
+    END LOOP;
+
+    -- Update status pesanan
+    UPDATE pesanan SET status_pesanan = 'Selesai' WHERE pesanan_id = p_pesanan_id;
+
+    -- Tentukan status distribusi
+    IF v_opsi = 'diantar' THEN
+        v_distribusi_id := 1;
+    ELSE
+        v_distribusi_id := NULL;
+    END IF;
+
+    -- Buat transaksi
+    INSERT INTO transaksi (created_at, catatan, users_id, status_transaksi, status_distribusi_id, metode_pembayaran, status_pembayaran)
+    VALUES (NOW(), 'Penerimaan pesanan ID ' || p_pesanan_id || ' oleh ' || p_karyawan_username, v_users_id, 'Diproses', v_distribusi_id, 'Cash', 'belum lunas')
+    RETURNING transaksi_id INTO v_transaksi_id;
+
+    -- Copy detail pembelian
+    FOR r_detail_pembelian IN SELECT quantity, harga_per_item, barang_id FROM detail_pesanan_pembelian WHERE pesanan_id = p_pesanan_id LOOP
+        INSERT INTO detail_transaksi_pembelian (quantity, harga_per_item, transaksi_id, barang_id)
+        VALUES (r_detail_pembelian.quantity, r_detail_pembelian.harga_per_item, v_transaksi_id, r_detail_pembelian.barang_id);
+    END LOOP;
+
+    -- Copy detail sewa
+    FOR r_detail_sewa IN SELECT quantity, tgl_sewa, tgl_pengembalian, harga_sewa_perhari, alat_sewa_id FROM detail_pesanan_sewa WHERE pesanan_id = p_pesanan_id LOOP
+        INSERT INTO detail_transaksi_sewa (quantity, tgl_sewa, tgl_pengembalian, harga_sewa_perhari, denda, status_sewa, transaksi_id, alat_sewa_id, opsi_pengembalian_id)
+        VALUES (r_detail_sewa.quantity, r_detail_sewa.tgl_sewa, r_detail_sewa.tgl_pengembalian, r_detail_sewa.harga_sewa_perhari, 0, 'Belum Kembali', v_transaksi_id, r_detail_sewa.alat_sewa_id, 1);
+    END LOOP;
+END;
+$$;
+
+-- 3. PROSEDUR untuk Membatalkan Pesanan dengan Alasan Tertentu
+CREATE OR REPLACE PROCEDURE public.p_batal_pesanan(IN p_pesanan_id integer, IN p_alasan text)
+LANGUAGE 'plpgsql'
+AS $$
+BEGIN
+    UPDATE pesanan
+    SET status_pesanan = 'Dibatalkan',
+        opsi_pengiriman = COALESCE(opsi_pengiriman, '') || ' (Batal: ' || p_alasan || ')'
+    WHERE pesanan_id = p_pesanan_id AND status_pesanan = 'Sudah Checkout';
+END;
+$$;

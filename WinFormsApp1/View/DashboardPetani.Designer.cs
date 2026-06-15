@@ -434,14 +434,14 @@
             panel4.Controls.Add(Lbl_Pesanan);
             panel4.Location = new Point(11, 16);
             panel4.Name = "panel4";
-            panel4.Size = new Size(1061, 220);
+            panel4.Size = new Size(1061, 172);
             panel4.TabIndex = 5;
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.ForeColor = Color.White;
-            label2.Location = new Point(13, 193);
+            label2.Location = new Point(3, 146);
             label2.Name = "label2";
             label2.Size = new Size(334, 15);
             label2.TabIndex = 2;
@@ -453,7 +453,7 @@
             Lbl_Pesanan.AutoSize = true;
             Lbl_Pesanan.Font = new Font("Segoe UI", 26.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             Lbl_Pesanan.ForeColor = SystemColors.ButtonFace;
-            Lbl_Pesanan.Location = new Point(340, 13);
+            Lbl_Pesanan.Location = new Point(328, 34);
             Lbl_Pesanan.Name = "Lbl_Pesanan";
             Lbl_Pesanan.Size = new Size(382, 47);
             Lbl_Pesanan.TabIndex = 1;
