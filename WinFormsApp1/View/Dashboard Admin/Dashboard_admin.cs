@@ -10,6 +10,7 @@ using WinFormsApp1.Controller;
 using WinFormsApp1.Models.User;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using WinFormsApp1.Models;
+using WinFormsApp1.View;
 
 
 namespace WinFormsApp1.View.Dashboard_Admin

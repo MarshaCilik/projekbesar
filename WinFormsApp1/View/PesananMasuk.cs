@@ -51,7 +51,7 @@ namespace WinFormsApp1.View
 
             int pesananId = Convert.ToInt32(dgvPesanan.SelectedRows[0].Cells["ID Pesanan"].Value);
             string namaItem = dgvPesanan.SelectedRows[0].Cells["Nama Item"].Value.ToString();
-            
+
             DialogResult confirm = MessageBox.Show($"Terima pesanan #{pesananId} untuk item {namaItem}?", "Konfirmasi", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (confirm == DialogResult.Yes)
             {
@@ -93,5 +93,6 @@ namespace WinFormsApp1.View
                 }
             }
         }
+
     }
 }
