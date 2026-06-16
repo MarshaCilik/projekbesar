@@ -38,6 +38,7 @@
             dgv_AllUser = new DataGridView();
             pictureBox7 = new PictureBox();
             panel3 = new Panel();
+            button8 = new Button();
             btn_Profil = new Button();
             btn_TambahKaryawan = new Button();
             btn_CRUDProduk = new Button();
@@ -54,7 +55,7 @@
             tabPage2 = new TabPage();
             txtNamaAdmin1 = new MaskedTextBox();
             btn_Hapus = new Button();
-            textBox1 = new TextBox();
+            textBox_pencarian = new TextBox();
             btn_tambahBarang = new Button();
             panel4 = new Panel();
             label1 = new Label();
@@ -81,6 +82,7 @@
             label5 = new Label();
             label7 = new Label();
             button6 = new Button();
+            tabPage4 = new TabPage();
             tabPage5 = new TabPage();
             panel15 = new Panel();
             Btn_Simpan = new Button();
@@ -114,8 +116,6 @@
             panel18 = new Panel();
             label19 = new Label();
             pictureBox4 = new PictureBox();
-            button8 = new Button();
-            tabPage4 = new TabPage();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgv_AllUser).BeginInit();
@@ -275,6 +275,20 @@
             panel3.Name = "panel3";
             panel3.Size = new Size(293, 1340);
             panel3.TabIndex = 46;
+            // 
+            // button8
+            // 
+            button8.FlatAppearance.BorderSize = 0;
+            button8.FlatStyle = FlatStyle.Flat;
+            button8.Font = new Font("Rockwell", 14.25F);
+            button8.ForeColor = Color.FromArgb(49, 106, 14);
+            button8.Location = new Point(35, 436);
+            button8.Margin = new Padding(3, 4, 3, 4);
+            button8.Name = "button8";
+            button8.Size = new Size(222, 76);
+            button8.TabIndex = 20;
+            button8.Text = "Laporan dan Rekap";
+            button8.UseVisualStyleBackColor = true;
             // 
             // btn_Profil
             // 
@@ -456,7 +470,7 @@
             // 
             tabPage2.Controls.Add(txtNamaAdmin1);
             tabPage2.Controls.Add(btn_Hapus);
-            tabPage2.Controls.Add(textBox1);
+            tabPage2.Controls.Add(textBox_pencarian);
             tabPage2.Controls.Add(btn_tambahBarang);
             tabPage2.Controls.Add(panel4);
             tabPage2.Controls.Add(pictureBox2);
@@ -496,13 +510,13 @@
             btn_Hapus.Text = "Hapus";
             btn_Hapus.UseVisualStyleBackColor = false;
             // 
-            // textBox1
+            // textBox_pencarian
             // 
-            textBox1.Location = new Point(13, 322);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(447, 27);
-            textBox1.TabIndex = 60;
-            textBox1.Text = "Cari Nama Barang/Alat";
+            textBox_pencarian.Location = new Point(13, 322);
+            textBox_pencarian.Name = "textBox_pencarian";
+            textBox_pencarian.Size = new Size(447, 27);
+            textBox_pencarian.TabIndex = 60;
+            textBox_pencarian.Text = "Cari Nama Barang/Alat";
             // 
             // btn_tambahBarang
             // 
@@ -822,6 +836,16 @@
             button6.TabIndex = 86;
             button6.Text = "Tambah Karyawan";
             button6.UseVisualStyleBackColor = false;
+            // 
+            // tabPage4
+            // 
+            tabPage4.Location = new Point(4, 29);
+            tabPage4.Name = "tabPage4";
+            tabPage4.Padding = new Padding(3);
+            tabPage4.Size = new Size(1257, 1318);
+            tabPage4.TabIndex = 4;
+            tabPage4.Text = "tabPage4";
+            tabPage4.UseVisualStyleBackColor = true;
             // 
             // tabPage5
             // 
@@ -1189,30 +1213,6 @@
             pictureBox4.TabIndex = 46;
             pictureBox4.TabStop = false;
             // 
-            // button8
-            // 
-            button8.FlatAppearance.BorderSize = 0;
-            button8.FlatStyle = FlatStyle.Flat;
-            button8.Font = new Font("Rockwell", 14.25F);
-            button8.ForeColor = Color.FromArgb(49, 106, 14);
-            button8.Location = new Point(35, 436);
-            button8.Margin = new Padding(3, 4, 3, 4);
-            button8.Name = "button8";
-            button8.Size = new Size(222, 76);
-            button8.TabIndex = 20;
-            button8.Text = "Laporan dan Rekap";
-            button8.UseVisualStyleBackColor = true;
-            // 
-            // tabPage4
-            // 
-            tabPage4.Location = new Point(4, 29);
-            tabPage4.Name = "tabPage4";
-            tabPage4.Padding = new Padding(3);
-            tabPage4.Size = new Size(1257, 1318);
-            tabPage4.TabIndex = 4;
-            tabPage4.Text = "tabPage4";
-            tabPage4.UseVisualStyleBackColor = true;
-            // 
             // Dashboard_admin
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -1364,7 +1364,7 @@
         private Panel panel18;
         private Label label19;
         private PictureBox pictureBox4;
-        private TextBox textBox1;
+        private TextBox textBox_pencarian;
         private Button button7;
         private MaskedTextBox maskedTextBox1;
         private MaskedTextBox maskedTextBox4;

@@ -38,8 +38,8 @@
             Tb_Nama_Alat = new TextBox();
             label7 = new Label();
             Tb_Denda_Perhari = new TextBox();
-            button2 = new Button();
-            button1 = new Button();
+            btn_selesai_editAlat = new Button();
+            btn_batal_editAlat = new Button();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -144,36 +144,36 @@
             Tb_Denda_Perhari.Size = new Size(427, 32);
             Tb_Denda_Perhari.TabIndex = 21;
             // 
-            // button2
+            // btn_selesai_editAlat
             // 
-            button2.BackColor = Color.YellowGreen;
-            button2.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button2.Location = new Point(72, 553);
-            button2.Name = "button2";
-            button2.Size = new Size(159, 55);
-            button2.TabIndex = 35;
-            button2.Text = "Selesai";
-            button2.UseVisualStyleBackColor = false;
+            btn_selesai_editAlat.BackColor = Color.YellowGreen;
+            btn_selesai_editAlat.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btn_selesai_editAlat.Location = new Point(72, 553);
+            btn_selesai_editAlat.Name = "btn_selesai_editAlat";
+            btn_selesai_editAlat.Size = new Size(159, 55);
+            btn_selesai_editAlat.TabIndex = 35;
+            btn_selesai_editAlat.Text = "Selesai";
+            btn_selesai_editAlat.UseVisualStyleBackColor = false;
             // 
-            // button1
+            // btn_batal_editAlat
             // 
-            button1.BackColor = Color.IndianRed;
-            button1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button1.Location = new Point(339, 553);
-            button1.Name = "button1";
-            button1.Size = new Size(159, 55);
-            button1.TabIndex = 34;
-            button1.Text = "Batal";
-            button1.UseVisualStyleBackColor = false;
+            btn_batal_editAlat.BackColor = Color.IndianRed;
+            btn_batal_editAlat.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btn_batal_editAlat.Location = new Point(339, 553);
+            btn_batal_editAlat.Name = "btn_batal_editAlat";
+            btn_batal_editAlat.Size = new Size(159, 55);
+            btn_batal_editAlat.TabIndex = 34;
+            btn_batal_editAlat.Text = "Batal";
+            btn_batal_editAlat.UseVisualStyleBackColor = false;
             // 
             // Form_Edit_Alat
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(559, 667);
-            Controls.Add(button2);
+            Controls.Add(btn_selesai_editAlat);
             Controls.Add(Tb_Denda_Perhari);
-            Controls.Add(button1);
+            Controls.Add(btn_batal_editAlat);
             Controls.Add(label7);
             Controls.Add(label1);
             Controls.Add(panel1);
@@ -207,7 +207,7 @@
         private TextBox Tb_Nama_Alat;
         private Label label7;
         private TextBox Tb_Denda_Perhari;
-        private Button button2;
-        private Button button1;
+        private Button btn_selesai_editAlat;
+        private Button btn_batal_editAlat;
     }
 }

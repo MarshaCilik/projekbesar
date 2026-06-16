@@ -36,8 +36,8 @@
             Tb_Nama_Barang = new TextBox();
             Tb_Harga = new TextBox();
             Tb_Stok = new TextBox();
-            button1 = new Button();
-            button2 = new Button();
+            btn_batal_edit = new Button();
+            btn_selesai_edit = new Button();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -122,37 +122,38 @@
             Tb_Stok.Size = new Size(76, 47);
             Tb_Stok.TabIndex = 10;
             // 
-            // button1
+            // btn_batal_edit
             // 
-            button1.BackColor = Color.IndianRed;
-            button1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button1.ForeColor = Color.Black;
-            button1.Location = new Point(333, 547);
-            button1.Name = "button1";
-            button1.Size = new Size(159, 55);
-            button1.TabIndex = 10;
-            button1.Text = "Batal";
-            button1.UseVisualStyleBackColor = false;
+            btn_batal_edit.BackColor = Color.IndianRed;
+            btn_batal_edit.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btn_batal_edit.ForeColor = Color.Black;
+            btn_batal_edit.Location = new Point(333, 547);
+            btn_batal_edit.Name = "btn_batal_edit";
+            btn_batal_edit.Size = new Size(159, 55);
+            btn_batal_edit.TabIndex = 10;
+            btn_batal_edit.Text = "Batal";
+            btn_batal_edit.UseVisualStyleBackColor = false;
+            btn_batal_edit.Click += this.btn_batal_edit_Click;
             // 
-            // button2
+            // btn_selesai_edit
             // 
-            button2.BackColor = Color.YellowGreen;
-            button2.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button2.ForeColor = Color.Black;
-            button2.Location = new Point(65, 547);
-            button2.Name = "button2";
-            button2.Size = new Size(159, 55);
-            button2.TabIndex = 11;
-            button2.Text = "Selesai";
-            button2.UseVisualStyleBackColor = false;
+            btn_selesai_edit.BackColor = Color.YellowGreen;
+            btn_selesai_edit.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btn_selesai_edit.ForeColor = Color.Black;
+            btn_selesai_edit.Location = new Point(65, 547);
+            btn_selesai_edit.Name = "btn_selesai_edit";
+            btn_selesai_edit.Size = new Size(159, 55);
+            btn_selesai_edit.TabIndex = 11;
+            btn_selesai_edit.Text = "Selesai";
+            btn_selesai_edit.UseVisualStyleBackColor = false;
             // 
             // Form_Edit_barang
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(559, 667);
-            Controls.Add(button2);
-            Controls.Add(button1);
+            Controls.Add(btn_selesai_edit);
+            Controls.Add(btn_batal_edit);
             Controls.Add(Tb_Stok);
             Controls.Add(Tb_Harga);
             Controls.Add(Tb_Nama_Barang);
@@ -179,7 +180,7 @@
         private TextBox Tb_Nama_Barang;
         private TextBox Tb_Harga;
         private TextBox Tb_Stok;
-        private Button button1;
-        private Button button2;
+        private Button btn_batal_edit;
+        private Button btn_selesai_edit;
     }
 }

@@ -38,8 +38,8 @@
             Tb_Stok = new TextBox();
             Tb_Harga = new TextBox();
             Tb_Nama_Alat = new TextBox();
-            button1 = new Button();
-            button2 = new Button();
+            btn_batal_alat = new Button();
+            btn_selesai_alat = new Button();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -144,35 +144,35 @@
             Tb_Nama_Alat.Size = new Size(427, 32);
             Tb_Nama_Alat.TabIndex = 28;
             // 
-            // button1
+            // btn_batal_alat
             // 
-            button1.BackColor = Color.IndianRed;
-            button1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button1.Location = new Point(339, 563);
-            button1.Name = "button1";
-            button1.Size = new Size(159, 55);
-            button1.TabIndex = 10;
-            button1.Text = "Batal";
-            button1.UseVisualStyleBackColor = false;
+            btn_batal_alat.BackColor = Color.IndianRed;
+            btn_batal_alat.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btn_batal_alat.Location = new Point(339, 563);
+            btn_batal_alat.Name = "btn_batal_alat";
+            btn_batal_alat.Size = new Size(159, 55);
+            btn_batal_alat.TabIndex = 10;
+            btn_batal_alat.Text = "Batal";
+            btn_batal_alat.UseVisualStyleBackColor = false;
             // 
-            // button2
+            // btn_selesai_alat
             // 
-            button2.BackColor = Color.YellowGreen;
-            button2.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button2.Location = new Point(72, 563);
-            button2.Name = "button2";
-            button2.Size = new Size(159, 55);
-            button2.TabIndex = 33;
-            button2.Text = "Selesai";
-            button2.UseVisualStyleBackColor = false;
+            btn_selesai_alat.BackColor = Color.YellowGreen;
+            btn_selesai_alat.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btn_selesai_alat.Location = new Point(72, 563);
+            btn_selesai_alat.Name = "btn_selesai_alat";
+            btn_selesai_alat.Size = new Size(159, 55);
+            btn_selesai_alat.TabIndex = 33;
+            btn_selesai_alat.Text = "Selesai";
+            btn_selesai_alat.UseVisualStyleBackColor = false;
             // 
             // Form_Tambah_Alat
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(559, 667);
-            Controls.Add(button2);
-            Controls.Add(button1);
+            Controls.Add(btn_selesai_alat);
+            Controls.Add(btn_batal_alat);
             Controls.Add(label1);
             Controls.Add(panel1);
             Controls.Add(Tb_Denda_Perhari);
@@ -203,7 +203,7 @@
         private TextBox Tb_Stok;
         private TextBox Tb_Harga;
         private TextBox Tb_Nama_Alat;
-        private Button button1;
-        private Button button2;
+        private Button btn_batal_alat;
+        private Button btn_selesai_alat;
     }
 }
