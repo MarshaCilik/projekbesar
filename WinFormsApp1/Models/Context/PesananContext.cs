@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualBasic.ApplicationServices;
+using Microsoft.VisualBasic.ApplicationServices;
 using Npgsql;
 using System;
 using System.Collections.Generic;
@@ -372,7 +372,7 @@ namespace WinFormsApp1.Models.Context
             return list;
         }
 
-        public void CreatePesanan_AlatSewa(Users user, AlatTani alat, string opsiPengiriman, int quantity, DateOnly tanggalPengembalian, string opsiPengembalian)
+        public void CreatePesanan_AlatSewa(Users user, AlatTani alat, string opsiPengiriman, string metodePembayaran, int quantity, DateOnly tanggalPengembalian, string opsiPengembalian)
         {
             using (NpgsqlConnection conn = connectDB.GetConnection())
             {
@@ -391,11 +391,12 @@ namespace WinFormsApp1.Models.Context
                 }
 
                 // 2. Panggil stored procedure dengan opsi_pengembalian_id
-                string sql = "CALL add_pesanan_alat_sewa(@userid, @opsi_pengiriman, @alat_sewa_id, @quantity, @tanggal_pengembalian, @opsi_pengembalian_id)";
+                string sql = "CALL add_pesanan_alat_sewa(@userid, @opsi_pengiriman, @metode_pembayaran, @alat_sewa_id, @quantity, @tanggal_pengembalian, @opsi_pengembalian_id)";
                 using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                 {
                     cmd.Parameters.AddWithValue("userid", user.UsersId);
                     cmd.Parameters.AddWithValue("opsi_pengiriman", opsiPengiriman);
+                    cmd.Parameters.AddWithValue("metode_pembayaran", string.IsNullOrEmpty(metodePembayaran) ? (object)DBNull.Value : metodePembayaran);
                     cmd.Parameters.AddWithValue("alat_sewa_id", alat.Id);
                     cmd.Parameters.AddWithValue("quantity", quantity);
                     cmd.Parameters.AddWithValue("tanggal_pengembalian", tanggalPengembalian);
@@ -414,15 +415,16 @@ namespace WinFormsApp1.Models.Context
             }
         }
 
-        public void CreatePesanan_Barang(Users user, barangTani barang, int quantity, string opsiPengiriman)
+        public void CreatePesanan_Barang(Users user, barangTani barang, int quantity, string opsiPengiriman, string metodePembayaran)
         {
             using (NpgsqlConnection conn = connectDB.GetConnection())
             {
-                string sql = "CALL add_pesanan_barang(@userid, @opsi_pengiriman, @barang_id, @quantity)";
+                string sql = "CALL add_pesanan_barang(@userid, @opsi_pengiriman, @metode_pembayaran, @barang_id, @quantity)";
                 using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                 {
                     cmd.Parameters.AddWithValue("userid", user.UsersId);
                     cmd.Parameters.AddWithValue("opsi_pengiriman", opsiPengiriman);
+                    cmd.Parameters.AddWithValue("metode_pembayaran", string.IsNullOrEmpty(metodePembayaran) ? (object)DBNull.Value : metodePembayaran);
                     cmd.Parameters.AddWithValue("barang_id", barang.Id);
                     cmd.Parameters.AddWithValue("quantity", quantity);
 

@@ -10,7 +10,6 @@ namespace WinFormsApp1.View
     public partial class Dashboard_Karyawan : Form
     {
         private KaryawanController db = new KaryawanController();
-        private LaporanController lapCtrl = new LaporanController();
         private ProfilController profCtrl = new ProfilController();
 
         // Update Stok Tab States
@@ -41,29 +40,57 @@ namespace WinFormsApp1.View
             Logout.Cursor = Cursors.Hand;
 
             // Dashboard Aksi Labels
-            label18.Click += labelStatusPembayaran_Click;
-            label18.Cursor = Cursors.Hand;
-            label18.MouseEnter += (s, e) => label18.ForeColor = Color.ForestGreen;
-            label18.MouseLeave += (s, e) => label18.ForeColor = Color.White;
+            if (label18 != null)
+            {
+                label18.Click += labelStatusPembayaran_Click;
+                label18.Cursor = Cursors.Hand;
+                label18.MouseEnter += (s, e) => label18.ForeColor = Color.ForestGreen;
+                label18.MouseLeave += (s, e) => label18.ForeColor = Color.White;
+            }
 
-            label17.Click += labelStatusTransaksi_Click;
-            label17.Cursor = Cursors.Hand;
-            label17.MouseEnter += (s, e) => label17.ForeColor = Color.ForestGreen;
-            label17.MouseLeave += (s, e) => label17.ForeColor = Color.White;
+            if (label17 != null)
+            {
+                label17.Click += labelStatusTransaksi_Click;
+                label17.Cursor = Cursors.Hand;
+                label17.MouseEnter += (s, e) => label17.ForeColor = Color.ForestGreen;
+                label17.MouseLeave += (s, e) => label17.ForeColor = Color.White;
+            }
+
+            btnProduk.Click += btnDashboardProduk_Click;
+            btnAlat.Click += btnDashboardAlat_Click;
+            btnRefresh1.Click += (s, e) => LoadDashboardData();
 
             // Update Stok Tab Events
             btnProduk1.Click += btnStokProduk_Click;
             btnAlatSewa2.Click += btnStokAlat_Click;
             dgvUpdateStok.CellDoubleClick += dgvStok_CellDoubleClick;
+            btnUpdate.Click += btnUpdateStokAction_Click;
+            txtCariNamaBarang2.KeyDown += txtCariNamaBarang2_KeyDown;
+            btnRefresh2.Click += btnRefresh2_Click;
 
             // Manajemen Distribusi Search & Grid Events
-            txtNamaKaryawan3.TextChanged += txtSearchDistribusi_TextChanged;
+            txtCariID3.TextChanged += txtSearchDistribusi_TextChanged;
+            btnRefresh3.Click += (s, e) => { txtCariID3.Text = ""; LoadDistribusiData(); };
             dgvDistribusi.CellDoubleClick += dgvDistribusi_CellDoubleClick;
 
             // Laporan & Rekap Tab Events
-            btnLaporanTransaksi.Click += btnLaporanTransaksi_Click;
-            btnLaporanStok.Click += btnLaporanStok_Click;
-            btnLaporanDenda.Click += btnLaporanDenda_Click;
+            btnLaporanTransaksi.Click += (s, e) => PilihMenuLaporan("Transaksi");
+            btnLaporanStok.Click += (s, e) => PilihMenuLaporan("Stok");
+            btnLaporanDenda.Click += (s, e) => PilihMenuLaporan("Denda");
+
+            // Laporan Transaksi Events
+            btn_Filter41.Click += btnLaporanTransaksiFilter_Click;
+            btn_Refresh41.Click += btnLaporanTransaksiRefresh_Click;
+            txt_CariID41.KeyDown += txtLaporanTransaksiCari_KeyDown;
+
+            // Laporan Stok Events
+            btnProduk42.Click += (s, e) => LoadLaporanStok("produk");
+            btnAlat42.Click += (s, e) => LoadLaporanStok("alat");
+            btnRiwayat.Click += (s, e) => LoadLaporanStok("riwayat");
+
+            // Laporan Denda Events
+            txtCariNamaDenda.TextChanged += txtCariDenda_TextChanged;
+            btnLunas.Click += btnDendaLunas_Click;
             dgvDenda.CellDoubleClick += dgvDenda_CellDoubleClick;
 
             // Profil Tab Events
@@ -117,10 +144,12 @@ namespace WinFormsApp1.View
             }
             else if (index == 1)
             {
+                txtNamaKaryawan2.Text = UserSession.Username;
                 SwitchStokView("barang");
             }
             else if (index == 2)
             {
+                txtNamaKaryawan3.Text = UserSession.Username;
                 LoadDistribusiData();
             }
             else if (index == 3)
@@ -159,15 +188,59 @@ namespace WinFormsApp1.View
         {
             try
             {
-                var stats = db.GetDashboardStats(DateTime.Today);
-                txtJumlahTransaksi.Text = stats.TotalTransaksi.ToString();
-                txtJumlahDiantar.Text = stats.BarangDikirim.ToString();
-                dgvDashboard.DataSource = db.GetDashboardTransaksi();
+                var stats = db.GetDashboardStats();
+                txtJumlahTransaksi.Text = stats.TotalTransaksiDiproses.ToString();
+                txtJumlahDiantar.Text = stats.TotalTransaksiDiantar.ToString();
+                txtJumlahPesanan.Text = stats.TotalPesananMasuk.ToString();
+                
+                DataTable dt = db.GetDashboardTransaksi();
+                DataView dv = dt.DefaultView;
+                dv.RowFilter = "status_transaksi = 'Diproses'";
+                dgvDashboard.DataSource = dv.ToTable();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Gagal memuat data dashboard: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void btnDashboardProduk_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DataTable dt = db.GetDashboardTransaksi();
+                DataView dv = dt.DefaultView;
+                var query = dt.AsEnumerable().Where(r => 
+                {
+                    var produkDb = db.GetStokBarang().AsEnumerable().Select(p => p.Field<string>("nama")).ToList();
+                    return produkDb.Contains(r.Field<string>("barang_atau_alat"));
+                });
+                
+                if (query.Any())
+                    dgvDashboard.DataSource = query.CopyToDataTable();
+                else
+                    dgvDashboard.DataSource = dt.Clone();
+            }
+            catch {}
+        }
+
+        private void btnDashboardAlat_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DataTable dt = db.GetDashboardTransaksi();
+                var query = dt.AsEnumerable().Where(r => 
+                {
+                    var alatDb = db.GetStokAlat().AsEnumerable().Select(p => p.Field<string>("nama")).ToList();
+                    return alatDb.Contains(r.Field<string>("barang_atau_alat"));
+                });
+                
+                if (query.Any())
+                    dgvDashboard.DataSource = query.CopyToDataTable();
+                else
+                    dgvDashboard.DataSource = dt.Clone();
+            }
+            catch {}
         }
 
         private void labelStatusPembayaran_Click(object sender, EventArgs e)
@@ -219,6 +292,13 @@ namespace WinFormsApp1.View
             if (statusTransaksi.Equals("Selesai", StringComparison.OrdinalIgnoreCase))
             {
                 MessageBox.Show("Transaksi ini sudah selesai!", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // Validasi denda sebelum diselesaikan
+            if (db.HasUnpaidDenda(transaksiId))
+            {
+                MessageBox.Show("Transaksi ini tidak dapat diselesaikan karena ada denda alat sewa yang belum dilunasi. Silakan lunasi denda di Laporan Denda terlebih dahulu!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -337,6 +417,54 @@ namespace WinFormsApp1.View
             }
         }
 
+        private void btnUpdateStokAction_Click(object sender, EventArgs e)
+        {
+            if (dgvUpdateStok.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Silakan pilih barang atau alat sewa terlebih dahulu!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DataGridViewRow row = dgvUpdateStok.SelectedRows[0];
+            selectedStokId = Convert.ToInt32(row.Cells["id"].Value);
+            string nama = row.Cells["nama"].Value.ToString();
+            int stok = Convert.ToInt32(row.Cells["stok"].Value);
+
+            ShowUpdateStokPopup(nama, stok);
+        }
+
+        private void txtCariNamaBarang2_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true; // Prevent ding sound
+                string keyword = txtCariNamaBarang2.Text.Trim();
+                try
+                {
+                    DataTable dt = stokMode == "barang" ? db.GetStokBarang() : db.GetStokAlat();
+                    if (string.IsNullOrEmpty(keyword))
+                    {
+                        dgvUpdateStok.DataSource = dt;
+                        return;
+                    }
+
+                    DataView dv = dt.DefaultView;
+                    dv.RowFilter = string.Format("nama LIKE '%{0}%'", keyword.Replace("'", "''"));
+                    dgvUpdateStok.DataSource = dv.ToTable();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Terjadi kesalahan saat mencari: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void btnRefresh2_Click(object sender, EventArgs e)
+        {
+            txtCariNamaBarang2.Text = "";
+            SwitchStokView(stokMode);
+        }
+
         // =========================================================================
         // FEATURE 3: MANAJEMEN DISTRIBUSI
         // =========================================================================
@@ -354,7 +482,7 @@ namespace WinFormsApp1.View
 
         private void txtSearchDistribusi_TextChanged(object sender, EventArgs e)
         {
-            string keyword = txtNamaKaryawan3.Text.Trim();
+            string keyword = txtCariID3.Text.Trim();
             try
             {
                 DataTable dt = db.GetManajemenDistribusi();
@@ -477,11 +605,156 @@ namespace WinFormsApp1.View
         // =========================================================================
         // FEATURE 4: REKAP & LAPORAN
         // =========================================================================
+        private void LoadLaporanTransaksi()
+        {
+            try
+            {
+                dgvTransaksi.Visible = true;
+                DataTable dt = db.GetDashboardTransaksi();
+                DataView dv = dt.DefaultView;
+                dv.RowFilter = "status_transaksi IN ('Selesai', 'Ditolak', 'Dibatalkan')";
+                dgvTransaksi.DataSource = dv.ToTable();
+
+                // Hitung rekap opsional
+                Lbl_JumlahTransaksi.Text = dv.Count.ToString();
+                decimal pemasukan = 0;
+                foreach (DataRowView row in dv)
+                {
+                    if (row["status_transaksi"].ToString() == "Selesai")
+                        pemasukan += Convert.ToDecimal(row["total"]);
+                }
+                Lbl_Pemasukan.Text = "Rp " + pemasukan.ToString("N0");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Gagal memuat laporan transaksi: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnLaporanTransaksiFilter_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DataTable dt = db.GetDashboardTransaksi();
+                DataView dv = dt.DefaultView;
+                string start = dtp_DariTanggal.Value.ToString("yyyy-MM-dd");
+                string end = dtp_KeTanggal.Value.ToString("yyyy-MM-dd 23:59:59");
+                dv.RowFilter = $"status_transaksi IN ('Selesai', 'Ditolak', 'Dibatalkan') AND created_at >= '{start}' AND created_at <= '{end}'";
+                dgvTransaksi.DataSource = dv.ToTable();
+                
+                Lbl_JumlahTransaksi.Text = dv.Count.ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Filter error: " + ex.Message);
+            }
+        }
+
+        private void btnLaporanTransaksiRefresh_Click(object sender, EventArgs e)
+        {
+            txt_CariID41.Text = "";
+            LoadLaporanTransaksi();
+        }
+
+        private void txtLaporanTransaksiCari_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                string keyword = txt_CariID41.Text.Trim();
+                try
+                {
+                    DataTable dt = db.GetDashboardTransaksi();
+                    DataView dv = dt.DefaultView;
+                    if (string.IsNullOrEmpty(keyword))
+                    {
+                        dv.RowFilter = "status_transaksi IN ('Selesai', 'Ditolak', 'Dibatalkan')";
+                    }
+                    else
+                    {
+                        dv.RowFilter = $"status_transaksi IN ('Selesai', 'Ditolak', 'Dibatalkan') AND Convert(transaksi_id, 'System.String') LIKE '%{keyword.Replace("'", "''")}%'";
+                    }
+                    dgvTransaksi.DataSource = dv.ToTable();
+                }
+                catch {}
+            }
+        }
+
+        private void LoadLaporanStok(string jenis)
+        {
+            try
+            {
+                dgvStok.DataSource = db.GetLaporanStok(jenis);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Gagal memuat laporan stok: " + ex.Message);
+            }
+        }
+
+        private void LoadLaporanDenda()
+        {
+            try
+            {
+                dgvDenda.DataSource = db.GetLaporanDenda();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Gagal memuat laporan denda: " + ex.Message);
+            }
+        }
+
+        private void txtCariDenda_TextChanged(object sender, EventArgs e)
+        {
+            string keyword = txtCariNamaDenda.Text.Trim();
+            try
+            {
+                DataTable dt = db.GetLaporanDenda();
+                if (string.IsNullOrEmpty(keyword))
+                {
+                    dgvDenda.DataSource = dt;
+                    return;
+                }
+
+                DataView dv = dt.DefaultView;
+                dv.RowFilter = string.Format("nama_petani LIKE '%{0}%'", keyword.Replace("'", "''"));
+                dgvDenda.DataSource = dv.ToTable();
+            }
+            catch {}
+        }
+
+        private void btnDendaLunas_Click(object sender, EventArgs e)
+        {
+            if (dgvDenda.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Pilih alat sewa yang dendanya ingin dilunaskan!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            int dendaId = Convert.ToInt32(dgvDenda.SelectedRows[0].Cells["denda_id"].Value);
+            string namaAlat = dgvDenda.SelectedRows[0].Cells["nama_alat"].Value.ToString();
+
+            DialogResult confirm = MessageBox.Show($"Tandai denda alat sewa {namaAlat} (ID: {dendaId}) sebagai LUNAS?", "Konfirmasi Pelunasan", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (confirm == DialogResult.Yes)
+            {
+                try
+                {
+                    db.LunaskanDenda(dendaId);
+                    MessageBox.Show("Denda berhasil dilunaskan!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadLaporanDenda();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Gagal melunaskan denda: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
         private void PilihMenuLaporan(string menu)
         {
-            ResetReportButton(btnLaporanTransaksi);
-            ResetReportButton(btnLaporanStok);
-            ResetReportButton(btnLaporanDenda);
+            btnLaporanTransaksi.BackColor = Color.FromArgb(224, 224, 224);
+            btnLaporanStok.BackColor = Color.FromArgb(224, 224, 224);
+            btnLaporanDenda.BackColor = Color.FromArgb(224, 224, 224);
 
             dgvTransaksi.Visible = false;
             dgvStok.Visible = false;
@@ -489,21 +762,21 @@ namespace WinFormsApp1.View
 
             if (menu == "Transaksi")
             {
-                SetActiveReportButton(btnLaporanTransaksi);
-                dgvTransaksi.Visible = true;
-                dgvTransaksi.DataSource = lapCtrl.GetTransaksi(UserSession.UserId);
+                btnLaporanTransaksi.BackColor = Color.White;
+                tcLaporan.SelectedTab = tcLaporan.TabPages[0];
+                LoadLaporanTransaksi();
             }
             else if (menu == "Stok")
             {
-                SetActiveReportButton(btnLaporanStok);
-                dgvStok.Visible = true;
-                dgvStok.DataSource = lapCtrl.GetStok();
+                btnLaporanStok.BackColor = Color.White;
+                tcLaporan.SelectedTab = tcLaporan.TabPages[1];
+                LoadLaporanStok("produk");
             }
             else if (menu == "Denda")
             {
-                SetActiveReportButton(btnLaporanDenda);
-                dgvDenda.Visible = true;
-                dgvDenda.DataSource = lapCtrl.GetDenda();
+                btnLaporanDenda.BackColor = Color.White;
+                tcLaporan.SelectedTab = tcLaporan.TabPages[2];
+                LoadLaporanDenda();
             }
         }
 
@@ -538,7 +811,7 @@ namespace WinFormsApp1.View
                     {
                         try
                         {
-                            lapCtrl.LunasiDenda(idDenda);
+                            db.LunaskanDenda(idDenda);
                             MessageBox.Show("Denda berhasil dilunasi!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             PilihMenuLaporan("Denda");
                         }
@@ -663,7 +936,9 @@ namespace WinFormsApp1.View
 
         private void Lbl_DetailPesanan_Click(object sender, EventArgs e)
         {
-
+            PesananMasuk pesananForm = new PesananMasuk();
+            pesananForm.ShowDialog();
+            LoadDashboardData();
         }
 
         private void txtJumlahTransaksi_TextChanged(object sender, EventArgs e)

@@ -34,6 +34,8 @@
             Lbl_OpsiPengiriman = new Label();
             lbl_formbarang = new Label();
             cmbPengiriman = new ComboBox();
+            Lbl_MetodePembayaran = new Label();
+            Cbx_MetodePembayaran = new ComboBox();
             SuspendLayout();
             // 
             // label1
@@ -93,11 +95,32 @@
             cmbPengiriman.Size = new Size(225, 23);
             cmbPengiriman.TabIndex = 6;
             // 
+            // Lbl_MetodePembayaran
+            // 
+            Lbl_MetodePembayaran.AutoSize = true;
+            Lbl_MetodePembayaran.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Lbl_MetodePembayaran.Location = new Point(354, 41);
+            Lbl_MetodePembayaran.Name = "Lbl_MetodePembayaran";
+            Lbl_MetodePembayaran.Size = new Size(146, 20);
+            Lbl_MetodePembayaran.TabIndex = 7;
+            Lbl_MetodePembayaran.Text = "Metode Pembayaran";
+            // 
+            // Cbx_MetodePembayaran
+            // 
+            Cbx_MetodePembayaran.FormattingEnabled = true;
+            Cbx_MetodePembayaran.Items.AddRange(new object[] { "Tunai", "Transfer Bank" });
+            Cbx_MetodePembayaran.Location = new Point(354, 64);
+            Cbx_MetodePembayaran.Name = "Cbx_MetodePembayaran";
+            Cbx_MetodePembayaran.Size = new Size(225, 23);
+            Cbx_MetodePembayaran.TabIndex = 8;
+            // 
             // PopUpPesanan
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(558, 231);
+            ClientSize = new Size(623, 231);
+            Controls.Add(Cbx_MetodePembayaran);
+            Controls.Add(Lbl_MetodePembayaran);
             Controls.Add(cmbPengiriman);
             Controls.Add(lbl_formbarang);
             Controls.Add(Lbl_OpsiPengiriman);
@@ -119,5 +142,7 @@
         private Label Lbl_OpsiPengiriman;
         private Label lbl_formbarang;
         private ComboBox cmbPengiriman;
+        private Label Lbl_MetodePembayaran;
+        private ComboBox Cbx_MetodePembayaran;
     }
 }

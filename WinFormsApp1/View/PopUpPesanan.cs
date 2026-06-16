@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualBasic.ApplicationServices;
+using Microsoft.VisualBasic.ApplicationServices;
 using Npgsql;
 using System;
 using System.Collections.Generic;
@@ -51,12 +51,16 @@ namespace WinFormsApp1.View
                 // Jika keranjang sudah ada, sembunyikan label dan combobox pengiriman
                 Lbl_OpsiPengiriman.Visible = false;
                 cmbPengiriman.Visible = false;
+                Lbl_MetodePembayaran.Visible = false;
+                Cbx_MetodePembayaran.Visible = false;
             }
             else
             {
                 // Jika keranjang baru, tampilkan opsi pengirimannya
                 Lbl_OpsiPengiriman.Visible = true;
                 cmbPengiriman.Visible = true;
+                Lbl_MetodePembayaran.Visible = true;
+                Cbx_MetodePembayaran.Visible = true;
             }
 
             // Cek apakah barang ini sudah ada di pesanan yang belum checkout
@@ -92,10 +96,11 @@ namespace WinFormsApp1.View
             {
                 // Barang belum ada: buat entry baru
                 string opsiPengiriman = cmbPengiriman.SelectedItem?.ToString() ?? "Diambil Sendiri";
+                string metodePembayaran = Cbx_MetodePembayaran.SelectedItem?.ToString() ?? "Tunai";
 
                 try
                 {
-                    controller.CreatePesananBarang(User, Barang, quantity, opsiPengiriman);
+                    controller.CreatePesananBarang(User, Barang, quantity, opsiPengiriman, metodePembayaran);
 
                     MessageBox.Show($"Berhasil menambahkan {quantity} {Barang.nama_barang} ke pesanan!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     this.DialogResult = DialogResult.OK;

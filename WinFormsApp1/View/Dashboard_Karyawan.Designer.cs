@@ -71,6 +71,7 @@ namespace WinFormsApp1.View
             label15 = new Label();
             label16 = new Label();
             panel6 = new Panel();
+            btnSewaSelesai = new Button();
             btnAlat = new Button();
             btnProduk = new Button();
             btnTransaksi = new Button();
@@ -118,10 +119,13 @@ namespace WinFormsApp1.View
             dtp_DariTanggal = new DateTimePicker();
             label2 = new Label();
             tabPage7 = new TabPage();
+            btnRiwayat = new Button();
+            btnAlat42 = new Button();
             btnProduk42 = new Button();
             Lbl_Stok = new Label();
             dgvStok = new DataGridView();
             tabPage8 = new TabPage();
+            btnLunas = new Button();
             txtCariNamaDenda = new TextBox();
             label11 = new Label();
             dgvDenda = new DataGridView();
@@ -171,10 +175,6 @@ namespace WinFormsApp1.View
             panel19 = new Panel();
             label26 = new Label();
             btnUbahStatusTransaksi = new Label();
-            btnSewaSelesai = new Button();
-            btnAlat42 = new Button();
-            btnRiwayat = new Button();
-            btnLunas = new Button();
             ((ISupportInitialize)pictureBox1).BeginInit();
             panel3.SuspendLayout();
             ((ISupportInitialize)Logout).BeginInit();
@@ -405,7 +405,7 @@ namespace WinFormsApp1.View
             // button20
             // 
             button20.BackColor = Color.FromArgb(217, 217, 217);
-            button20.Font = new Font("Rockwell", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button20.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button20.Location = new Point(707, 158);
             button20.Name = "button20";
             button20.Size = new Size(190, 127);
@@ -440,7 +440,7 @@ namespace WinFormsApp1.View
             // button2
             // 
             button2.BackColor = Color.FromArgb(217, 217, 217);
-            button2.Font = new Font("Rockwell", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button2.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button2.Location = new Point(318, 211);
             button2.Name = "button2";
             button2.Size = new Size(153, 74);
@@ -487,7 +487,7 @@ namespace WinFormsApp1.View
             // button3
             // 
             button3.BackColor = Color.FromArgb(217, 217, 217);
-            button3.Font = new Font("Rockwell", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button3.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button3.Location = new Point(502, 211);
             button3.Name = "button3";
             button3.Size = new Size(147, 74);
@@ -533,12 +533,12 @@ namespace WinFormsApp1.View
             // 
             label16.AutoSize = true;
             label16.BackColor = Color.Transparent;
-            label16.Font = new Font("Rockwell", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label16.Font = new Font("Microsoft Sans Serif", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label16.ForeColor = SystemColors.ButtonHighlight;
             label16.Location = new Point(24, 18);
             label16.Margin = new Padding(2, 0, 2, 0);
             label16.Name = "label16";
-            label16.Size = new Size(213, 31);
+            label16.Size = new Size(216, 31);
             label16.TabIndex = 1;
             label16.Text = "Selamat Datang!";
             // 
@@ -558,6 +558,15 @@ namespace WinFormsApp1.View
             panel6.Name = "panel6";
             panel6.Size = new Size(958, 651);
             panel6.TabIndex = 58;
+            // 
+            // btnSewaSelesai
+            // 
+            btnSewaSelesai.Location = new Point(181, 45);
+            btnSewaSelesai.Name = "btnSewaSelesai";
+            btnSewaSelesai.Size = new Size(132, 23);
+            btnSewaSelesai.TabIndex = 104;
+            btnSewaSelesai.Text = "Sewa Selesai";
+            btnSewaSelesai.UseVisualStyleBackColor = true;
             // 
             // btnAlat
             // 
@@ -745,7 +754,7 @@ namespace WinFormsApp1.View
             // button13
             // 
             button13.BackColor = Color.FromArgb(49, 106, 14);
-            button13.Font = new Font("Rockwell", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button13.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button13.Location = new Point(6, 45);
             button13.Name = "button13";
             button13.Size = new Size(983, 62);
@@ -837,7 +846,7 @@ namespace WinFormsApp1.View
             // button9
             // 
             button9.BackColor = Color.FromArgb(49, 106, 14);
-            button9.Font = new Font("Rockwell", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button9.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button9.Location = new Point(6, 55);
             button9.Name = "button9";
             button9.Size = new Size(983, 62);
@@ -1055,6 +1064,24 @@ namespace WinFormsApp1.View
             tabPage7.Text = "tabPage7";
             tabPage7.UseVisualStyleBackColor = true;
             // 
+            // btnRiwayat
+            // 
+            btnRiwayat.Location = new Point(791, 58);
+            btnRiwayat.Name = "btnRiwayat";
+            btnRiwayat.Size = new Size(163, 31);
+            btnRiwayat.TabIndex = 63;
+            btnRiwayat.Text = "Riwayat Stok";
+            btnRiwayat.UseVisualStyleBackColor = true;
+            // 
+            // btnAlat42
+            // 
+            btnAlat42.Location = new Point(111, 66);
+            btnAlat42.Name = "btnAlat42";
+            btnAlat42.Size = new Size(75, 23);
+            btnAlat42.TabIndex = 62;
+            btnAlat42.Text = "Alat Sewa";
+            btnAlat42.UseVisualStyleBackColor = true;
+            // 
             // btnProduk42
             // 
             btnProduk42.Location = new Point(21, 66);
@@ -1098,6 +1125,15 @@ namespace WinFormsApp1.View
             tabPage8.Text = "tabPage8";
             tabPage8.UseVisualStyleBackColor = true;
             // 
+            // btnLunas
+            // 
+            btnLunas.Location = new Point(868, 67);
+            btnLunas.Name = "btnLunas";
+            btnLunas.Size = new Size(86, 38);
+            btnLunas.TabIndex = 63;
+            btnLunas.Text = "Lunas";
+            btnLunas.UseVisualStyleBackColor = true;
+            // 
             // txtCariNamaDenda
             // 
             txtCariNamaDenda.Location = new Point(15, 76);
@@ -1129,7 +1165,7 @@ namespace WinFormsApp1.View
             // btnLaporanDenda
             // 
             btnLaporanDenda.BackColor = SystemColors.ButtonFace;
-            btnLaporanDenda.Font = new Font("Rockwell", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnLaporanDenda.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnLaporanDenda.ForeColor = Color.FromArgb(49, 106, 14);
             btnLaporanDenda.Location = new Point(328, 128);
             btnLaporanDenda.Name = "btnLaporanDenda";
@@ -1161,7 +1197,7 @@ namespace WinFormsApp1.View
             // btnLaporanTransaksi
             // 
             btnLaporanTransaksi.BackColor = Color.FromArgb(49, 106, 14);
-            btnLaporanTransaksi.Font = new Font("Rockwell", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnLaporanTransaksi.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnLaporanTransaksi.ForeColor = Color.White;
             btnLaporanTransaksi.Location = new Point(36, 127);
             btnLaporanTransaksi.Name = "btnLaporanTransaksi";
@@ -1183,7 +1219,7 @@ namespace WinFormsApp1.View
             // button8
             // 
             button8.BackColor = Color.FromArgb(49, 106, 14);
-            button8.Font = new Font("Rockwell", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button8.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button8.Location = new Point(7, 59);
             button8.Name = "button8";
             button8.Size = new Size(954, 62);
@@ -1193,7 +1229,7 @@ namespace WinFormsApp1.View
             // btnLaporanStok
             // 
             btnLaporanStok.BackColor = SystemColors.ButtonFace;
-            btnLaporanStok.Font = new Font("Rockwell", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnLaporanStok.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnLaporanStok.ForeColor = Color.FromArgb(49, 106, 14);
             btnLaporanStok.Location = new Point(181, 127);
             btnLaporanStok.Name = "btnLaporanStok";
@@ -1239,12 +1275,12 @@ namespace WinFormsApp1.View
             // 
             label6.AutoSize = true;
             label6.BackColor = Color.Transparent;
-            label6.Font = new Font("Rockwell", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label6.Font = new Font("Microsoft Sans Serif", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label6.ForeColor = SystemColors.ButtonHighlight;
             label6.Location = new Point(386, 23);
             label6.Margin = new Padding(2, 0, 2, 0);
             label6.Name = "label6";
-            label6.Size = new Size(188, 31);
+            label6.Size = new Size(196, 31);
             label6.TabIndex = 1;
             label6.Text = "PROFIL ANDA";
             // 
@@ -1594,11 +1630,11 @@ namespace WinFormsApp1.View
             // label26
             // 
             label26.AutoSize = true;
-            label26.Font = new Font("Elephant", 20.2499962F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label26.Font = new Font("Microsoft Sans Serif", 20.2499962F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label26.ForeColor = SystemColors.ButtonFace;
             label26.Location = new Point(48, 19);
             label26.Name = "label26";
-            label26.Size = new Size(308, 35);
+            label26.Size = new Size(262, 31);
             label26.TabIndex = 0;
             label26.Text = "DATA KARYAWAN";
             // 
@@ -1612,42 +1648,6 @@ namespace WinFormsApp1.View
             btnUbahStatusTransaksi.Size = new Size(200, 25);
             btnUbahStatusTransaksi.TabIndex = 56;
             btnUbahStatusTransaksi.Text = "Ubah status transaksi";
-            // 
-            // btnSewaSelesai
-            // 
-            btnSewaSelesai.Location = new Point(181, 45);
-            btnSewaSelesai.Name = "btnSewaSelesai";
-            btnSewaSelesai.Size = new Size(132, 23);
-            btnSewaSelesai.TabIndex = 104;
-            btnSewaSelesai.Text = "Sewa Selesai";
-            btnSewaSelesai.UseVisualStyleBackColor = true;
-            // 
-            // btnAlat42
-            // 
-            btnAlat42.Location = new Point(111, 66);
-            btnAlat42.Name = "btnAlat42";
-            btnAlat42.Size = new Size(75, 23);
-            btnAlat42.TabIndex = 62;
-            btnAlat42.Text = "Alat Sewa";
-            btnAlat42.UseVisualStyleBackColor = true;
-            // 
-            // btnRiwayat
-            // 
-            btnRiwayat.Location = new Point(791, 58);
-            btnRiwayat.Name = "btnRiwayat";
-            btnRiwayat.Size = new Size(163, 31);
-            btnRiwayat.TabIndex = 63;
-            btnRiwayat.Text = "Riwayat Stok";
-            btnRiwayat.UseVisualStyleBackColor = true;
-            // 
-            // btnLunas
-            // 
-            btnLunas.Location = new Point(868, 67);
-            btnLunas.Name = "btnLunas";
-            btnLunas.Size = new Size(86, 38);
-            btnLunas.TabIndex = 63;
-            btnLunas.Text = "Lunas";
-            btnLunas.UseVisualStyleBackColor = true;
             // 
             // Dashboard_Karyawan
             // 

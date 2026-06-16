@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualBasic.ApplicationServices;
+using Microsoft.VisualBasic.ApplicationServices;
 using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
@@ -54,14 +54,14 @@ namespace WinFormsApp1.Controller
             return context.ReadPesanan(user);
         }
 
-        public void CreatePesananAlatSewa(Users user, AlatTani alat, string opsiPengiriman, int quantity, DateOnly tanggalPengembalian, string opsiPengembalian)
+        public void CreatePesananAlatSewa(Users user, AlatTani alat, string opsiPengiriman, string metodePembayaran, int quantity, DateOnly tanggalPengembalian, string opsiPengembalian)
         {
-            context.CreatePesanan_AlatSewa(user, alat, opsiPengiriman, quantity, tanggalPengembalian, opsiPengembalian ?? "");
+            context.CreatePesanan_AlatSewa(user, alat, opsiPengiriman, metodePembayaran, quantity, tanggalPengembalian, opsiPengembalian ?? "");
         }
 
-        public void CreatePesananBarang(Users user, barangTani barang, int quantity, string opsiPengiriman)
+        public void CreatePesananBarang(Users user, barangTani barang, int quantity, string opsiPengiriman, string metodePembayaran)
         {
-            context.CreatePesanan_Barang(user, barang, quantity, opsiPengiriman);
+            context.CreatePesanan_Barang(user, barang, quantity, opsiPengiriman, metodePembayaran);
         }
 
         public bool ProsesCheckout(Pesanan pesanan)

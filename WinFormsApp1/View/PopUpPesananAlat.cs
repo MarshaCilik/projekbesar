@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualBasic.ApplicationServices;
+using Microsoft.VisualBasic.ApplicationServices;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -45,11 +45,15 @@ namespace WinFormsApp1.View.Kerjaan_Tiwi
             {
                 Lbl_OpsiPengiriman.Visible = false;
                 cmbPengiriman.Visible = false;
+                Lbl_MetodePembayaran.Visible = false;
+                Cbx_MetodePembayaran.Visible = false;
             }
             else
             {
                 Lbl_OpsiPengiriman.Visible = true;
                 cmbPengiriman.Visible = true;
+                Lbl_MetodePembayaran.Visible = true;
+                Cbx_MetodePembayaran.Visible = true;
             }
 
             // 2. Sembunyikan opsi pengembalian jika sudah ada di pesanan (satu pesanan satu opsi pengembalian)
@@ -109,18 +113,19 @@ namespace WinFormsApp1.View.Kerjaan_Tiwi
             {
                 // Alat belum ada di pesanan: buat pesanan baru atau tambah ke pesanan yang ada
                 string opsiPengiriman = cmbPengiriman.SelectedItem?.ToString() ?? "Diambil Sendiri";
+                string metodePembayaran = Cbx_MetodePembayaran.SelectedItem?.ToString() ?? "Tunai";
                 string opsiPengembalian = Cbx_OpsiPengembalian.Visible
                     ? (Cbx_OpsiPengembalian.SelectedItem?.ToString() ?? "Antar sendiri")
                     : string.Empty;
 
                 if (!string.IsNullOrEmpty(opsiPengembalian))
                 {
-                    controller.CreatePesananAlatSewa(User, Alat, opsiPengiriman, quantity, tanggalPilihan, opsiPengembalian);
+                    controller.CreatePesananAlatSewa(User, Alat, opsiPengiriman, metodePembayaran, quantity, tanggalPilihan, opsiPengembalian);
                 }
                 else
                 {
                     // Opsi pengembalian sudah di-set sebelumnya, lewatkan parameter opsi
-                    controller.CreatePesananAlatSewa(User, Alat, opsiPengiriman, quantity, tanggalPilihan, string.Empty);
+                    controller.CreatePesananAlatSewa(User, Alat, opsiPengiriman, metodePembayaran, quantity, tanggalPilihan, string.Empty);
                 }
 
                 MessageBox.Show($"Berhasil menambahkan {quantity} {Alat.Nama} ke pesanan!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
