@@ -68,7 +68,7 @@ namespace WinFormsApp1.View
 
         private void RegisterEvents()
         {
-
+            
         }
 
         private void Btn_Simpan_Click(object sender, EventArgs e)
@@ -114,11 +114,7 @@ namespace WinFormsApp1.View
             }
         }
 
-        //private void Btn_Batal_Click(object sender, EventArgs e)
-        //{
-        //}
-
-        private void btn_batal_edit_Click(object sender, EventArgs e)
+        private void Btn_Batal_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();

@@ -33,7 +33,6 @@
             btnDiterima = new Button();
             btnDItolak = new Button();
             btnBack = new Button();
-            Cbx_NamaKurir = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)dgvPesanan).BeginInit();
             SuspendLayout();
             // 
@@ -64,7 +63,6 @@
             btnDiterima.TabIndex = 2;
             btnDiterima.Text = "Diterima";
             btnDiterima.UseVisualStyleBackColor = true;
-            btnDiterima.Click += btnDiterima_Click;
             // 
             // btnDItolak
             // 
@@ -87,20 +85,11 @@
             btnBack.Text = "Back";
             btnBack.UseVisualStyleBackColor = false;
             // 
-            // Cbx_NamaKurir
-            // 
-            Cbx_NamaKurir.FormattingEnabled = true;
-            Cbx_NamaKurir.Location = new Point(573, 51);
-            Cbx_NamaKurir.Name = "Cbx_NamaKurir";
-            Cbx_NamaKurir.Size = new Size(121, 23);
-            Cbx_NamaKurir.TabIndex = 6;
-            // 
             // PesananMasuk
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(951, 507);
-            Controls.Add(Cbx_NamaKurir);
             Controls.Add(btnBack);
             Controls.Add(btnDItolak);
             Controls.Add(btnDiterima);
@@ -120,6 +109,5 @@
         private Button btnDiterima;
         private Button btnDItolak;
         private Button btnBack;
-        private ComboBox Cbx_NamaKurir;
     }
 }

@@ -76,15 +76,10 @@ namespace WinFormsApp1.View
                 return;
             }
 
+            // 2. Proteksi Konversi: Pastikan input teks di TbStok benar-benar berupa angka valid
             if (!int.TryParse(TbStok.Text, out int quantity) || quantity <= 0)
             {
                 MessageBox.Show("Jumlah barang harus berupa angka yang valid!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (quantity > Barang.stok)
-            {
-                MessageBox.Show($"Stok tidak mencukupi! Stok yang tersedia hanya {Barang.stok}.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 

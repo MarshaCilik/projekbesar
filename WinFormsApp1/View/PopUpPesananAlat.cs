@@ -92,12 +92,6 @@ namespace WinFormsApp1.View.Kerjaan_Tiwi
                 return;
             }
 
-            if (quantity > Alat.Stok)
-            {
-                MessageBox.Show($"Stok tidak mencukupi! Stok yang tersedia hanya {Alat.Stok}.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
             if (Dtp_TanggalSewa.Value.Date < DateTime.Today)
             {
                 MessageBox.Show("Tanggal pengembalian tidak boleh kurang dari tanggal hari ini!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
