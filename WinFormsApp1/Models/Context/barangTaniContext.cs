@@ -38,7 +38,7 @@ namespace WinFormsApp1.Models.Context
         public List<barangTani> ReadBarangTani()
         {
             List<barangTani> listbarang = new List<barangTani>();
-             
+
             using(NpgsqlConnection conn = connectDB.GetConnection())
             {
                 string sql = "select * from lihat_barang_petani";

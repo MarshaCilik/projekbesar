@@ -38,7 +38,7 @@ namespace WinFormsApp1.Models.Context
         {
             using (NpgsqlConnection conn = connectDB.GetConnection())
             {
-                string sql = "CALL checkout_petani(@p_id)";
+                string sql = "CALL checkout_pesanan(@p_id)";
                 using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                 {
                     cmd.Parameters.AddWithValue("p_id", pesanan.Id);

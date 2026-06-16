@@ -102,7 +102,6 @@
             btn_LihatProdukTani = new Button();
             btn_LihatAlatSewa = new Button();
             Tc_Petani = new TabControl();
-            btn_TerimaPesanan = new Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             tabPage5.SuspendLayout();
@@ -618,7 +617,6 @@
             // 
             // tabPage3
             // 
-            tabPage3.Controls.Add(btn_TerimaPesanan);
             tabPage3.Controls.Add(btn_TransaksiBerlangsung);
             tabPage3.Controls.Add(btn_TagihanDenda);
             tabPage3.Controls.Add(btn_RiwayatTransaksi);
@@ -643,7 +641,6 @@
             btn_TransaksiBerlangsung.TabIndex = 13;
             btn_TransaksiBerlangsung.Text = "Transaksi Berlangsung";
             btn_TransaksiBerlangsung.UseVisualStyleBackColor = false;
-            btn_TransaksiBerlangsung.Click += btn_TransaksiBerlangsung_Click;
             // 
             // btn_TagihanDenda
             // 
@@ -656,7 +653,6 @@
             btn_TagihanDenda.TabIndex = 12;
             btn_TagihanDenda.Text = "Tagihan Denda";
             btn_TagihanDenda.UseVisualStyleBackColor = false;
-            btn_TagihanDenda.Click += btn_TagihanDenda_Click;
             // 
             // btn_RiwayatTransaksi
             // 
@@ -669,7 +665,6 @@
             btn_RiwayatTransaksi.TabIndex = 11;
             btn_RiwayatTransaksi.Text = "Riwayat Transaksi";
             btn_RiwayatTransaksi.UseVisualStyleBackColor = false;
-            btn_RiwayatTransaksi.Click += btn_RiwayatTransaksi_Click;
             // 
             // panel18
             // 
@@ -967,19 +962,6 @@
             Tc_Petani.Size = new Size(1107, 1013);
             Tc_Petani.TabIndex = 5;
             // 
-            // btn_TerimaPesanan
-            // 
-            btn_TerimaPesanan.BackColor = Color.FromArgb(128, 255, 128);
-            btn_TerimaPesanan.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btn_TerimaPesanan.ForeColor = Color.Black;
-            btn_TerimaPesanan.Location = new Point(905, 274);
-            btn_TerimaPesanan.Name = "btn_TerimaPesanan";
-            btn_TerimaPesanan.Size = new Size(167, 32);
-            btn_TerimaPesanan.TabIndex = 14;
-            btn_TerimaPesanan.Text = "Terima Pesanan";
-            btn_TerimaPesanan.UseVisualStyleBackColor = false;
-            btn_TerimaPesanan.Click += btn_TerimaPesanan_Click;
-            // 
             // DashboardPetani
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -1110,6 +1092,5 @@
         private Button btn_TransaksiBerlangsung;
         private Button btn_TagihanDenda;
         private Button btn_RiwayatTransaksi;
-        private Button btn_TerimaPesanan;
     }
 }

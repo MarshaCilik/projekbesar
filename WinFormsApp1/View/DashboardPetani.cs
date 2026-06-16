@@ -1,4 +1,4 @@
-using Microsoft.VisualBasic.ApplicationServices;
+﻿using Microsoft.VisualBasic.ApplicationServices;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,7 +21,6 @@ namespace WinFormsApp1
         c_user controllerUser = new c_user();
         c_pesanan controller_pesanan = new c_pesanan();
         c_barangtani controller = new c_barangtani();
-        c_transaksi controller_transaksi = new c_transaksi();
 
 
         public Users User;
@@ -40,15 +39,7 @@ namespace WinFormsApp1
             this.StartPosition = FormStartPosition.CenterScreen;
             Dgv_BarangTani.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             Dgv_Pesanan.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            InitializeCustomControls();
             LoadData("barang");
-        }
-
-        private void InitializeCustomControls()
-        {
-
-            dgv_RiwayatDanTagihan.SelectionChanged += dgv_RiwayatDanTagihan_SelectionChanged;
-            dgv_RiwayatDanTagihan.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
         public void LoadUsernameDinamis(Users user)
@@ -385,61 +376,6 @@ namespace WinFormsApp1
             Tc_Petani.SelectedIndex = 2;
         }
 
-        private void btn_TransaksiBerlangsung_Click(object sender, EventArgs e)
-        {
-            dgv_RiwayatDanTagihan.DataSource = controller_transaksi.GetTransaksiBerlangsung(this.User);
-            if (btn_TerimaPesanan != null) btn_TerimaPesanan.Visible = false;
-        }
 
-        private void btn_TagihanDenda_Click(object sender, EventArgs e)
-        {
-            dgv_RiwayatDanTagihan.DataSource = controller_transaksi.GetTagihanDenda(this.User);
-            if (btn_TerimaPesanan != null) btn_TerimaPesanan.Visible = false;
-        }
-
-        private void btn_RiwayatTransaksi_Click(object sender, EventArgs e)
-        {
-            dgv_RiwayatDanTagihan.DataSource = controller_transaksi.GetRiwayatTransaksi(this.User);
-            if (btn_TerimaPesanan != null)
-            {
-                btn_TerimaPesanan.Visible = false;
-            }
-        }
-
-        private void dgv_RiwayatDanTagihan_SelectionChanged(object sender, EventArgs e)
-        {
-            if (dgv_RiwayatDanTagihan.CurrentRow != null && btn_TerimaPesanan != null)
-            {
-                var row = dgv_RiwayatDanTagihan.CurrentRow;
-                int transaksiId = Convert.ToInt32(row.Cells["TransaksiId"].Value);
-                string statusDistribusi = controller_transaksi.GetStatusDistribusi(transaksiId);
-                
-                if (statusDistribusi == "Dikirim")
-                {
-                    btn_TerimaPesanan.Visible = true;
-                }
-                else
-                {
-                    btn_TerimaPesanan.Visible = false;
-                }
-            }
-        }
-
-        private void btn_TerimaPesanan_Click(object sender, EventArgs e)
-        {
-            if (dgv_RiwayatDanTagihan.CurrentRow != null)
-            {
-                int transaksiId = Convert.ToInt32(dgv_RiwayatDanTagihan.CurrentRow.Cells["TransaksiId"].Value);
-                if (controller_transaksi.TerimaPesanan(transaksiId))
-                {
-                    MessageBox.Show("Pesanan berhasil diterima!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    btn_TransaksiBerlangsung_Click(sender, e); // Refresh tabel
-                }
-                else
-                {
-                    MessageBox.Show("Gagal menerima pesanan.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
     }
 }
