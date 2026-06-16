@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualBasic.ApplicationServices;
+using Microsoft.VisualBasic.ApplicationServices;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using WinFormsApp1.Controller;
 using WinFormsApp1.Models.User;
+using WinFormsApp1.Helpers;
 
 namespace WinFormsApp1
 {
@@ -49,8 +50,11 @@ namespace WinFormsApp1
             }
             if (sessionUser != null)
             {
-                sessionUser.BukaDashboard();
+                UserSession.UserId = sessionUser.UsersId;
+                UserSession.Username = sessionUser.Username;
+                UserSession.Roles = sessionUser.Roles;
 
+                sessionUser.BukaDashboard();
                 this.Hide(); 
             }
             this.Hide();

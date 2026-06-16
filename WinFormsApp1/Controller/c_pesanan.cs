@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualBasic.ApplicationServices;
+using Microsoft.VisualBasic.ApplicationServices;
 using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
@@ -19,19 +19,49 @@ namespace WinFormsApp1.Controller
             return context.CekApakahPesananSudahAda(user);
         }
 
+        public bool CekBarangSudahAdaDiPesanan(Users user, int barangId)
+        {
+            return context.CekBarangSudahAdaDiPesanan(user, barangId);
+        }
+
+        public bool CekAlatSudahAdaDiPesanan(Users user, int alatId)
+        {
+            return context.CekAlatSudahAdaDiPesanan(user, alatId);
+        }
+
+        public DateOnly? GetTanggalPengembalianAlat(Users user, int alatId)
+        {
+            return context.GetTanggalPengembalianAlat(user, alatId);
+        }
+
+        public bool CekOpsiPengembalianSudahAda(Users user)
+        {
+            return context.CekOpsiPengembalianSudahAda(user);
+        }
+
+        public void TambahQuantityBarang(Users user, int barangId, int tambahanQuantity)
+        {
+            context.TambahQuantityBarang(user, barangId, tambahanQuantity);
+        }
+
+        public void TambahQuantityAlatDanUpdateTanggal(Users user, int alatId, int tambahanQuantity, DateOnly tanggalPengembalianBaru)
+        {
+            context.TambahQuantityAlatDanUpdateTanggal(user, alatId, tambahanQuantity, tanggalPengembalianBaru);
+        }
+
         public List<Pesanan> ReadPesananUser(Users user)
         {
             return context.ReadPesanan(user);
         }
 
-        public void CreatePesananAlatSewa(Users user, AlatTani alat, string opsiPengiriman, int quantity, DateOnly tanggalPengembalian)
+        public void CreatePesananAlatSewa(Users user, AlatTani alat, string opsiPengiriman, string metodePembayaran, int quantity, DateOnly tanggalPengembalian, string opsiPengembalian)
         {
-            context.CreatePesanan_AlatSewa(user, alat, opsiPengiriman, quantity, tanggalPengembalian);
+            context.CreatePesanan_AlatSewa(user, alat, opsiPengiriman, metodePembayaran, quantity, tanggalPengembalian, opsiPengembalian ?? "");
         }
 
-        public void CreatePesananBarang(Users user, barangTani barang, int quantity, string opsiPengiriman)
+        public void CreatePesananBarang(Users user, barangTani barang, int quantity, string opsiPengiriman, string metodePembayaran)
         {
-            context.CreatePesanan_Barang(user, barang, quantity, opsiPengiriman);
+            context.CreatePesanan_Barang(user, barang, quantity, opsiPengiriman, metodePembayaran);
         }
 
         public bool ProsesCheckout(Pesanan pesanan)

@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using WinFormsApp1.View;
 
 namespace WinFormsApp1.Models.User
 {
@@ -15,7 +16,7 @@ namespace WinFormsApp1.Models.User
 
         public override void BukaDashboard()
         {
-
+            new Dashboard_Karyawan().Show();
         }
     }
 }

@@ -8,9 +8,9 @@ using System.Windows.Forms;
 
 namespace WinFormsApp1.View
 {
-    public partial class coba : Form
+    public partial class UpdateStok : Form
     {
-        public coba()
+        public UpdateStok()
         {
             InitializeComponent();
         }

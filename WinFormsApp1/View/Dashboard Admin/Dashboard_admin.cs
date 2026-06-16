@@ -211,9 +211,10 @@ namespace WinFormsApp1.View.Dashboard_Admin
                         );
 
                     EditDataUserKaryawan form = new EditDataUserKaryawan(selecteduser);
+                    string usernameLamaKaryawan = selecteduser.Username;
                     if (form.ShowDialog() == DialogResult.OK)
                     {
-                        string result = controller.Update(form.UserData);
+                        string result = controller.Update(form.UserData, usernameLamaKaryawan);
 
                         MessageBox.Show(
                         result,

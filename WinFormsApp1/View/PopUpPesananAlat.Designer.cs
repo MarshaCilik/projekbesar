@@ -37,6 +37,10 @@
             label3 = new Label();
             Dtp_TanggalSewa = new DateTimePicker();
             Btn_Batal = new Button();
+            label2 = new Label();
+            Cbx_OpsiPengembalian = new ComboBox();
+            Cbx_MetodePembayaran = new ComboBox();
+            Lbl_MetodePembayaran = new Label();
             SuspendLayout();
             // 
             // cmbPengiriman
@@ -108,7 +112,7 @@
             // 
             // Dtp_TanggalSewa
             // 
-            Dtp_TanggalSewa.Location = new Point(22, 139);
+            Dtp_TanggalSewa.Location = new Point(17, 132);
             Dtp_TanggalSewa.Name = "Dtp_TanggalSewa";
             Dtp_TanggalSewa.Size = new Size(200, 23);
             Dtp_TanggalSewa.TabIndex = 14;
@@ -122,11 +126,53 @@
             Btn_Batal.Text = "Batal";
             Btn_Batal.UseVisualStyleBackColor = true;
             // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label2.Location = new Point(12, 272);
+            label2.Name = "label2";
+            label2.Size = new Size(137, 20);
+            label2.TabIndex = 16;
+            label2.Text = "Opsi Pengembalian";
+            // 
+            // Cbx_OpsiPengembalian
+            // 
+            Cbx_OpsiPengembalian.FormattingEnabled = true;
+            Cbx_OpsiPengembalian.Items.AddRange(new object[] { "Diambil kurir", "Antar sendiri" });
+            Cbx_OpsiPengembalian.Location = new Point(17, 295);
+            Cbx_OpsiPengembalian.Name = "Cbx_OpsiPengembalian";
+            Cbx_OpsiPengembalian.Size = new Size(225, 23);
+            Cbx_OpsiPengembalian.TabIndex = 17;
+            // 
+            // Cbx_MetodePembayaran
+            // 
+            Cbx_MetodePembayaran.FormattingEnabled = true;
+            Cbx_MetodePembayaran.Items.AddRange(new object[] { "Tunai", "Transfer Bank" });
+            Cbx_MetodePembayaran.Location = new Point(313, 65);
+            Cbx_MetodePembayaran.Name = "Cbx_MetodePembayaran";
+            Cbx_MetodePembayaran.Size = new Size(225, 23);
+            Cbx_MetodePembayaran.TabIndex = 19;
+            // 
+            // Lbl_MetodePembayaran
+            // 
+            Lbl_MetodePembayaran.AutoSize = true;
+            Lbl_MetodePembayaran.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Lbl_MetodePembayaran.Location = new Point(313, 42);
+            Lbl_MetodePembayaran.Name = "Lbl_MetodePembayaran";
+            Lbl_MetodePembayaran.Size = new Size(146, 20);
+            Lbl_MetodePembayaran.TabIndex = 18;
+            Lbl_MetodePembayaran.Text = "Metode Pembayaran";
+            // 
             // PopUpPesananAlat
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(558, 457);
+            Controls.Add(Cbx_MetodePembayaran);
+            Controls.Add(Lbl_MetodePembayaran);
+            Controls.Add(Cbx_OpsiPengembalian);
+            Controls.Add(label2);
             Controls.Add(Btn_Batal);
             Controls.Add(Dtp_TanggalSewa);
             Controls.Add(label3);
@@ -153,5 +199,9 @@
         private Label label3;
         private DateTimePicker Dtp_TanggalSewa;
         private Button Btn_Batal;
+        private Label label2;
+        private ComboBox Cbx_OpsiPengembalian;
+        private ComboBox Cbx_MetodePembayaran;
+        private Label Lbl_MetodePembayaran;
     }
 }
