@@ -483,15 +483,15 @@ namespace WinFormsApp1.View.Dashboard_Admin
             TampilDataBarang();
 
             // NAH, ini kuncinya biar pop-up View_barang keluar!
-            View.View_barang popUpBarang = new View.View_barang();
-            popUpBarang.ShowDialog();
+            //View.View_barang popUpBarang = new View.View_barang();
+            //popUpBarang.ShowDialog();
         }
 
         private void Btn_AlatSewa_Click_1(object sender, EventArgs e)
         {
             // Kodingan yang merah-merah tadi udah dihapus, diganti sama yang bener ini:
-            View.view_alatSewa popUpAlat = new View.view_alatSewa();
-            popUpAlat.ShowDialog();
+            //View.view_alatSewa popUpAlat = new View.view_alatSewa();
+            //popUpAlat.ShowDialog();
 
         }
     }
