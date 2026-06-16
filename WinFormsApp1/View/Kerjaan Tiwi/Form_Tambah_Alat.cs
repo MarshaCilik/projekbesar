@@ -59,7 +59,7 @@ namespace WinFormsApp1.View
 
         private void RegisterEvents()
         {
-            
+
         }
 
         private void Btn_Simpan_Click(object sender, EventArgs e)

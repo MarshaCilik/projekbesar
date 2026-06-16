@@ -98,7 +98,7 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label4.Location = new Point(238, 424);
+            label4.Location = new Point(257, 427);
             label4.Name = "label4";
             label4.Size = new Size(53, 25);
             label4.TabIndex = 27;
@@ -118,7 +118,7 @@
             // 
             Tb_Stok.BackColor = Color.FromArgb(74, 103, 65);
             Tb_Stok.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Tb_Stok.Location = new Point(227, 466);
+            Tb_Stok.Location = new Point(245, 476);
             Tb_Stok.Margin = new Padding(3, 4, 3, 4);
             Tb_Stok.Name = "Tb_Stok";
             Tb_Stok.Size = new Size(76, 47);
@@ -148,7 +148,7 @@
             // 
             button1.BackColor = Color.IndianRed;
             button1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button1.Location = new Point(339, 561);
+            button1.Location = new Point(339, 563);
             button1.Name = "button1";
             button1.Size = new Size(159, 55);
             button1.TabIndex = 10;
@@ -159,7 +159,7 @@
             // 
             button2.BackColor = Color.YellowGreen;
             button2.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button2.Location = new Point(72, 561);
+            button2.Location = new Point(72, 563);
             button2.Name = "button2";
             button2.Size = new Size(159, 55);
             button2.TabIndex = 33;

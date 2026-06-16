@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Npgsql;
 using System.Data;
 using System.Drawing;
 using System.Text;
@@ -36,7 +37,6 @@ namespace WinFormsApp1.View.Dashboard_Admin
             this.StartPosition = FormStartPosition.CenterScreen;
             dgv_AllUser.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             Load("semua");
-            Lbl_UsernameAtas.Text = $"{Username}";
 
             // Set default tampilan awal saat form pertama kali dibuka
             SetMenuKiriAktif(btn_Dashboard);
@@ -400,7 +400,7 @@ namespace WinFormsApp1.View.Dashboard_Admin
         {
             if (Dgv_Barang.CurrentRow != null && Dgv_Barang.CurrentRow.DataBoundItem is barangTani selectedBarang)
             {
-                var confirm = MessageBox.Show($"Apakah Anda yakin ingin menghapus barang '{selectedBarang.nama_barang}'?", 
+                var confirm = MessageBox.Show($"Apakah Anda yakin ingin menghapus barang '{selectedBarang.nama_barang}'?",
                     "Konfirmasi Hapus", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (confirm == DialogResult.Yes)
                 {
@@ -415,7 +415,7 @@ namespace WinFormsApp1.View.Dashboard_Admin
         {
             if (dataGridView1.CurrentRow != null && dataGridView1.CurrentRow.DataBoundItem is AlatTani selectedAlat)
             {
-                var confirm = MessageBox.Show($"Apakah Anda yakin ingin menghapus alat sewa '{selectedAlat.Nama}'?", 
+                var confirm = MessageBox.Show($"Apakah Anda yakin ingin menghapus alat sewa '{selectedAlat.Nama}'?",
                     "Konfirmasi Hapus", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (confirm == DialogResult.Yes)
                 {
@@ -425,10 +425,73 @@ namespace WinFormsApp1.View.Dashboard_Admin
                 }
             }
         }
+        private void TampilDataBarang()
+        {
+            // 1. Setup koneksi ke database 'pastani'
+            // PENTING: Ganti "password_kamu" sama password asli postgres-mu di laptop
+            string connString = "Host=localhost;Username=postgres;Password=password_kamu;Database=pastani";
+
+            try
+            {
+                using (NpgsqlConnection conn = new NpgsqlConnection(connString))
+                {
+                    conn.Open();
+
+                    // 2. Ini query SQL-nya, nyesuaiin sama kolom di gambarmu
+                    string query = "SELECT barang_id, nama_barang, stok, harga_per_item, kategori_id, added_at FROM barang ORDER BY barang_id ASC";
+
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, conn))
+                    {
+                        using (NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd))
+                        {
+                            // 3. Bikin tabel penampung sementara di memori
+                            DataTable dt = new DataTable();
+                            da.Fill(dt);
+
+                            // 4. Lempar datanya ke UI
+                            // INGAT: Ganti "dataGridView1" sama nama asli komponen tabel di desainmu!
+                            dataGridView1.DataSource = dt;
+
+                            // Opsional: Bikin nama kolom di UI jadi lebih enak dibaca (nggak kaku pakai underscore)
+                            dataGridView1.Columns["barang_id"].HeaderText = "ID Barang";
+                            dataGridView1.Columns["nama_barang"].HeaderText = "Nama Barang";
+                            dataGridView1.Columns["stok"].HeaderText = "Stok Sisa";
+                            dataGridView1.Columns["harga_per_item"].HeaderText = "Harga per Item";
+                            dataGridView1.Columns["kategori_id"].HeaderText = "Kategori";
+                            dataGridView1.Columns["added_at"].HeaderText = "Tanggal Ditambahkan";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Kalau ada error (misal lupa nyalain server postgres), muncul popup ini
+                MessageBox.Show("Gagal menarik data, coba lagi: " + ex.Message, "Error Database", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
 
         private void Dashboard_admin_FormClosed(object sender, FormClosedEventArgs e)
         {
             Application.Exit();
         }
+
+        private void Btn_Barang_Click_1(object sender, EventArgs e)
+        {
+            // Biarin aja fungsi ini tetep narik data
+            TampilDataBarang();
+
+            // NAH, ini kuncinya biar pop-up View_barang keluar!
+            View.View_barang popUpBarang = new View.View_barang();
+            popUpBarang.ShowDialog();
+        }
+
+        private void Btn_AlatSewa_Click_1(object sender, EventArgs e)
+        {
+            // Kodingan yang merah-merah tadi udah dihapus, diganti sama yang bener ini:
+            View.view_alatSewa popUpAlat = new View.view_alatSewa();
+            popUpAlat.ShowDialog();
+
+        }
     }
-}
+}    
