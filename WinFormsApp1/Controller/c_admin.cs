@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using WinFormsApp1.Models.User;
@@ -29,18 +29,24 @@ namespace WinFormsApp1.Controller
             return null;
         }
 
-        public string Update(Users user)
+        public string Update(Users user, string usernameLama)
         {
             string validation = Validation(user);
 
-            if (validation == null)
+            if (validation != null)
             {
                 return validation;
             }
 
-            context.Update(user);
-
-            return "data terupdate";
+            try
+            {
+                context.UpdateProfil(user, usernameLama);
+                return "data terupdate";
+            }
+            catch (Exception ex)
+            {
+                return "Gagal mengupdate data: " + ex.Message;
+            }
         }
     }
 }

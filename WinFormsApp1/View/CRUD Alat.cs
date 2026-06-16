@@ -14,5 +14,10 @@ namespace WinFormsApp1.View
         {
             InitializeComponent();
         }
+
+        private void CRUD_Alat_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
