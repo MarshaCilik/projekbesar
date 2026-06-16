@@ -1,4 +1,4 @@
-﻿namespace WinFormsApp1.View
+namespace WinFormsApp1.View
 {
     partial class Form_Edit_barang
     {
@@ -133,7 +133,6 @@
             btn_batal_edit.TabIndex = 10;
             btn_batal_edit.Text = "Batal";
             btn_batal_edit.UseVisualStyleBackColor = false;
-            btn_batal_edit.Click += this.btn_batal_edit_Click;
             // 
             // btn_selesai_edit
             // 

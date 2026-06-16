@@ -87,9 +87,9 @@ namespace WinFormsApp1.Controller
             return _context.HasUnpaidDenda(transaksiId);
         }
 
-        public void TerimaPesanan(int pesananId, string karyawanUsername)
+        public void TerimaPesanan(int pesananId, string karyawanUsername, int? kurirId = null)
         {
-            _context.TerimaPesanan(pesananId, karyawanUsername);
+            _context.TerimaPesanan(pesananId, karyawanUsername, kurirId);
         }
 
         public void BatalPesanan(int pesananId, string alasan)

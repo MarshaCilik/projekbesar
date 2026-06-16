@@ -33,6 +33,7 @@
             btnDiterima = new Button();
             btnDItolak = new Button();
             btnBack = new Button();
+            cbxKurir = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)dgvPesanan).BeginInit();
             SuspendLayout();
             // 
@@ -51,9 +52,9 @@
             label1.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.Location = new Point(372, 23);
             label1.Name = "label1";
-            label1.Size = new Size(193, 25);
+            label1.Size = new Size(205, 25);
             label1.TabIndex = 1;
-            label1.Text = "Detail Pesaan Masuk";
+            label1.Text = "Detail Pesanan Masuk";
             // 
             // btnDiterima
             // 
@@ -85,11 +86,21 @@
             btnBack.Text = "Back";
             btnBack.UseVisualStyleBackColor = false;
             // 
+            // cbxKurir
+            // 
+            cbxKurir.FormattingEnabled = true;
+            cbxKurir.Location = new Point(24, 51);
+            cbxKurir.Name = "cbxKurir";
+            cbxKurir.Size = new Size(192, 23);
+            cbxKurir.TabIndex = 6;
+            cbxKurir.Text = "Pili Kurir";
+            // 
             // PesananMasuk
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(951, 507);
+            Controls.Add(cbxKurir);
             Controls.Add(btnBack);
             Controls.Add(btnDItolak);
             Controls.Add(btnDiterima);
@@ -109,5 +120,6 @@
         private Button btnDiterima;
         private Button btnDItolak;
         private Button btnBack;
+        private ComboBox cbxKurir;
     }
 }

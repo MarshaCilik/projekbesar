@@ -91,9 +91,9 @@ namespace WinFormsApp1.View
             button13 = new Button();
             tabPage3 = new TabPage();
             panel1 = new Panel();
-            btnKirim = new Button();
             btnRefresh3 = new Button();
             txtCariID3 = new MaskedTextBox();
+            btnKirim = new Button();
             dgvDistribusi = new DataGridView();
             txtNamaKaryawan3 = new TextBox();
             label5 = new Label();
@@ -118,7 +118,6 @@ namespace WinFormsApp1.View
             dtp_DariTanggal = new DateTimePicker();
             label2 = new Label();
             tabPage7 = new TabPage();
-            btnRiwayat = new Button();
             btnAlat42 = new Button();
             btnProduk42 = new Button();
             Lbl_Stok = new Label();
@@ -767,23 +766,14 @@ namespace WinFormsApp1.View
             // 
             panel1.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             panel1.BackColor = Color.FromArgb(122, 148, 114);
-            panel1.Controls.Add(btnKirim);
             panel1.Controls.Add(btnRefresh3);
             panel1.Controls.Add(txtCariID3);
+            panel1.Controls.Add(btnKirim);
             panel1.Controls.Add(dgvDistribusi);
             panel1.Location = new Point(6, 123);
             panel1.Name = "panel1";
             panel1.Size = new Size(979, 839);
             panel1.TabIndex = 89;
-            // 
-            // btnKirim
-            // 
-            btnKirim.Location = new Point(884, 26);
-            btnKirim.Name = "btnKirim";
-            btnKirim.Size = new Size(75, 23);
-            btnKirim.TabIndex = 99;
-            btnKirim.Text = "Kirim";
-            btnKirim.UseVisualStyleBackColor = true;
             // 
             // btnRefresh3
             // 
@@ -801,6 +791,20 @@ namespace WinFormsApp1.View
             txtCariID3.Size = new Size(361, 23);
             txtCariID3.TabIndex = 96;
             txtCariID3.Text = "Cari ID Transaksi";
+            // 
+            // btnKirim
+            // 
+            btnKirim.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnKirim.BackColor = Color.FromArgb(49, 106, 14);
+            btnKirim.Cursor = Cursors.Hand;
+            btnKirim.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnKirim.ForeColor = Color.White;
+            btnKirim.Location = new Point(786, 25);
+            btnKirim.Name = "btnKirim";
+            btnKirim.Size = new Size(180, 35);
+            btnKirim.TabIndex = 99;
+            btnKirim.Text = "Kirim / Update Status";
+            btnKirim.UseVisualStyleBackColor = false;
             // 
             // dgvDistribusi
             // 
@@ -1059,7 +1063,6 @@ namespace WinFormsApp1.View
             // 
             // tabPage7
             // 
-            tabPage7.Controls.Add(btnRiwayat);
             tabPage7.Controls.Add(btnAlat42);
             tabPage7.Controls.Add(btnProduk42);
             tabPage7.Controls.Add(Lbl_Stok);
@@ -1071,16 +1074,6 @@ namespace WinFormsApp1.View
             tabPage7.TabIndex = 1;
             tabPage7.Text = "tabPage7";
             tabPage7.UseVisualStyleBackColor = true;
-            // 
-            // btnRiwayat
-            // 
-            btnRiwayat.Anchor = AnchorStyles.Right;
-            btnRiwayat.Location = new Point(791, 58);
-            btnRiwayat.Name = "btnRiwayat";
-            btnRiwayat.Size = new Size(163, 31);
-            btnRiwayat.TabIndex = 63;
-            btnRiwayat.Text = "Riwayat Stok";
-            btnRiwayat.UseVisualStyleBackColor = true;
             // 
             // btnAlat42
             // 
@@ -1102,6 +1095,7 @@ namespace WinFormsApp1.View
             // 
             // Lbl_Stok
             // 
+            Lbl_Stok.Anchor = AnchorStyles.None;
             Lbl_Stok.AutoSize = true;
             Lbl_Stok.BackColor = Color.FromArgb(49, 106, 14);
             Lbl_Stok.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
@@ -1156,11 +1150,12 @@ namespace WinFormsApp1.View
             // 
             // label11
             // 
+            label11.Anchor = AnchorStyles.None;
             label11.AutoSize = true;
             label11.BackColor = Color.FromArgb(49, 106, 14);
             label11.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label11.ForeColor = Color.White;
-            label11.Location = new Point(386, 11);
+            label11.Location = new Point(386, 23);
             label11.Name = "label11";
             label11.Size = new Size(188, 32);
             label11.TabIndex = 61;
@@ -1181,7 +1176,7 @@ namespace WinFormsApp1.View
             btnLaporanDenda.BackColor = SystemColors.ButtonFace;
             btnLaporanDenda.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnLaporanDenda.ForeColor = Color.FromArgb(49, 106, 14);
-            btnLaporanDenda.Location = new Point(328, 128);
+            btnLaporanDenda.Location = new Point(339, 129);
             btnLaporanDenda.Name = "btnLaporanDenda";
             btnLaporanDenda.Size = new Size(137, 39);
             btnLaporanDenda.TabIndex = 86;
@@ -1214,7 +1209,7 @@ namespace WinFormsApp1.View
             btnLaporanTransaksi.BackColor = Color.FromArgb(49, 106, 14);
             btnLaporanTransaksi.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnLaporanTransaksi.ForeColor = Color.FromArgb(49, 106, 14);
-            btnLaporanTransaksi.Location = new Point(36, 127);
+            btnLaporanTransaksi.Location = new Point(32, 129);
             btnLaporanTransaksi.Name = "btnLaporanTransaksi";
             btnLaporanTransaksi.Size = new Size(137, 39);
             btnLaporanTransaksi.TabIndex = 77;
@@ -1247,7 +1242,7 @@ namespace WinFormsApp1.View
             btnLaporanStok.BackColor = SystemColors.ButtonFace;
             btnLaporanStok.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnLaporanStok.ForeColor = Color.FromArgb(49, 106, 14);
-            btnLaporanStok.Location = new Point(181, 127);
+            btnLaporanStok.Location = new Point(185, 129);
             btnLaporanStok.Name = "btnLaporanStok";
             btnLaporanStok.Size = new Size(137, 39);
             btnLaporanStok.TabIndex = 85;
@@ -1877,7 +1872,6 @@ namespace WinFormsApp1.View
         private Button btnUpdate;
         private Button btnSewaSelesai;
         private Button btnAlat42;
-        private Button btnRiwayat;
         private Button btnLunas;
         private Button btnKirim;
     }
