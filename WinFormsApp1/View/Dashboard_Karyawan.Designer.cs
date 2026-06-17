@@ -63,8 +63,6 @@ namespace WinFormsApp1.View
             button2 = new Button();
             label12 = new Label();
             label13 = new Label();
-            dtpDashboard = new DateTimePicker();
-            label14 = new Label();
             button3 = new Button();
             pictureBox2 = new PictureBox();
             panel5 = new Panel();
@@ -359,8 +357,6 @@ namespace WinFormsApp1.View
             tabPage1.Controls.Add(button2);
             tabPage1.Controls.Add(label12);
             tabPage1.Controls.Add(label13);
-            tabPage1.Controls.Add(dtpDashboard);
-            tabPage1.Controls.Add(label14);
             tabPage1.Controls.Add(button3);
             tabPage1.Controls.Add(pictureBox2);
             tabPage1.Controls.Add(panel5);
@@ -467,23 +463,6 @@ namespace WinFormsApp1.View
             label13.TabIndex = 62;
             label13.Text = "Jumlah Transaksi \r\n\r\n";
             // 
-            // dtpDashboard
-            // 
-            dtpDashboard.Location = new Point(385, 119);
-            dtpDashboard.Name = "dtpDashboard";
-            dtpDashboard.Size = new Size(200, 23);
-            dtpDashboard.TabIndex = 61;
-            // 
-            // label14
-            // 
-            label14.AutoSize = true;
-            label14.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label14.Location = new Point(301, 117);
-            label14.Name = "label14";
-            label14.Size = new Size(78, 25);
-            label14.TabIndex = 60;
-            label14.Text = "Tanggal";
-            // 
             // button3
             // 
             button3.BackColor = Color.FromArgb(217, 217, 217);
@@ -565,6 +544,7 @@ namespace WinFormsApp1.View
             btnSewaSelesai.TabIndex = 104;
             btnSewaSelesai.Text = "Sewa Selesai";
             btnSewaSelesai.UseVisualStyleBackColor = true;
+            btnSewaSelesai.Click += btnSewaSelesai_Click;
             // 
             // btnTransaksi
             // 
@@ -577,6 +557,7 @@ namespace WinFormsApp1.View
             btnTransaksi.TabIndex = 100;
             btnTransaksi.Text = "Ubah Status Transaksi";
             btnTransaksi.UseVisualStyleBackColor = false;
+            btnTransaksi.Click += btnTransaksi_Click;
             // 
             // btnPembayaran
             // 
@@ -588,6 +569,7 @@ namespace WinFormsApp1.View
             btnPembayaran.TabIndex = 99;
             btnPembayaran.Text = "Ubah Status Pembayaran";
             btnPembayaran.UseVisualStyleBackColor = false;
+            btnPembayaran.Click += btnPembayaran_Click;
             // 
             // btnRefresh1
             // 
@@ -878,6 +860,7 @@ namespace WinFormsApp1.View
             // 
             // tcLaporan
             // 
+            tcLaporan.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             tcLaporan.Controls.Add(tabPage6);
             tcLaporan.Controls.Add(tabPage7);
             tcLaporan.Controls.Add(tabPage8);
@@ -1263,6 +1246,7 @@ namespace WinFormsApp1.View
             // 
             // pictureBox4
             // 
+            pictureBox4.Anchor = AnchorStyles.None;
             pictureBox4.BackgroundImage = Properties.Resources.Proifl;
             pictureBox4.BackgroundImageLayout = ImageLayout.Zoom;
             pictureBox4.Location = new Point(46, 135);
@@ -1297,7 +1281,7 @@ namespace WinFormsApp1.View
             // 
             // panel7
             // 
-            panel7.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            panel7.Anchor = AnchorStyles.None;
             panel7.BackColor = Color.FromArgb(122, 148, 114);
             panel7.Controls.Add(btnBatal);
             panel7.Controls.Add(btnSimpan);
@@ -1756,8 +1740,6 @@ namespace WinFormsApp1.View
         private Button button2;
         private Label label12;
         private Label label13;
-        private DateTimePicker dtpDashboard;
-        private Label label14;
         private Button button3;
         private PictureBox pictureBox2;
         private Panel panel5;

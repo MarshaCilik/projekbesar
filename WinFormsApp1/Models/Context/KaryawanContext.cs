@@ -147,15 +147,19 @@ namespace WinFormsApp1.Models.Context
             return dt;
         }
 
-        public void UpdateStatusDistribusi(int transaksiId, int statusId)
+        public void UpdateStatusDistribusi(int transaksiId, int statusId, int karyawanId)
         {
             using (NpgsqlConnection conn = connectDB.GetConnection())
             {
-                string sql = "UPDATE transaksi SET status_distribusi_id = @statusId WHERE transaksi_id = @transaksiId AND status_distribusi_id IS NOT NULL";
+                string sql = @"
+                    SELECT set_config('myapp.current_user_id', @karyawanId::text, true);
+                    UPDATE transaksi SET status_distribusi_id = @statusId WHERE transaksi_id = @transaksiId AND status_distribusi_id IS NOT NULL;
+                ";
                 using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                 {
                     cmd.Parameters.AddWithValue("statusId", statusId);
                     cmd.Parameters.AddWithValue("transaksiId", transaksiId);
+                    cmd.Parameters.AddWithValue("karyawanId", karyawanId);
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -255,7 +259,38 @@ namespace WinFormsApp1.Models.Context
                 {
                     cmd.Parameters.AddWithValue("pesanan_id", pesananId);
                     cmd.Parameters.AddWithValue("karyawan_username", karyawanUsername);
-                    cmd.Parameters.AddWithValue("kurir_id", (object)kurirId ?? DBNull.Value);
+                    
+                    var kurirParam = new NpgsqlParameter("kurir_id", NpgsqlTypes.NpgsqlDbType.Integer);
+                    kurirParam.Value = kurirId.HasValue ? (object)kurirId.Value : DBNull.Value;
+                    cmd.Parameters.Add(kurirParam);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void UpdatePembayaranLunas(int transaksiId)
+        {
+            using (NpgsqlConnection conn = connectDB.GetConnection())
+            {
+                string sql = "CALL p_update_pembayaran_lunas(@transaksi_id);";
+                using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("transaksi_id", transaksiId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void UpdateSewaKembali(int transaksiId, int karyawanId)
+        {
+            using (NpgsqlConnection conn = connectDB.GetConnection())
+            {
+                string sql = "CALL p_update_sewa_kembali(@transaksi_id, @karyawan_id);";
+                using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("transaksi_id", transaksiId);
+                    cmd.Parameters.AddWithValue("karyawan_id", karyawanId);
                     cmd.ExecuteNonQuery();
                 }
             }

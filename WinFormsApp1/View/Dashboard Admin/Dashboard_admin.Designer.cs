@@ -89,13 +89,6 @@ namespace WinFormsApp1.View.Dashboard_Admin
             Lbl_Pemasukan = new Label();
             label31 = new Label();
             label30 = new Label();
-            btn_AuditTransaksi = new Button();
-            Tb_CariID = new TextBox();
-            btn_TerapkanFilter = new Button();
-            label20 = new Label();
-            dtp_KeTanggal = new DateTimePicker();
-            label21 = new Label();
-            dtp_DariTanggal = new DateTimePicker();
             label22 = new Label();
             tabPage7 = new TabPage();
             btnRiwayat = new Button();
@@ -292,6 +285,7 @@ namespace WinFormsApp1.View.Dashboard_Admin
             pictureBox7.Size = new Size(147, 61);
             pictureBox7.TabIndex = 15;
             pictureBox7.TabStop = false;
+            pictureBox7.Click += pictureBox7_Click;
             // 
             // panel3
             // 
@@ -855,13 +849,6 @@ namespace WinFormsApp1.View.Dashboard_Admin
             panel19.BackColor = Color.FromArgb(122, 148, 114);
             panel19.Controls.Add(dgvTransaksi);
             panel19.Controls.Add(panel23);
-            panel19.Controls.Add(btn_AuditTransaksi);
-            panel19.Controls.Add(Tb_CariID);
-            panel19.Controls.Add(btn_TerapkanFilter);
-            panel19.Controls.Add(label20);
-            panel19.Controls.Add(dtp_KeTanggal);
-            panel19.Controls.Add(label21);
-            panel19.Controls.Add(dtp_DariTanggal);
             panel19.Controls.Add(label22);
             panel19.Location = new Point(4, 3);
             panel19.Name = "panel19";
@@ -874,9 +861,9 @@ namespace WinFormsApp1.View.Dashboard_Admin
             dgvTransaksi.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
             dgvTransaksi.BackgroundColor = SystemColors.ButtonHighlight;
             dgvTransaksi.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvTransaksi.Location = new Point(124, 260);
+            dgvTransaksi.Location = new Point(37, 110);
             dgvTransaksi.Name = "dgvTransaksi";
-            dgvTransaksi.Size = new Size(846, 375);
+            dgvTransaksi.Size = new Size(1025, 525);
             dgvTransaksi.TabIndex = 106;
             // 
             // panel23
@@ -931,73 +918,6 @@ namespace WinFormsApp1.View.Dashboard_Admin
             label30.Size = new Size(135, 25);
             label30.TabIndex = 0;
             label30.Text = "Total Transaksi";
-            // 
-            // btn_AuditTransaksi
-            // 
-            btn_AuditTransaksi.Anchor = AnchorStyles.Right;
-            btn_AuditTransaksi.Location = new Point(852, 221);
-            btn_AuditTransaksi.Name = "btn_AuditTransaksi";
-            btn_AuditTransaksi.Size = new Size(118, 23);
-            btn_AuditTransaksi.TabIndex = 104;
-            btn_AuditTransaksi.Text = "Audit Transaksi";
-            btn_AuditTransaksi.UseVisualStyleBackColor = true;
-            // 
-            // Tb_CariID
-            // 
-            Tb_CariID.Location = new Point(124, 224);
-            Tb_CariID.Name = "Tb_CariID";
-            Tb_CariID.Size = new Size(267, 23);
-            Tb_CariID.TabIndex = 103;
-            Tb_CariID.Text = "Cari Berdasarkan Id";
-            // 
-            // btn_TerapkanFilter
-            // 
-            btn_TerapkanFilter.Anchor = AnchorStyles.Right;
-            btn_TerapkanFilter.Location = new Point(852, 192);
-            btn_TerapkanFilter.Name = "btn_TerapkanFilter";
-            btn_TerapkanFilter.Size = new Size(118, 23);
-            btn_TerapkanFilter.TabIndex = 102;
-            btn_TerapkanFilter.Text = "Terapkan Filter";
-            btn_TerapkanFilter.UseVisualStyleBackColor = true;
-            btn_TerapkanFilter.Click += btn_TerapkanFilter_Click;
-            // 
-            // label20
-            // 
-            label20.AutoSize = true;
-            label20.BackColor = Color.Transparent;
-            label20.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label20.ForeColor = Color.Black;
-            label20.Location = new Point(352, 159);
-            label20.Name = "label20";
-            label20.Size = new Size(76, 17);
-            label20.TabIndex = 101;
-            label20.Text = "Ke Tanggal";
-            // 
-            // dtp_KeTanggal
-            // 
-            dtp_KeTanggal.Location = new Point(352, 179);
-            dtp_KeTanggal.Name = "dtp_KeTanggal";
-            dtp_KeTanggal.Size = new Size(200, 23);
-            dtp_KeTanggal.TabIndex = 100;
-            // 
-            // label21
-            // 
-            label21.AutoSize = true;
-            label21.BackColor = Color.Transparent;
-            label21.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label21.ForeColor = Color.Black;
-            label21.Location = new Point(124, 159);
-            label21.Name = "label21";
-            label21.Size = new Size(91, 17);
-            label21.TabIndex = 97;
-            label21.Text = "Dari Tanggal:";
-            // 
-            // dtp_DariTanggal
-            // 
-            dtp_DariTanggal.Location = new Point(124, 179);
-            dtp_DariTanggal.Name = "dtp_DariTanggal";
-            dtp_DariTanggal.Size = new Size(200, 23);
-            dtp_DariTanggal.TabIndex = 99;
             // 
             // label22
             // 
@@ -1733,13 +1653,6 @@ namespace WinFormsApp1.View.Dashboard_Admin
         private Label Lbl_Pemasukan;
         private Label label31;
         private Label label30;
-        private Button btn_AuditTransaksi;
-        private TextBox Tb_CariID;
-        private Button btn_TerapkanFilter;
-        private Label label20;
-        private DateTimePicker dtp_KeTanggal;
-        private Label label21;
-        private DateTimePicker dtp_DariTanggal;
         private Label label22;
         private Button btnRiwayat;
         private Button btn_ProdukTerlaris;

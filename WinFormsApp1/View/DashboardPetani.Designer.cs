@@ -643,6 +643,7 @@
             btn_TerimaPesanan.TabIndex = 14;
             btn_TerimaPesanan.Text = "Terima Pesanan";
             btn_TerimaPesanan.UseVisualStyleBackColor = false;
+            btn_TerimaPesanan.Click += btn_TerimaPesanan_Click;
             // 
             // btn_TransaksiBerlangsung
             // 
@@ -655,7 +656,7 @@
             btn_TransaksiBerlangsung.TabIndex = 13;
             btn_TransaksiBerlangsung.Text = "Transaksi Berlangsung";
             btn_TransaksiBerlangsung.UseVisualStyleBackColor = false;
-            btn_TransaksiBerlangsung.Click += btn_TransaksiBerlangsung_Click_1;
+            btn_TransaksiBerlangsung.Click += btn_TransaksiBerlangsung_Click;
             // 
             // btn_TagihanDenda
             // 
@@ -668,7 +669,7 @@
             btn_TagihanDenda.TabIndex = 12;
             btn_TagihanDenda.Text = "Tagihan Denda";
             btn_TagihanDenda.UseVisualStyleBackColor = false;
-            btn_TagihanDenda.Click += btn_TagihanDenda_Click_1;
+            btn_TagihanDenda.Click += btn_TagihanDenda_Click;
             // 
             // btn_RiwayatTransaksi
             // 
@@ -681,7 +682,7 @@
             btn_RiwayatTransaksi.TabIndex = 11;
             btn_RiwayatTransaksi.Text = "Riwayat Transaksi";
             btn_RiwayatTransaksi.UseVisualStyleBackColor = false;
-            btn_RiwayatTransaksi.Click += btn_RiwayatTransaksi_Click_1;
+            btn_RiwayatTransaksi.Click += btn_RiwayatTransaksi_Click;
             // 
             // panel18
             // 
@@ -1109,5 +1110,6 @@
         private Button btn_TransaksiBerlangsung;
         private Button btn_TagihanDenda;
         private Button btn_RiwayatTransaksi;
+        private Button btn_TerimaPesanan;
     }
 }

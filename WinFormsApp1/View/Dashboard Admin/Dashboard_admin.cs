@@ -579,12 +579,14 @@ namespace WinFormsApp1.View.Dashboard_Admin
         {
             tabControl2.SelectedTab = tabPage6;
             SetMenuLaporanAktif(btnLaporanTransaksi);
+            LoadAuditTransaksi();
         }
 
         private void btn_LaporanRekap_Click(object sender, EventArgs e)
         {
             tabControl1.SelectedTab = tabPage4;
             SetMenuKiriAktif(btn_LaporanRekap);
+            LoadAuditTransaksi();
         }
 
         private void SetMenuKiriAktif(Button tombolAktif)
@@ -637,21 +639,7 @@ namespace WinFormsApp1.View.Dashboard_Admin
             }
         }
 
-        private void btn_TerapkanFilter_Click(object sender, EventArgs e)
-        {
-            DateTime dariTanggal = dtp_DariTanggal.Value.Date;
-            DateTime keTanggal = dtp_KeTanggal.Value.Date;
-            string searchId = Tb_CariID.Text.Trim();
-
-            // Panggil method controller untuk GetAllTransaksiSelesai (filter untuk Admin)
-            var listTransaksi = controllerTransaksi.GetAllTransaksiSelesai(dariTanggal, keTanggal, searchId);
-
-            dgvTransaksi.DataSource = null;
-            dgvTransaksi.DataSource = listTransaksi;
-            dgvTransaksi.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-        }
-
-        private void btn_AuditTransaksi_Click(object sender, EventArgs e)
+        private void LoadAuditTransaksi()
         {
             try
             {
@@ -701,6 +689,13 @@ namespace WinFormsApp1.View.Dashboard_Admin
         private void btnRiwayat_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void pictureBox7_Click(object sender, EventArgs e)
+        {
+            LoginForm form = new LoginForm();
+            this.Hide();
+            form.Show();
         }
     }
 }

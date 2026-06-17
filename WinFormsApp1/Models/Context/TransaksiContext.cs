@@ -26,10 +26,19 @@ namespace WinFormsApp1.Models.Context
             decimal hargaSewaPerhari = dr["harga_sewa_perhari"] != DBNull.Value ? Convert.ToDecimal(dr["harga_sewa_perhari"]) : 0;
             decimal denda = dr["denda"] != DBNull.Value ? Convert.ToDecimal(dr["denda"]) : 0;
             string statusSewa = dr["status_sewa"] != DBNull.Value ? dr["status_sewa"].ToString() ?? "-" : "-";
-            DateOnly tglSewa = dr["tgl_sewa"] != DBNull.Value
-                ? DateOnly.FromDateTime(Convert.ToDateTime(dr["tgl_sewa"])) : DateOnly.MinValue;
-            DateOnly tglPengembalian = dr["tgl_pengembalian"] != DBNull.Value
-                ? DateOnly.FromDateTime(Convert.ToDateTime(dr["tgl_pengembalian"])) : DateOnly.MinValue;
+            DateOnly tglSewa = DateOnly.MinValue;
+            if (dr["tgl_sewa"] != DBNull.Value)
+            {
+                if (dr["tgl_sewa"] is DateOnly d) tglSewa = d;
+                else if (dr["tgl_sewa"] is DateTime dt) tglSewa = DateOnly.FromDateTime(dt);
+            }
+
+            DateOnly tglPengembalian = DateOnly.MinValue;
+            if (dr["tgl_pengembalian"] != DBNull.Value)
+            {
+                if (dr["tgl_pengembalian"] is DateOnly d) tglPengembalian = d;
+                else if (dr["tgl_pengembalian"] is DateTime dt) tglPengembalian = DateOnly.FromDateTime(dt);
+            }
             string opsiPengembalian = dr["opsi_pengembalian"] != DBNull.Value ? dr["opsi_pengembalian"].ToString() ?? "-" : "-";
 
             return new Transaksi(transaksiId, createdAt, statusTransaksi, metodePembayaran,
@@ -198,7 +207,17 @@ namespace WinFormsApp1.Models.Context
             var dt = new System.Data.DataTable();
             using (NpgsqlConnection conn = connectDB.GetConnection())
             {
-                string sql = "SELECT audit_id, transaksi_id, aksi, kolom_perubahan, waktu_perubahan FROM audit_transaksi ORDER BY waktu_perubahan DESC";
+                string sql = @"
+                    SELECT 
+                        a.audit_transaksi_id, 
+                        a.transaksi_id, 
+                        a.aksi, 
+                        a.kolom_perubahan, 
+                        a.waktu_perubahan, 
+                        u.nama AS nama_user
+                    FROM audit_transaksi a
+                    LEFT JOIN users u ON a.users_id = u.users_id
+                    ORDER BY a.waktu_perubahan DESC";
                 using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                 {
                     using (NpgsqlDataReader dr = cmd.ExecuteReader())

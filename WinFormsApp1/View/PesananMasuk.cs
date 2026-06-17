@@ -60,7 +60,7 @@ namespace WinFormsApp1.View
                 if (row.Cells["Pengiriman"].Value != null)
                 {
                     string pengiriman = row.Cells["Pengiriman"].Value.ToString().ToLower();
-                    if (pengiriman == "diantar")
+                    if (pengiriman.Contains("diantar"))
                     {
                         cbxKurir.Enabled = true;
                     }
@@ -105,7 +105,7 @@ namespace WinFormsApp1.View
 
             int? kurirId = null;
 
-            if (pengiriman == "diantar")
+            if (pengiriman.Contains("diantar"))
             {
                 if (cbxKurir.SelectedValue == null || cbxKurir.SelectedIndex == -1)
                 {
@@ -127,6 +127,7 @@ namespace WinFormsApp1.View
                 }
                 catch (Exception ex)
                 {
+
                     MessageBox.Show("Gagal menerima pesanan: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }

@@ -37,7 +37,7 @@ namespace WinFormsApp1.View
             btnProfil.Click += (s, e) => NavigateToTab(4, btnProfil); // Profil
 
             // Logout Picture
-            Logout.Click += pictureBox7_Click;
+            //Logout.Click += pictureBox7_Click;
             Logout.Cursor = Cursors.Hand;
 
             // Dashboard Aksi Labels
@@ -51,7 +51,7 @@ namespace WinFormsApp1.View
 
             if (label17 != null)
             {
-                label17.Click += labelStatusTransaksi_Click;
+                label17.Click += btnTransaksi_Click;
                 label17.Cursor = Cursors.Hand;
                 label17.MouseEnter += (s, e) => label17.ForeColor = Color.ForestGreen;
                 label17.MouseLeave += (s, e) => label17.ForeColor = Color.White;
@@ -107,7 +107,6 @@ namespace WinFormsApp1.View
 
             // Load default dashboard settings
             txtNamaKaryawan1.Text = UserSession.Username;
-            dtpDashboard.Value = DateTime.Now;
 
             // Setup DataGridViews style settings
             ConfigureDgvStyle(dgvDashboard);
@@ -238,53 +237,7 @@ namespace WinFormsApp1.View
             }
         }
 
-        private void labelStatusTransaksi_Click(object sender, EventArgs e)
-        {
-            if (dgvDashboard.SelectedRows.Count == 0)
-            {
-                MessageBox.Show("Silakan pilih transaksi terlebih dahulu di tabel!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
 
-            DataGridViewRow row = dgvDashboard.SelectedRows[0];
-            int transaksiId = Convert.ToInt32(row.Cells["transaksi_id"].Value);
-            string statusTransaksi = row.Cells["status_transaksi"].Value.ToString();
-            string jenisPesanan = row.Cells["jenis_pesanan"].Value?.ToString() ?? "";
-
-            if (jenisPesanan != "Penyewaan")
-            {
-                MessageBox.Show("Aksi ini hanya berlaku untuk penyewaan alat!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (statusTransaksi.Equals("Selesai", StringComparison.OrdinalIgnoreCase))
-            {
-                MessageBox.Show("Transaksi ini sudah selesai!", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            // Validasi denda sebelum diselesaikan
-            if (db.HasUnpaidDenda(transaksiId))
-            {
-                MessageBox.Show("Transaksi ini tidak dapat diselesaikan karena ada denda alat sewa yang belum dilunasi. Silakan lunasi denda di Laporan Denda terlebih dahulu!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            DialogResult confirm = MessageBox.Show($"Ubah status transaksi #{transaksiId} menjadi Selesai?", "Konfirmasi Transaksi", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (confirm == DialogResult.Yes)
-            {
-                try
-                {
-                    db.UpdateTransactionStatus(transaksiId, "Selesai", UserSession.UserId);
-                    MessageBox.Show("Status transaksi berhasil diperbarui menjadi Selesai!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    LoadDashboardData();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Gagal menyelesaikan transaksi: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
 
         // =========================================================================
         // FEATURE 2: UPDATE STOK
@@ -452,7 +405,7 @@ namespace WinFormsApp1.View
                 try
                 {
                     int transaksiId = Convert.ToInt32(dgvDistribusi.SelectedRows[0].Cells["transaksi_id"].Value);
-                    db.UpdateStatusDistribusi(transaksiId, 2);
+                    db.UpdateStatusDistribusi(transaksiId, 2, UserSession.UserId);
                     MessageBox.Show("Status distribusi berhasil diubah menjadi 'Dikirim'.", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LoadDistribusiData();
                 }
@@ -877,16 +830,16 @@ namespace WinFormsApp1.View
         // =========================================================================
         // LOGOUT & CLOSE EVENT
         // =========================================================================
-        private void pictureBox7_Click(object? sender, EventArgs e)
-        {
-            DialogResult confirm = MessageBox.Show("Apakah Anda yakin ingin keluar?", "Konfirmasi Logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (confirm == DialogResult.Yes)
-            {
-                var loginForm = Application.OpenForms["LoginForm"] ?? new LoginForm();
-                loginForm.Show();
-                this.Close();
-            }
-        }
+        //private void pictureBox7_Click(object? sender, EventArgs e)
+        //{
+        //    DialogResult confirm = MessageBox.Show("Apakah Anda yakin ingin keluar?", "Konfirmasi Logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+        //    if (confirm == DialogResult.Yes)
+        //    {
+        //        var loginForm = Application.OpenForms["LoginForm"] ?? new LoginForm();
+        //        loginForm.Show();
+        //        this.Close();
+        //    }
+        //}
 
         private void button7_Click(object sender, EventArgs e)
         {
@@ -925,6 +878,137 @@ namespace WinFormsApp1.View
         private void btnLaporan_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnPembayaran_Click(object sender, EventArgs e)
+        {
+            if (dgvDashboard.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Silakan pilih transaksi terlebih dahulu di tabel!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DataGridViewRow row = dgvDashboard.SelectedRows[0];
+            int transaksiId = Convert.ToInt32(row.Cells["transaksi_id"].Value);
+            string statusPembayaran = row.Cells["status_pembayaran"].Value.ToString();
+
+            if (statusPembayaran.Equals("lunas", StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show("Transaksi ini sudah lunas!", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            DialogResult confirm = MessageBox.Show($"Ubah status pembayaran transaksi #{transaksiId} menjadi LUNAS?", "Konfirmasi Pembayaran", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (confirm == DialogResult.Yes)
+            {
+                try
+                {
+                    db.UpdatePembayaranLunas(transaksiId);
+                    MessageBox.Show("Status pembayaran berhasil diperbarui menjadi LUNAS!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadDashboardData();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Gagal memperbarui status pembayaran: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void btnTransaksi_Click(object sender, EventArgs e)
+        {
+            if (dgvDashboard.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Silakan pilih transaksi terlebih dahulu di tabel!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DataGridViewRow row = dgvDashboard.SelectedRows[0];
+            int transaksiId = Convert.ToInt32(row.Cells["transaksi_id"].Value);
+            string statusTransaksi = row.Cells["status_transaksi"].Value.ToString();
+            string jenisPesanan = row.Cells["jenis_pesanan"].Value?.ToString() ?? "";
+
+            if (statusTransaksi.Equals("Selesai", StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show("Transaksi ini sudah selesai!", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            string statusSewa = row.Cells["status_sewa"].Value?.ToString() ?? "";
+            if (jenisPesanan == "Penyewaan" || statusSewa.Equals("Belum Kembali", StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show("Aksi ini tidak diperbolehkan! Gunakan tombol 'Sewa Selesai' khusus untuk transaksi penyewaan alat.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Validasi denda sebelum diselesaikan
+            if (db.HasUnpaidDenda(transaksiId))
+            {
+                MessageBox.Show("Transaksi ini tidak dapat diselesaikan karena ada denda alat sewa yang belum dilunasi. Silakan lunasi denda di Laporan Denda terlebih dahulu!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DialogResult confirm = MessageBox.Show($"Ubah status transaksi #{transaksiId} menjadi Selesai?", "Konfirmasi Transaksi", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (confirm == DialogResult.Yes)
+            {
+                try
+                {
+                    db.UpdateTransactionStatus(transaksiId, "Selesai", UserSession.UserId);
+                    MessageBox.Show("Status transaksi berhasil diperbarui menjadi Selesai!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadDashboardData();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Gagal menyelesaikan transaksi: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void btnSewaSelesai_Click(object sender, EventArgs e)
+        {
+            if (dgvDashboard.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Silakan pilih transaksi penyewaan terlebih dahulu di tabel!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DataGridViewRow row = dgvDashboard.SelectedRows[0];
+            int transaksiId = Convert.ToInt32(row.Cells["transaksi_id"].Value);
+            string statusSewa = row.Cells["status_sewa"].Value?.ToString() ?? "";
+            string jenisPesanan = row.Cells["jenis_pesanan"].Value?.ToString() ?? "";
+
+            if (jenisPesanan != "Penyewaan")
+            {
+                MessageBox.Show("Aksi ini hanya berlaku untuk penyewaan alat!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (statusSewa.Equals("Dikembalikan", StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show("Alat sewa sudah dikembalikan!", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // Validasi denda sebelum diselesaikan
+            if (db.HasUnpaidDenda(transaksiId))
+            {
+                MessageBox.Show("Transaksi ini tidak dapat diselesaikan karena ada denda alat sewa yang belum dilunasi. Silakan lunasi denda di Laporan Denda terlebih dahulu!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DialogResult confirm = MessageBox.Show($"Ubah status sewa menjadi Dikembalikan sekaligus menyelesaikan transaksi #{transaksiId}?", "Konfirmasi Sewa Selesai", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (confirm == DialogResult.Yes)
+            {
+                try
+                {
+                    db.UpdateSewaKembali(transaksiId, UserSession.UserId);
+                    MessageBox.Show("Status sewa berhasil diperbarui dan transaksi telah Selesai!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadDashboardData();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Gagal menyelesaikan sewa: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
     }
 }

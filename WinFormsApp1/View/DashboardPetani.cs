@@ -22,7 +22,6 @@ namespace WinFormsApp1
         c_pesanan controller_pesanan = new c_pesanan();
         c_barangtani controller = new c_barangtani();
         c_transaksi controller_transaksi = new c_transaksi();
-        private Button btn_TerimaPesanan;
 
 
         public Users User;
@@ -43,20 +42,21 @@ namespace WinFormsApp1
             Dgv_Pesanan.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             InitializeCustomControls();
             LoadData("barang");
+
         }
 
         private void InitializeCustomControls()
         {
-            btn_TerimaPesanan = new Button();
-            btn_TerimaPesanan.Name = "btn_TerimaPesanan";
-            btn_TerimaPesanan.Text = "Terima Pesanan";
-            btn_TerimaPesanan.BackColor = Color.LightGray;
-            btn_TerimaPesanan.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btn_TerimaPesanan.ForeColor = Color.Black;
-            btn_TerimaPesanan.Size = new Size(149, 32);
-            btn_TerimaPesanan.Location = new Point(479, 274);
-            btn_TerimaPesanan.Visible = false;
-            btn_TerimaPesanan.Click += btn_TerimaPesanan_Click;
+            //btn_TerimaPesanan = new Button();
+            //btn_TerimaPesanan.Name = "btn_TerimaPesanan";
+            //btn_TerimaPesanan.Text = "Terima Pesanan";
+            //btn_TerimaPesanan.BackColor = Color.LightGray;
+            //btn_TerimaPesanan.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            //btn_TerimaPesanan.ForeColor = Color.Black;
+            //btn_TerimaPesanan.Size = new Size(149, 32);
+            //btn_TerimaPesanan.Location = new Point(479, 274);
+            //btn_TerimaPesanan.Visible = false;
+            //btn_TerimaPesanan.Click += btn_TerimaPesanan_Click;
             this.tabPage3.Controls.Add(btn_TerimaPesanan);
 
             dgv_RiwayatDanTagihan.SelectionChanged += dgv_RiwayatDanTagihan_SelectionChanged;
@@ -444,21 +444,6 @@ namespace WinFormsApp1
                     MessageBox.Show("Gagal menerima pesanan.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-        }
-
-        private void btn_TransaksiBerlangsung_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btn_TagihanDenda_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btn_RiwayatTransaksi_Click_1(object sender, EventArgs e)
-        {
-
         }
     }
 }

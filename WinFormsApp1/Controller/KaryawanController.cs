@@ -53,9 +53,9 @@ namespace WinFormsApp1.Controller
             return _context.GetManajemenDistribusi();
         }
 
-        public void UpdateStatusDistribusi(int transaksiId, int statusId)
+        public void UpdateStatusDistribusi(int transaksiId, int statusId, int karyawanId)
         {
-            _context.UpdateStatusDistribusi(transaksiId, statusId);
+            _context.UpdateStatusDistribusi(transaksiId, statusId, karyawanId);
         }
 
         public DataTable GetPesananCheckout()
@@ -90,6 +90,16 @@ namespace WinFormsApp1.Controller
         public void TerimaPesanan(int pesananId, string karyawanUsername, int? kurirId = null)
         {
             _context.TerimaPesanan(pesananId, karyawanUsername, kurirId);
+        }
+
+        public void UpdatePembayaranLunas(int transaksiId)
+        {
+            _context.UpdatePembayaranLunas(transaksiId);
+        }
+
+        public void UpdateSewaKembali(int transaksiId, int karyawanId)
+        {
+            _context.UpdateSewaKembali(transaksiId, karyawanId);
         }
 
         public void BatalPesanan(int pesananId, string alasan)
