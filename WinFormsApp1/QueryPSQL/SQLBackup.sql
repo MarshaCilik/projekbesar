@@ -590,12 +590,15 @@ ALTER PROCEDURE public.p_batal_pesanan(IN p_pesanan_id integer, IN p_alasan text
 
 --
 -- TOC entry 297 (class 1255 OID 74574)
--- Name: p_terima_pesanan(integer, character varying); Type: PROCEDURE; Schema: public; Owner: postgres
+-- Name: p_terima_pesanan(integer, character varying, integer); Type: PROCEDURE; Schema: public; Owner: postgres
 --
 
-CREATE PROCEDURE public.p_terima_pesanan(IN p_pesanan_id integer, IN p_karyawan_username character varying)
-    LANGUAGE plpgsql
-    AS $$
+CREATE OR REPLACE PROCEDURE public.p_terima_pesanan(
+	IN p_pesanan_id integer,
+	IN p_karyawan_username character varying,
+	IN p_kurir_id integer DEFAULT NULL)
+LANGUAGE 'plpgsql'
+AS $BODY$
 DECLARE
     v_transaksi_id int;
     v_users_id int;
@@ -608,12 +611,10 @@ BEGIN
     INTO v_users_id, v_opsi
     FROM pesanan
     WHERE pesanan_id = p_pesanan_id AND status_pesanan = 'Sudah Checkout';
-
     IF v_users_id IS NULL THEN
         RAISE EXCEPTION 'Pesanan dengan ID % tidak ditemukan atau statusnya bukan Sudah Checkout.', p_pesanan_id;
     END IF;
-
-    -- Validasi & Pengurangan Stok Barang
+    -- Validasi & Pengurangan Stok Barang Pembelian
     FOR r_detail_pembelian IN 
         SELECT dp.barang_id, dp.quantity, b.nama_barang, b.stok 
         FROM detail_pesanan_pembelian dp
@@ -627,8 +628,7 @@ BEGIN
         
         UPDATE barang SET stok = stok - r_detail_pembelian.quantity WHERE barang_id = r_detail_pembelian.barang_id;
     END LOOP;
-
-    -- Validasi & Pengurangan Stok Alat
+    -- Validasi & Pengurangan Stok Alat Sewa
     FOR r_detail_sewa IN 
         SELECT ds.alat_sewa_id, ds.quantity, a.nama_alat, a.stok 
         FROM detail_pesanan_sewa ds
@@ -642,38 +642,33 @@ BEGIN
         
         UPDATE alat_sewa SET stok = stok - r_detail_sewa.quantity WHERE alat_sewa_id = r_detail_sewa.alat_sewa_id;
     END LOOP;
-
-    -- Update status pesanan
+    -- Update status keranjang pesanan utama
     UPDATE pesanan SET status_pesanan = 'Selesai' WHERE pesanan_id = p_pesanan_id;
-
-    -- Tentukan status distribusi
+    -- Tentukan status distribusi untuk diteruskan ke logistik
     IF v_opsi = 'diantar' THEN
         v_distribusi_id := 1;
     ELSE
         v_distribusi_id := NULL;
     END IF;
-
-    -- Buat transaksi
-    INSERT INTO transaksi (created_at, catatan, users_id, status_transaksi, status_distribusi_id, metode_pembayaran, status_pembayaran)
-    VALUES (NOW(), 'Penerimaan pesanan ID ' || p_pesanan_id || ' oleh ' || p_karyawan_username, v_users_id, 'Diproses', v_distribusi_id, 'Cash', 'belum lunas')
+    -- Buat baris transaksi baru
+    INSERT INTO transaksi (created_at, catatan, users_id, kurir_id, status_transaksi, status_distribusi_id, metode_pembayaran, status_pembayaran)
+    VALUES (NOW(), 'Penerimaan pesanan ID ' || p_pesanan_id || ' oleh ' || p_karyawan_username, v_users_id, p_kurir_id, 'Diproses', v_distribusi_id, 'Cash', 'belum lunas')
     RETURNING transaksi_id INTO v_transaksi_id;
-
-    -- Copy detail pembelian
+    -- Migrasi detail pembelian
     FOR r_detail_pembelian IN SELECT quantity, harga_per_item, barang_id FROM detail_pesanan_pembelian WHERE pesanan_id = p_pesanan_id LOOP
         INSERT INTO detail_transaksi_pembelian (quantity, harga_per_item, transaksi_id, barang_id)
         VALUES (r_detail_pembelian.quantity, r_detail_pembelian.harga_per_item, v_transaksi_id, r_detail_pembelian.barang_id);
     END LOOP;
-
-    -- Copy detail sewa
+    -- Migrasi detail sewa
     FOR r_detail_sewa IN SELECT quantity, tgl_sewa, tgl_pengembalian, harga_sewa_perhari, alat_sewa_id FROM detail_pesanan_sewa WHERE pesanan_id = p_pesanan_id LOOP
         INSERT INTO detail_transaksi_sewa (quantity, tgl_sewa, tgl_pengembalian, harga_sewa_perhari, denda, status_sewa, transaksi_id, alat_sewa_id, opsi_pengembalian_id)
         VALUES (r_detail_sewa.quantity, r_detail_sewa.tgl_sewa, r_detail_sewa.tgl_pengembalian, r_detail_sewa.harga_sewa_perhari, 0, 'Belum Kembali', v_transaksi_id, r_detail_sewa.alat_sewa_id, 1);
     END LOOP;
 END;
-$$;
+$BODY$;
 
 
-ALTER PROCEDURE public.p_terima_pesanan(IN p_pesanan_id integer, IN p_karyawan_username character varying) OWNER TO postgres;
+ALTER PROCEDURE public.p_terima_pesanan(IN p_pesanan_id integer, IN p_karyawan_username character varying, IN p_kurir_id integer) OWNER TO postgres;
 
 --
 -- TOC entry 288 (class 1255 OID 74559)

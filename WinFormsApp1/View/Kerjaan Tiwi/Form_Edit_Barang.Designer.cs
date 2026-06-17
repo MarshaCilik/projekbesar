@@ -1,4 +1,4 @@
-﻿namespace WinFormsApp1.View
+namespace WinFormsApp1.View
 {
     partial class Form_Edit_barang
     {

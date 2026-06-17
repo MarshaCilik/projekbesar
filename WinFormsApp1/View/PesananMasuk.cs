@@ -3,6 +3,7 @@ using System.Data;
 using System.Windows.Forms;
 using WinFormsApp1.Controller;
 using WinFormsApp1.Helpers;
+using WinFormsApp1.Models;
 
 namespace WinFormsApp1.View
 {
@@ -26,7 +27,55 @@ namespace WinFormsApp1.View
             dgvPesanan.ReadOnly = true;
             dgvPesanan.AllowUserToAddRows = false;
             dgvPesanan.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            
+            LoadKurirComboBox();
             LoadPesananData();
+
+            dgvPesanan.SelectionChanged += dgvPesanan_SelectionChanged;
+        }
+
+        private void LoadKurirComboBox()
+        {
+            try
+            {
+                c_user userCtrl = new c_user();
+                var listKurir = userCtrl.ReadKurir();
+                cbxKurir.DataSource = listKurir;
+                cbxKurir.DisplayMember = "Nama";
+                cbxKurir.ValueMember = "Id";
+                cbxKurir.SelectedIndex = -1;
+                cbxKurir.Enabled = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Gagal memuat data kurir: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void dgvPesanan_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvPesanan.SelectedRows.Count > 0)
+            {
+                var row = dgvPesanan.SelectedRows[0];
+                if (row.Cells["Pengiriman"].Value != null)
+                {
+                    string pengiriman = row.Cells["Pengiriman"].Value.ToString().ToLower();
+                    if (pengiriman == "diantar")
+                    {
+                        cbxKurir.Enabled = true;
+                    }
+                    else
+                    {
+                        cbxKurir.Enabled = false;
+                        cbxKurir.SelectedIndex = -1;
+                    }
+                }
+            }
+            else
+            {
+                cbxKurir.Enabled = false;
+                cbxKurir.SelectedIndex = -1;
+            }
         }
 
         private void LoadPesananData()
@@ -49,17 +98,32 @@ namespace WinFormsApp1.View
                 return;
             }
 
-            int pesananId = Convert.ToInt32(dgvPesanan.SelectedRows[0].Cells["ID Pesanan"].Value);
-            string namaItem = dgvPesanan.SelectedRows[0].Cells["Nama Item"].Value.ToString();
-            
+            var selectedRow = dgvPesanan.SelectedRows[0];
+            int pesananId = Convert.ToInt32(selectedRow.Cells["ID Pesanan"].Value);
+            string namaItem = selectedRow.Cells["Nama Item"].Value.ToString();
+            string pengiriman = selectedRow.Cells["Pengiriman"].Value != null ? selectedRow.Cells["Pengiriman"].Value.ToString().ToLower() : "";
+
+            int? kurirId = null;
+
+            if (pengiriman == "diantar")
+            {
+                if (cbxKurir.SelectedValue == null || cbxKurir.SelectedIndex == -1)
+                {
+                    MessageBox.Show("Silakan pilih kurir terlebih dahulu untuk metode pengiriman diantar!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                kurirId = Convert.ToInt32(cbxKurir.SelectedValue);
+            }
+
             DialogResult confirm = MessageBox.Show($"Terima pesanan #{pesananId} untuk item {namaItem}?", "Konfirmasi", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (confirm == DialogResult.Yes)
             {
                 try
                 {
-                    db.TerimaPesanan(pesananId, UserSession.Username);
+                    db.TerimaPesanan(pesananId, UserSession.Username, kurirId);
                     MessageBox.Show("Pesanan diterima!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LoadPesananData();
+                    cbxKurir.SelectedIndex = -1;
                 }
                 catch (Exception ex)
                 {

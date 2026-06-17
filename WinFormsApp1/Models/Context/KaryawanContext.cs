@@ -246,15 +246,16 @@ namespace WinFormsApp1.Models.Context
             }
         }
 
-        public void TerimaPesanan(int pesananId, string karyawanUsername)
+        public void TerimaPesanan(int pesananId, string karyawanUsername, int? kurirId)
         {
             using (NpgsqlConnection conn = connectDB.GetConnection())
             {
-                string sql = "CALL p_terima_pesanan(@pesanan_id, @karyawan_username);";
+                string sql = "CALL p_terima_pesanan(@pesanan_id, @karyawan_username, @kurir_id);";
                 using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                 {
                     cmd.Parameters.AddWithValue("pesanan_id", pesananId);
                     cmd.Parameters.AddWithValue("karyawan_username", karyawanUsername);
+                    cmd.Parameters.AddWithValue("kurir_id", (object)kurirId ?? DBNull.Value);
                     cmd.ExecuteNonQuery();
                 }
             }

@@ -25,39 +25,7 @@ namespace WinFormsApp1.View
 
         private void WireEvents()
         {
-            // Tambahkan btnKirim secara dinamis untuk tabPage3 (Distribusi)
-            Button btnKirim = new Button();
-            btnKirim.Text = "Kirim / Update Status";
-            btnKirim.Size = new Size(180, 35);
-            btnKirim.Location = new Point(dgvDistribusi.Left, dgvDistribusi.Top - 40);
-            btnKirim.BackColor = Color.FromArgb(49, 106, 14);
-            btnKirim.ForeColor = Color.White;
-            btnKirim.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btnKirim.Cursor = Cursors.Hand;
-            tabPage3.Controls.Add(btnKirim);
-            btnKirim.BringToFront();
-
-            btnKirim.Click += (s, e) => {
-                if (dgvDistribusi.SelectedRows.Count > 0)
-                {
-                    try
-                    {
-                        int transaksiId = Convert.ToInt32(dgvDistribusi.SelectedRows[0].Cells["transaksi_id"].Value);
-                        // Status 2 = Dikirim
-                        db.UpdateStatusDistribusi(transaksiId, 2);
-                        MessageBox.Show("Status distribusi berhasil diubah menjadi 'Dikirim'.", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        dgvDistribusi.DataSource = db.GetManajemenDistribusi();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Terjadi kesalahan: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Silakan pilih transaksi pada tabel terlebih dahulu.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-            };
+            btnKirim.Click += btnKirim_Click;
 
             this.Load += Dashboard_Karyawan_Load;
 
@@ -117,7 +85,7 @@ namespace WinFormsApp1.View
             // Laporan Stok Events
             btnProduk42.Click += (s, e) => LoadLaporanStok("produk");
             btnAlat42.Click += (s, e) => LoadLaporanStok("alat");
-            btnRiwayat.Click += (s, e) => LoadLaporanStok("riwayat");
+            btnAlat42.Click += (s, e) => LoadLaporanStok("alat");
 
             // Laporan Denda Events
             txtCariNamaDenda.TextChanged += txtCariDenda_TextChanged;
@@ -477,6 +445,28 @@ namespace WinFormsApp1.View
             }
         }
 
+        private void btnKirim_Click(object sender, EventArgs e)
+        {
+            if (dgvDistribusi.SelectedRows.Count > 0)
+            {
+                try
+                {
+                    int transaksiId = Convert.ToInt32(dgvDistribusi.SelectedRows[0].Cells["transaksi_id"].Value);
+                    db.UpdateStatusDistribusi(transaksiId, 2);
+                    MessageBox.Show("Status distribusi berhasil diubah menjadi 'Dikirim'.", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadDistribusiData();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Terjadi kesalahan: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Silakan pilih transaksi pada tabel terlebih dahulu.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
         private void dgvDistribusi_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
@@ -656,6 +646,7 @@ namespace WinFormsApp1.View
         {
             try
             {
+                dgvStok.Visible = true;
                 dgvStok.DataSource = db.GetLaporanStok(jenis);
             }
             catch (Exception ex)
@@ -668,6 +659,7 @@ namespace WinFormsApp1.View
         {
             try
             {
+                dgvDenda.Visible = true;
                 dgvDenda.DataSource = db.GetLaporanDenda();
             }
             catch (Exception ex)
