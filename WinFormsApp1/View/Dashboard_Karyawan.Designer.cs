@@ -72,8 +72,6 @@ namespace WinFormsApp1.View
             label16 = new Label();
             panel6 = new Panel();
             btnSewaSelesai = new Button();
-            btnAlat = new Button();
-            btnProduk = new Button();
             btnTransaksi = new Button();
             btnPembayaran = new Button();
             btnRefresh1 = new Button();
@@ -280,6 +278,7 @@ namespace WinFormsApp1.View
             btnLaporan.TabIndex = 20;
             btnLaporan.Text = "Laporan dan Rekap";
             btnLaporan.UseVisualStyleBackColor = false;
+            btnLaporan.Click += btnLaporan_Click;
             // 
             // btnDistribusi
             // 
@@ -332,6 +331,7 @@ namespace WinFormsApp1.View
             Logout.Size = new Size(107, 46);
             Logout.TabIndex = 15;
             Logout.TabStop = false;
+            Logout.Click += Logout_Click;
             // 
             // tabControl1
             // 
@@ -547,8 +547,6 @@ namespace WinFormsApp1.View
             panel6.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             panel6.BackColor = Color.FromArgb(122, 148, 114);
             panel6.Controls.Add(btnSewaSelesai);
-            panel6.Controls.Add(btnAlat);
-            panel6.Controls.Add(btnProduk);
             panel6.Controls.Add(btnTransaksi);
             panel6.Controls.Add(btnPembayaran);
             panel6.Controls.Add(btnRefresh1);
@@ -561,35 +559,16 @@ namespace WinFormsApp1.View
             // 
             // btnSewaSelesai
             // 
-            btnSewaSelesai.Location = new Point(181, 45);
+            btnSewaSelesai.Location = new Point(11, 45);
             btnSewaSelesai.Name = "btnSewaSelesai";
             btnSewaSelesai.Size = new Size(132, 23);
             btnSewaSelesai.TabIndex = 104;
             btnSewaSelesai.Text = "Sewa Selesai";
             btnSewaSelesai.UseVisualStyleBackColor = true;
             // 
-            // btnAlat
-            // 
-            btnAlat.Location = new Point(92, 45);
-            btnAlat.Name = "btnAlat";
-            btnAlat.Size = new Size(73, 23);
-            btnAlat.TabIndex = 102;
-            btnAlat.Text = "Alat Sewa";
-            btnAlat.UseVisualStyleBackColor = true;
-            // 
-            // btnProduk
-            // 
-            btnProduk.BackColor = Color.FromArgb(49, 106, 14);
-            btnProduk.ForeColor = Color.White;
-            btnProduk.Location = new Point(11, 45);
-            btnProduk.Name = "btnProduk";
-            btnProduk.Size = new Size(75, 23);
-            btnProduk.TabIndex = 101;
-            btnProduk.Text = "Produk";
-            btnProduk.UseVisualStyleBackColor = false;
-            // 
             // btnTransaksi
             // 
+            btnTransaksi.Anchor = AnchorStyles.Right;
             btnTransaksi.BackColor = Color.FromArgb(168, 197, 152);
             btnTransaksi.BackgroundImageLayout = ImageLayout.None;
             btnTransaksi.Location = new Point(751, 12);
@@ -601,6 +580,7 @@ namespace WinFormsApp1.View
             // 
             // btnPembayaran
             // 
+            btnPembayaran.Anchor = AnchorStyles.Right;
             btnPembayaran.BackColor = Color.FromArgb(168, 197, 152);
             btnPembayaran.Location = new Point(587, 12);
             btnPembayaran.Name = "btnPembayaran";
@@ -629,6 +609,7 @@ namespace WinFormsApp1.View
             // dgvDashboard
             // 
             dgvDashboard.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            dgvDashboard.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
             dgvDashboard.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvDashboard.Location = new Point(11, 74);
             dgvDashboard.Name = "dgvDashboard";
@@ -667,6 +648,7 @@ namespace WinFormsApp1.View
             // 
             // btnUpdate
             // 
+            btnUpdate.Anchor = AnchorStyles.Right;
             btnUpdate.Location = new Point(820, 33);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(140, 42);
@@ -714,6 +696,8 @@ namespace WinFormsApp1.View
             // 
             // dgvUpdateStok
             // 
+            dgvUpdateStok.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            dgvUpdateStok.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
             dgvUpdateStok.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvUpdateStok.Location = new Point(3, 94);
             dgvUpdateStok.Name = "dgvUpdateStok";
@@ -731,11 +715,12 @@ namespace WinFormsApp1.View
             // 
             // label27
             // 
+            label27.Anchor = AnchorStyles.None;
             label27.AutoSize = true;
             label27.BackColor = Color.FromArgb(49, 106, 14);
             label27.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label27.ForeColor = Color.White;
-            label27.Location = new Point(431, 63);
+            label27.Location = new Point(437, 63);
             label27.Name = "label27";
             label27.Size = new Size(123, 25);
             label27.TabIndex = 91;
@@ -753,6 +738,7 @@ namespace WinFormsApp1.View
             // 
             // button13
             // 
+            button13.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             button13.BackColor = Color.FromArgb(49, 106, 14);
             button13.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button13.Location = new Point(6, 45);
@@ -807,6 +793,8 @@ namespace WinFormsApp1.View
             // 
             // dgvDistribusi
             // 
+            dgvDistribusi.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            dgvDistribusi.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
             dgvDistribusi.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvDistribusi.Location = new Point(3, 71);
             dgvDistribusi.Name = "dgvDistribusi";
@@ -823,6 +811,7 @@ namespace WinFormsApp1.View
             // 
             // label5
             // 
+            label5.Anchor = AnchorStyles.None;
             label5.AutoSize = true;
             label5.BackColor = Color.FromArgb(49, 106, 14);
             label5.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
@@ -845,6 +834,7 @@ namespace WinFormsApp1.View
             // 
             // button9
             // 
+            button9.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             button9.BackColor = Color.FromArgb(49, 106, 14);
             button9.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button9.Location = new Point(6, 55);
@@ -873,6 +863,7 @@ namespace WinFormsApp1.View
             // 
             // tcLaporan
             // 
+            tcLaporan.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             tcLaporan.Controls.Add(tabPage6);
             tcLaporan.Controls.Add(tabPage7);
             tcLaporan.Controls.Add(tabPage8);
@@ -914,6 +905,8 @@ namespace WinFormsApp1.View
             // 
             // dgvTransaksi
             // 
+            dgvTransaksi.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            dgvTransaksi.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
             dgvTransaksi.BackgroundColor = SystemColors.ButtonHighlight;
             dgvTransaksi.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvTransaksi.Location = new Point(74, 206);
@@ -923,6 +916,7 @@ namespace WinFormsApp1.View
             // 
             // panel23
             // 
+            panel23.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             panel23.BackColor = Color.FromArgb(192, 255, 192);
             panel23.Controls.Add(Lbl_JumlahTransaksi);
             panel23.Controls.Add(Lbl_Pemasukan);
@@ -975,6 +969,7 @@ namespace WinFormsApp1.View
             // 
             // btn_Refresh41
             // 
+            btn_Refresh41.Anchor = AnchorStyles.Right;
             btn_Refresh41.Location = new Point(802, 167);
             btn_Refresh41.Name = "btn_Refresh41";
             btn_Refresh41.Size = new Size(118, 23);
@@ -992,6 +987,7 @@ namespace WinFormsApp1.View
             // 
             // btn_Filter41
             // 
+            btn_Filter41.Anchor = AnchorStyles.Right;
             btn_Filter41.Location = new Point(664, 167);
             btn_Filter41.Name = "btn_Filter41";
             btn_Filter41.Size = new Size(118, 23);
@@ -1039,6 +1035,7 @@ namespace WinFormsApp1.View
             // 
             // label2
             // 
+            label2.Anchor = AnchorStyles.None;
             label2.AutoSize = true;
             label2.BackColor = Color.FromArgb(49, 106, 14);
             label2.Font = new Font("Segoe UI", 21.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
@@ -1066,6 +1063,7 @@ namespace WinFormsApp1.View
             // 
             // btnRiwayat
             // 
+            btnRiwayat.Anchor = AnchorStyles.Right;
             btnRiwayat.Location = new Point(791, 58);
             btnRiwayat.Name = "btnRiwayat";
             btnRiwayat.Size = new Size(163, 31);
@@ -1105,6 +1103,8 @@ namespace WinFormsApp1.View
             // 
             // dgvStok
             // 
+            dgvStok.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            dgvStok.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
             dgvStok.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvStok.Location = new Point(17, 97);
             dgvStok.Name = "dgvStok";
@@ -1127,6 +1127,7 @@ namespace WinFormsApp1.View
             // 
             // btnLunas
             // 
+            btnLunas.Anchor = AnchorStyles.Right;
             btnLunas.Location = new Point(868, 67);
             btnLunas.Name = "btnLunas";
             btnLunas.Size = new Size(86, 38);
@@ -1156,6 +1157,8 @@ namespace WinFormsApp1.View
             // 
             // dgvDenda
             // 
+            dgvDenda.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            dgvDenda.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
             dgvDenda.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvDenda.Location = new Point(6, 112);
             dgvDenda.Name = "dgvDenda";
@@ -1184,6 +1187,7 @@ namespace WinFormsApp1.View
             // 
             // label10
             // 
+            label10.Anchor = AnchorStyles.None;
             label10.AutoSize = true;
             label10.BackColor = Color.FromArgb(49, 106, 14);
             label10.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
@@ -1198,7 +1202,7 @@ namespace WinFormsApp1.View
             // 
             btnLaporanTransaksi.BackColor = Color.FromArgb(49, 106, 14);
             btnLaporanTransaksi.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnLaporanTransaksi.ForeColor = Color.White;
+            btnLaporanTransaksi.ForeColor = Color.FromArgb(49, 106, 14);
             btnLaporanTransaksi.Location = new Point(36, 127);
             btnLaporanTransaksi.Name = "btnLaporanTransaksi";
             btnLaporanTransaksi.Size = new Size(137, 39);
@@ -1218,11 +1222,12 @@ namespace WinFormsApp1.View
             // 
             // button8
             // 
+            button8.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             button8.BackColor = Color.FromArgb(49, 106, 14);
             button8.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button8.Location = new Point(7, 59);
             button8.Name = "button8";
-            button8.Size = new Size(954, 62);
+            button8.Size = new Size(976, 62);
             button8.TabIndex = 82;
             button8.UseVisualStyleBackColor = false;
             // 
@@ -1273,6 +1278,7 @@ namespace WinFormsApp1.View
             // 
             // label6
             // 
+            label6.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             label6.AutoSize = true;
             label6.BackColor = Color.Transparent;
             label6.Font = new Font("Microsoft Sans Serif", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -1286,7 +1292,7 @@ namespace WinFormsApp1.View
             // 
             // panel7
             // 
-            panel7.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            panel7.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             panel7.BackColor = Color.FromArgb(122, 148, 114);
             panel7.Controls.Add(btnBatal);
             panel7.Controls.Add(btnSimpan);
@@ -1862,8 +1868,6 @@ namespace WinFormsApp1.View
         private DataGridView dgvDashboard;
         private DataGridView dgvTransaksi;
         private Button btnUpdate;
-        private Button btnAlat;
-        private Button btnProduk;
         private Button btnSewaSelesai;
         private Button btnAlat42;
         private Button btnRiwayat;

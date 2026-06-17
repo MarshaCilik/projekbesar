@@ -56,8 +56,6 @@ namespace WinFormsApp1.View
                 label17.MouseLeave += (s, e) => label17.ForeColor = Color.White;
             }
 
-            btnProduk.Click += btnDashboardProduk_Click;
-            btnAlat.Click += btnDashboardAlat_Click;
             btnRefresh1.Click += (s, e) => LoadDashboardData();
 
             // Update Stok Tab Events
@@ -156,6 +154,7 @@ namespace WinFormsApp1.View
             {
                 txtNamaKaryawan4.Text = UserSession.Username;
                 PilihMenuLaporan("Transaksi");
+                tcLaporan.ItemSize = new Size(0, 1);
             }
             else if (index == 4)
             {
@@ -192,7 +191,7 @@ namespace WinFormsApp1.View
                 txtJumlahTransaksi.Text = stats.TotalTransaksiDiproses.ToString();
                 txtJumlahDiantar.Text = stats.TotalTransaksiDiantar.ToString();
                 txtJumlahPesanan.Text = stats.TotalPesananMasuk.ToString();
-                
+
                 DataTable dt = db.GetDashboardTransaksi();
                 DataView dv = dt.DefaultView;
                 dv.RowFilter = "status_transaksi = 'Diproses'";
@@ -202,45 +201,6 @@ namespace WinFormsApp1.View
             {
                 MessageBox.Show("Gagal memuat data dashboard: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        private void btnDashboardProduk_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                DataTable dt = db.GetDashboardTransaksi();
-                DataView dv = dt.DefaultView;
-                var query = dt.AsEnumerable().Where(r => 
-                {
-                    var produkDb = db.GetStokBarang().AsEnumerable().Select(p => p.Field<string>("nama")).ToList();
-                    return produkDb.Contains(r.Field<string>("barang_atau_alat"));
-                });
-                
-                if (query.Any())
-                    dgvDashboard.DataSource = query.CopyToDataTable();
-                else
-                    dgvDashboard.DataSource = dt.Clone();
-            }
-            catch {}
-        }
-
-        private void btnDashboardAlat_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                DataTable dt = db.GetDashboardTransaksi();
-                var query = dt.AsEnumerable().Where(r => 
-                {
-                    var alatDb = db.GetStokAlat().AsEnumerable().Select(p => p.Field<string>("nama")).ToList();
-                    return alatDb.Contains(r.Field<string>("barang_atau_alat"));
-                });
-                
-                if (query.Any())
-                    dgvDashboard.DataSource = query.CopyToDataTable();
-                else
-                    dgvDashboard.DataSource = dt.Clone();
-            }
-            catch {}
         }
 
         private void labelStatusPembayaran_Click(object sender, EventArgs e)
@@ -288,6 +248,13 @@ namespace WinFormsApp1.View
             DataGridViewRow row = dgvDashboard.SelectedRows[0];
             int transaksiId = Convert.ToInt32(row.Cells["transaksi_id"].Value);
             string statusTransaksi = row.Cells["status_transaksi"].Value.ToString();
+            string jenisPesanan = row.Cells["jenis_pesanan"].Value?.ToString() ?? "";
+
+            if (jenisPesanan != "Penyewaan")
+            {
+                MessageBox.Show("Aksi ini hanya berlaku untuk penyewaan alat!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             if (statusTransaksi.Equals("Selesai", StringComparison.OrdinalIgnoreCase))
             {
@@ -362,57 +329,29 @@ namespace WinFormsApp1.View
 
         private void ShowUpdateStokPopup(string namaBarang, int currentStok)
         {
-            Form prompt = new Form()
+            using (UpdateStok popup = new UpdateStok(namaBarang, currentStok))
             {
-                Width = 400,
-                Height = 250,
-                FormBorderStyle = FormBorderStyle.FixedDialog,
-                Text = "Update Stok",
-                StartPosition = FormStartPosition.CenterScreen,
-                MaximizeBox = false,
-                MinimizeBox = false
-            };
-            Label lblNama = new Label() { Left = 20, Top = 25, Text = "Nama Barang:" };
-            TextBox txtNama = new TextBox() { Left = 120, Top = 20, Width = 240, Text = namaBarang, ReadOnly = true };
-            
-            Label lblStok = new Label() { Left = 20, Top = 65, Text = "Stok Saat Ini:" };
-            TextBox txtStok = new TextBox() { Left = 120, Top = 60, Width = 100, Text = currentStok.ToString() };
-            
-            Button btnMinus = new Button() { Left = 80, Top = 58, Width = 30, Text = "-" };
-            Button btnPlus = new Button() { Left = 230, Top = 58, Width = 30, Text = "+" };
-            
-            btnMinus.Click += (s, ev) => { if(int.TryParse(txtStok.Text, out int val) && val > 0) txtStok.Text = (val - 1).ToString(); };
-            btnPlus.Click += (s, ev) => { if(int.TryParse(txtStok.Text, out int val)) txtStok.Text = (val + 1).ToString(); };
-
-            Button confirmation = new Button() { Text = "Simpan", Left = 250, Width = 110, Top = 150, DialogResult = DialogResult.OK };
-            Button cancel = new Button() { Text = "Batal", Left = 120, Width = 110, Top = 150, DialogResult = DialogResult.Cancel };
-            
-            prompt.Controls.Add(lblNama); prompt.Controls.Add(txtNama);
-            prompt.Controls.Add(lblStok); prompt.Controls.Add(txtStok);
-            prompt.Controls.Add(btnMinus); prompt.Controls.Add(btnPlus);
-            prompt.Controls.Add(confirmation); prompt.Controls.Add(cancel);
-            
-            prompt.AcceptButton = confirmation;
-            prompt.CancelButton = cancel;
-
-            if (prompt.ShowDialog() == DialogResult.OK)
-            {
-                if (int.TryParse(txtStok.Text, out int newStok) && newStok >= 0)
+                popup.StartPosition = FormStartPosition.CenterParent;
+                if (popup.ShowDialog() == DialogResult.OK)
                 {
-                    try
+                    int newStok = popup.StokBaru;
+                    if (newStok >= 0)
                     {
-                        db.UpdateStok(selectedStokId, newStok, stokMode, UserSession.UserId);
-                        MessageBox.Show("Stok berhasil diperbarui!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        SwitchStokView(stokMode);
+                        try
+                        {
+                            db.UpdateStok(selectedStokId, newStok, stokMode, UserSession.UserId);
+                            MessageBox.Show("Stok berhasil diperbarui!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            SwitchStokView(stokMode);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Gagal menyimpan perubahan stok: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        MessageBox.Show("Gagal menyimpan perubahan stok: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Jumlah stok harus berupa angka positif!", "Validasi Gagal", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
-                }
-                else
-                {
-                    MessageBox.Show("Jumlah stok harus berupa angka positif!", "Validasi Gagal", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
         }
@@ -641,7 +580,7 @@ namespace WinFormsApp1.View
                 string end = dtp_KeTanggal.Value.ToString("yyyy-MM-dd 23:59:59");
                 dv.RowFilter = $"status_transaksi IN ('Selesai', 'Ditolak', 'Dibatalkan') AND created_at >= '{start}' AND created_at <= '{end}'";
                 dgvTransaksi.DataSource = dv.ToTable();
-                
+
                 Lbl_JumlahTransaksi.Text = dv.Count.ToString();
             }
             catch (Exception ex)
@@ -676,7 +615,7 @@ namespace WinFormsApp1.View
                     }
                     dgvTransaksi.DataSource = dv.ToTable();
                 }
-                catch {}
+                catch { }
             }
         }
 
@@ -720,7 +659,7 @@ namespace WinFormsApp1.View
                 dv.RowFilter = string.Format("nama_petani LIKE '%{0}%'", keyword.Replace("'", "''"));
                 dgvDenda.DataSource = dv.ToTable();
             }
-            catch {}
+            catch { }
         }
 
         private void btnDendaLunas_Click(object sender, EventArgs e)
@@ -947,6 +886,18 @@ namespace WinFormsApp1.View
         }
 
         private void dgvUpdateStok_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void Logout_Click(object sender, EventArgs e)
+        {
+            LoginForm loginForm = new LoginForm();
+            this.Hide();
+            loginForm.Show();
+        }
+
+        private void btnLaporan_Click(object sender, EventArgs e)
         {
 
         }

@@ -32,7 +32,6 @@
             label1 = new Label();
             btnDiterima = new Button();
             btnDItolak = new Button();
-            button1 = new Button();
             btnBack = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvPesanan).BeginInit();
             SuspendLayout();
@@ -74,15 +73,6 @@
             btnDItolak.Text = "Ditolak";
             btnDItolak.UseVisualStyleBackColor = true;
             // 
-            // button1
-            // 
-            button1.Location = new Point(32, 88);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 23);
-            button1.TabIndex = 4;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
-            // 
             // btnBack
             // 
             btnBack.BackColor = Color.FromArgb(255, 128, 128);
@@ -101,7 +91,6 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(951, 507);
             Controls.Add(btnBack);
-            Controls.Add(button1);
             Controls.Add(btnDItolak);
             Controls.Add(btnDiterima);
             Controls.Add(label1);
@@ -119,7 +108,6 @@
         private Label label1;
         private Button btnDiterima;
         private Button btnDItolak;
-        private Button button1;
         private Button btnBack;
     }
 }

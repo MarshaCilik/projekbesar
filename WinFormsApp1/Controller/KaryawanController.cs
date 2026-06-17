@@ -12,7 +12,7 @@ namespace WinFormsApp1.Controller
             DataTable dt = new DataTable();
             using (NpgsqlConnection conn = connectDB.GetConnection())
             {
-                string sql = "SELECT * FROM v_karyawan_dashboard_transaksi ORDER BY created_at DESC;";
+                string sql = "SELECT * FROM v_karyawan_dashboard_transaksi_detail ORDER BY created_at DESC;";
                 using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                 {
                     using (NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd))
