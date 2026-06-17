@@ -27,7 +27,7 @@ namespace WinFormsApp1.View
             dgvPesanan.ReadOnly = true;
             dgvPesanan.AllowUserToAddRows = false;
             dgvPesanan.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            
+
             LoadKurirComboBox();
             LoadPesananData();
 
@@ -44,7 +44,7 @@ namespace WinFormsApp1.View
                 cbxKurir.DisplayMember = "Nama";
                 cbxKurir.ValueMember = "Id";
                 cbxKurir.SelectedIndex = -1;
-                cbxKurir.Enabled = false;
+                cbxKurir.Enabled = true;
             }
             catch (Exception ex)
             {

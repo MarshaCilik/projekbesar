@@ -64,6 +64,7 @@
             btnDiterima.TabIndex = 2;
             btnDiterima.Text = "Diterima";
             btnDiterima.UseVisualStyleBackColor = true;
+            btnDiterima.Click += btnDiterima_Click;
             // 
             // btnDItolak
             // 
