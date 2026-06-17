@@ -10,6 +10,8 @@ namespace WinFormsApp1.Controller
     public class c_barangtani
     {
         barangTaniContext context = new barangTaniContext();
+
+
         public List<barangTani> ReadBarangTani() //method read
         {
             return context.ReadBarangTani();
@@ -45,13 +47,11 @@ namespace WinFormsApp1.Controller
             return null;
         }
 
-        public string AddBarangTani(barangTani barang)
+        public string AddBarangTani(AlatTani barang)
         {
-            string val = ValidationBarang(barang);
-            if (val != null) return val;
             try
             {
-                context.AddBarangTani(barang);
+                context.AddAlatTani(barang);
                 return "Data barang berhasil ditambahkan.";
             }
             catch (Exception ex)
@@ -94,7 +94,7 @@ namespace WinFormsApp1.Controller
             if (val != null) return val;
             try
             {
-                context.AddAlatTani(alat);
+                context.AddAlatSewa(alat);
                 return "Data alat sewa berhasil ditambahkan.";
             }
             catch (Exception ex)
@@ -129,6 +129,26 @@ namespace WinFormsApp1.Controller
             {
                 return "Gagal menghapus alat sewa: " + ex.Message;
             }
+        }
+
+        public List<barangTani> SearchBarangTani(string keyword)
+        {
+            return context.SearchBarangTani(keyword);
+        }
+
+        public List<AlatTani> SearchAlatTani(string keyword)
+        {
+            return context.SearchAlatTani(keyword);
+        }
+
+        public System.Data.DataTable GetStokTersedikit()
+        {
+            return context.GetStokTersedikit();
+        }
+
+        public System.Data.DataTable GetProdukTerlaris()
+        {
+            return context.GetProdukTerlaris();
         }
     }
 }

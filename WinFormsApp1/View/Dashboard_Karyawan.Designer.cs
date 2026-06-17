@@ -874,7 +874,6 @@ namespace WinFormsApp1.View
             // 
             // tcLaporan
             // 
-            tcLaporan.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             tcLaporan.Controls.Add(tabPage6);
             tcLaporan.Controls.Add(tabPage7);
             tcLaporan.Controls.Add(tabPage8);

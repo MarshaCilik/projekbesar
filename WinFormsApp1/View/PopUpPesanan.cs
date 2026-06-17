@@ -83,6 +83,12 @@ namespace WinFormsApp1.View
                 return;
             }
 
+            if (quantity > Barang.stok)
+            {
+                MessageBox.Show($"Stok tidak mencukupi! Stok yang tersedia hanya {Barang.stok}.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             if (barangSudahAdaDiPesanan)
             {
                 // Barang sudah ada di pesanan: tambah quantity saja

@@ -17,5 +17,23 @@ namespace WinFormsApp1.Controller
 
         public List<Transaksi> GetTagihanDenda(Users user)
             => context.GetTagihanDenda(user);
+
+        public string GetStatusDistribusi(int transaksiId)
+            => context.GetStatusDistribusi(transaksiId);
+
+        public bool TerimaPesanan(int transaksiId)
+            => context.TerimaPesanan(transaksiId);
+
+        // ================= UNTUK ADMIN =================
+
+        public List<Transaksi> GetAllTransaksiSelesai(DateTime dariTanggal, DateTime keTanggal, string searchId)
+        {
+            return context.GetAllTransaksiSelesai(dariTanggal, keTanggal, searchId);
+        }
+
+        public System.Data.DataTable GetAuditTransaksi()
+        {
+            return context.GetAuditTransaksi();
+        }
     }
 }

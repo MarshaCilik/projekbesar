@@ -70,10 +70,8 @@ namespace WinFormsApp1.View
 
         private void RegisterEvents()
         {
-            panel5.Click += Btn_Simpan_Click;
-            label5.Click += Btn_Simpan_Click;
-            panel6.Click += Btn_Batal_Click;
-            label6.Click += Btn_Batal_Click;
+            btn_selesai_editAlat.Click += Btn_Simpan_Click;
+            btn_batal_editAlat.Click += Btn_Batal_Click;
         }
 
         private void Btn_Simpan_Click(object sender, EventArgs e)

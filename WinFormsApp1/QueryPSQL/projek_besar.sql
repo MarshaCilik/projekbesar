@@ -2,12 +2,12 @@
 -- PostgreSQL database dump
 --
 
-\restrict XbMjKz50ULmerFaYoEgroEYnGkVl9rJksBvs4Z0AZTc9zakAFm2bVuaJMLYzK0z
+\restrict gDbhnHq5Qo9jIycmyxV4QhperdFlesqkA3zyWypUfKIWOpLt68WDwQAdNBvadGj
 
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
 
--- Started on 2026-06-15 20:50:42
+-- Started on 2026-06-17 07:50:38
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -22,7 +22,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- TOC entry 283 (class 1255 OID 74523)
+-- TOC entry 266 (class 1255 OID 82808)
 -- Name: add_alat_sewa(character varying, integer, numeric, numeric, character varying); Type: PROCEDURE; Schema: public; Owner: postgres
 --
 
@@ -57,7 +57,7 @@ $$;
 ALTER PROCEDURE public.add_alat_sewa(IN p_nama_alat character varying, IN p_stok integer, IN p_harga_sewa_perhari numeric, IN p_harga_denda_perhari numeric, IN p_nama_kategori character varying) OWNER TO postgres;
 
 --
--- TOC entry 268 (class 1255 OID 67308)
+-- TOC entry 267 (class 1255 OID 82809)
 -- Name: add_new_barang(character varying, integer, numeric, character varying); Type: PROCEDURE; Schema: public; Owner: postgres
 --
 
@@ -86,7 +86,7 @@ $$;
 ALTER PROCEDURE public.add_new_barang(IN p_nama_barang character varying, IN p_stok integer, IN p_harga_per_item numeric, IN p_kategori character varying) OWNER TO postgres;
 
 --
--- TOC entry 280 (class 1255 OID 67303)
+-- TOC entry 269 (class 1255 OID 82810)
 -- Name: add_new_users_petani(character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying); Type: PROCEDURE; Schema: public; Owner: postgres
 --
 
@@ -126,56 +126,63 @@ $$;
 ALTER PROCEDURE public.add_new_users_petani(IN p_nama character varying, IN p_email character varying, IN p_no_telp character varying, IN p_username character varying, IN p_password character varying, IN p_alamat character varying, IN p_kecamatan character varying, IN p_desa character varying) OWNER TO postgres;
 
 --
--- TOC entry 282 (class 1255 OID 67504)
--- Name: add_pesanan_alat_sewa(integer, character varying, integer, integer, date); Type: PROCEDURE; Schema: public; Owner: postgres
+-- TOC entry 285 (class 1255 OID 82811)
+-- Name: add_pesanan_alat_sewa(integer, character varying, integer, integer, date, integer); Type: PROCEDURE; Schema: public; Owner: postgres
 --
 
-CREATE PROCEDURE public.add_pesanan_alat_sewa(IN p_users_id integer, IN p_opsi_pengiriman character varying, IN p_alat_sewa_id integer, IN p_quantity integer, IN p_tanggal_pengembalian date)
+CREATE PROCEDURE public.add_pesanan_alat_sewa(IN p_users_id integer, IN p_opsi_pengiriman character varying, IN p_alat_sewa_id integer, IN p_quantity integer, IN p_tanggal_pengembalian date, IN p_opsi_pengembalian_id integer)
     LANGUAGE plpgsql
     AS $$
 DECLARE
-    v_pesanan_id INT;
-    v_status_pesanan VARCHAR;
-    v_harga_sewa_perhari NUMERIC;
-BEGIN    
-    -- 1. Mengambil harga sewa per hari dari tabel alat_sewa
-    SELECT harga_sewa_perhari 
-    INTO v_harga_sewa_perhari
-    FROM alat_sewa
-    WHERE alat_sewa_id = p_alat_sewa_id;
-
-    -- Validasi jika alat sewa tidak ditemukan
-    IF v_harga_sewa_perhari IS NULL THEN
-        RAISE EXCEPTION 'Alat sewa dengan ID % tidak ditemukan.', p_alat_sewa_id;
-    END IF;
-
-    -- 2. Mencari apakah user memiliki pesanan yang berstatus 'Belum Checkout'
-    SELECT status_pesanan, pesanan_id
-    INTO v_status_pesanan, v_pesanan_id
-    FROM pesanan
-    WHERE users_id = p_users_id AND status_pesanan = 'Belum Checkout'
-    LIMIT 1;
-
-    -- 3. Jika TIDAK ADA pesanan dengan status 'Belum Checkout', buat pesanan baru
+    v_pesanan_id INT; v_status_pesanan VARCHAR; v_harga_sewa_perhari NUMERIC;
+BEGIN
+    SELECT harga_sewa_perhari INTO v_harga_sewa_perhari FROM alat_sewa WHERE alat_sewa_id = p_alat_sewa_id;
+    IF v_harga_sewa_perhari IS NULL THEN RAISE EXCEPTION 'Alat sewa dengan ID % tidak ditemukan.', p_alat_sewa_id; END IF;
+    SELECT status_pesanan, pesanan_id INTO v_status_pesanan, v_pesanan_id FROM pesanan WHERE users_id = p_users_id AND status_pesanan = 'Belum Checkout' LIMIT 1;
     IF v_pesanan_id IS NULL THEN
-        INSERT INTO pesanan(tanggal_pesanan, users_id, status_pesanan, opsi_pengiriman)
-        VALUES (CURRENT_DATE, p_users_id, 'Belum Checkout', p_opsi_pengiriman) 
+        INSERT INTO pesanan(tanggal_pesanan, users_id, status_pesanan, opsi_pengiriman) VALUES (CURRENT_DATE, p_users_id, 'Belum Checkout', p_opsi_pengiriman) RETURNING pesanan_id INTO v_pesanan_id;
+    END IF;
+    INSERT INTO detail_pesanan_sewa(quantity, harga_sewa_perhari, tgl_sewa, tgl_pengembalian, pesanan_id, alat_sewa_id, opsi_pengembalian_id)
+    VALUES (p_quantity, v_harga_sewa_perhari, CURRENT_DATE, p_tanggal_pengembalian, v_pesanan_id, p_alat_sewa_id, p_opsi_pengembalian_id);
+END; $$;
+
+
+ALTER PROCEDURE public.add_pesanan_alat_sewa(IN p_users_id integer, IN p_opsi_pengiriman character varying, IN p_alat_sewa_id integer, IN p_quantity integer, IN p_tanggal_pengembalian date, IN p_opsi_pengembalian_id integer) OWNER TO postgres;
+
+--
+-- TOC entry 300 (class 1255 OID 83189)
+-- Name: add_pesanan_alat_sewa(integer, character varying, character varying, integer, integer, date, integer); Type: PROCEDURE; Schema: public; Owner: postgres
+--
+
+CREATE PROCEDURE public.add_pesanan_alat_sewa(IN p_users_id integer, IN p_opsi_pengiriman character varying, IN p_metode_pembayaran character varying, IN p_alat_sewa_id integer, IN p_quantity integer, IN p_tanggal_pengembalian date, IN p_opsi_pengembalian_id integer)
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    v_pesanan_id int;
+    v_harga numeric;
+BEGIN
+    SELECT pesanan_id INTO v_pesanan_id
+    FROM pesanan
+    WHERE users_id = p_users_id AND status_pesanan = 'Belum Checkout';
+
+    IF v_pesanan_id IS NULL THEN
+        INSERT INTO pesanan (users_id, status_pesanan, opsi_pengiriman, metode_pembayaran)
+        VALUES (p_users_id, 'Belum Checkout', p_opsi_pengiriman, p_metode_pembayaran)
         RETURNING pesanan_id INTO v_pesanan_id;
     END IF;
 
-    -- 4. Masukkan item sewa ke dalam detail_pesanan_sewa
-    -- tgl_sewa otomatis diset hari ini (CURRENT_DATE)
-    INSERT INTO detail_pesanan_sewa(quantity, harga_sewa_perhari, tgl_sewa, tgl_pengembalian, pesanan_id, alat_sewa_id)
-    VALUES (p_quantity, v_harga_sewa_perhari, CURRENT_DATE, p_tanggal_pengembalian, v_pesanan_id, p_alat_sewa_id);
+    SELECT harga_sewa_perhari INTO v_harga FROM alat_sewa WHERE alat_sewa_id = p_alat_sewa_id;
 
+    INSERT INTO detail_pesanan_sewa (pesanan_id, alat_sewa_id, quantity, harga_sewa_perhari, tgl_sewa, tgl_pengembalian, opsi_pengembalian_id)
+    VALUES (v_pesanan_id, p_alat_sewa_id, p_quantity, v_harga, CURRENT_DATE, p_tanggal_pengembalian, p_opsi_pengembalian_id);
 END;
 $$;
 
 
-ALTER PROCEDURE public.add_pesanan_alat_sewa(IN p_users_id integer, IN p_opsi_pengiriman character varying, IN p_alat_sewa_id integer, IN p_quantity integer, IN p_tanggal_pengembalian date) OWNER TO postgres;
+ALTER PROCEDURE public.add_pesanan_alat_sewa(IN p_users_id integer, IN p_opsi_pengiriman character varying, IN p_metode_pembayaran character varying, IN p_alat_sewa_id integer, IN p_quantity integer, IN p_tanggal_pengembalian date, IN p_opsi_pengembalian_id integer) OWNER TO postgres;
 
 --
--- TOC entry 281 (class 1255 OID 67453)
+-- TOC entry 286 (class 1255 OID 82812)
 -- Name: add_pesanan_barang(integer, character varying, integer, integer); Type: PROCEDURE; Schema: public; Owner: postgres
 --
 
@@ -222,7 +229,86 @@ $$;
 ALTER PROCEDURE public.add_pesanan_barang(IN p_users_id integer, IN p_opsi_pengiriman character varying, IN p_barang_id integer, IN p_quantity integer) OWNER TO postgres;
 
 --
--- TOC entry 285 (class 1255 OID 74526)
+-- TOC entry 299 (class 1255 OID 83188)
+-- Name: add_pesanan_barang(integer, character varying, character varying, integer, integer); Type: PROCEDURE; Schema: public; Owner: postgres
+--
+
+CREATE PROCEDURE public.add_pesanan_barang(IN p_users_id integer, IN p_opsi_pengiriman character varying, IN p_metode_pembayaran character varying, IN p_barang_id integer, IN p_quantity integer)
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    v_pesanan_id int;
+    v_harga numeric;
+BEGIN
+    -- Cek pesanan 'Belum Checkout'
+    SELECT pesanan_id INTO v_pesanan_id
+    FROM pesanan
+    WHERE users_id = p_users_id AND status_pesanan = 'Belum Checkout';
+
+    IF v_pesanan_id IS NULL THEN
+        -- Buat pesanan baru dengan metode_pembayaran
+        INSERT INTO pesanan (users_id, status_pesanan, opsi_pengiriman, metode_pembayaran)
+        VALUES (p_users_id, 'Belum Checkout', p_opsi_pengiriman, p_metode_pembayaran)
+        RETURNING pesanan_id INTO v_pesanan_id;
+    END IF;
+
+    -- Ambil harga
+    SELECT harga_per_item INTO v_harga FROM barang WHERE barang_id = p_barang_id;
+
+    -- Insert ke detail pesanan
+    INSERT INTO detail_pesanan_pembelian (pesanan_id, barang_id, quantity, harga_per_item)
+    VALUES (v_pesanan_id, p_barang_id, p_quantity, v_harga);
+END;
+$$;
+
+
+ALTER PROCEDURE public.add_pesanan_barang(IN p_users_id integer, IN p_opsi_pengiriman character varying, IN p_metode_pembayaran character varying, IN p_barang_id integer, IN p_quantity integer) OWNER TO postgres;
+
+--
+-- TOC entry 298 (class 1255 OID 83237)
+-- Name: audit_transaksi_trigger_func(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.audit_transaksi_trigger_func() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF (TG_OP = 'INSERT') THEN
+        INSERT INTO audit_transaksi(transaksi_id, aksi, kolom_perubahan, waktu_perubahan, users_id)
+        VALUES (NEW.transaksi_id, 'INSERT', 'Semua (Data Baru)', NOW(), NEW.users_id);
+        RETURN NEW;
+        
+    ELSIF (TG_OP = 'UPDATE') THEN
+        -- Cek perubahan pada status_transaksi
+        IF (OLD.status_transaksi IS DISTINCT FROM NEW.status_transaksi) THEN
+            INSERT INTO audit_transaksi(transaksi_id, aksi, kolom_perubahan, waktu_perubahan, users_id)
+            VALUES (NEW.transaksi_id, 'UPDATE', 'status_transaksi', NOW(), NEW.users_id);
+        END IF;
+
+        -- Cek perubahan pada status_pembayaran
+        IF (OLD.status_pembayaran IS DISTINCT FROM NEW.status_pembayaran) THEN
+            INSERT INTO audit_transaksi(transaksi_id, aksi, kolom_perubahan, waktu_perubahan, users_id)
+            VALUES (NEW.transaksi_id, 'UPDATE', 'status_pembayaran', NOW(), NEW.users_id);
+        END IF;
+
+        -- Cek perubahan pada status_distribusi_id
+        IF (OLD.status_distribusi_id IS DISTINCT FROM NEW.status_distribusi_id) THEN
+            INSERT INTO audit_transaksi(transaksi_id, aksi, kolom_perubahan, waktu_perubahan, users_id)
+            VALUES (NEW.transaksi_id, 'UPDATE', 'status_distribusi', NOW(), NEW.users_id);
+        END IF;
+
+        RETURN NEW;
+    END IF;
+    
+    RETURN NULL;
+END;
+$$;
+
+
+ALTER FUNCTION public.audit_transaksi_trigger_func() OWNER TO postgres;
+
+--
+-- TOC entry 287 (class 1255 OID 82813)
 -- Name: batal_pesanan_item(integer, text, character varying); Type: PROCEDURE; Schema: public; Owner: postgres
 --
 
@@ -261,114 +347,77 @@ $$;
 ALTER PROCEDURE public.batal_pesanan_item(IN p_pesanan_id integer, IN p_jenis_pesanan text, IN p_nama_item character varying) OWNER TO postgres;
 
 --
--- TOC entry 287 (class 1255 OID 74525)
--- Name: checkout_pesanan(integer); Type: PROCEDURE; Schema: public; Owner: postgres
+-- TOC entry 288 (class 1255 OID 82814)
+-- Name: petani_checkout_pesanan(integer); Type: PROCEDURE; Schema: public; Owner: postgres
 --
 
-CREATE PROCEDURE public.checkout_pesanan(IN p_pesanan_id integer)
+CREATE PROCEDURE public.petani_checkout_pesanan(IN p_pesanan_id integer)
     LANGUAGE plpgsql
     AS $$
 DECLARE
-    v_transaksi_id int;
-    v_users_id int;
-    v_opsi varchar;
-    v_distribusi_id int;
-    r_detail_pembelian RECORD;
-    r_detail_sewa RECORD;
+    v_transaksi_id int; v_users_id int; v_opsi varchar; v_distribusi_id int;
+    r_detail_pembelian RECORD; r_detail_sewa RECORD;
 BEGIN
-    -- Ambil info pesanan
-    SELECT users_id, opsi_pengiriman
-    INTO v_users_id, v_opsi
-    FROM pesanan
-    WHERE pesanan_id = p_pesanan_id AND status_pesanan = 'Belum Checkout';
-
-    IF v_users_id IS NULL THEN
-        RAISE EXCEPTION 'Pesanan tidak ditemukan atau sudah di-checkout.';
-    END IF;
-
-    -- Update status pesanan
-    UPDATE pesanan
-    SET status_pesanan = 'Sudah Checkout'
-    WHERE pesanan_id = p_pesanan_id;
-
-    -- Tentukan status distribusi awal (Mencegah null pada status_distribusi_id)
-    IF v_opsi = 'diantar' THEN
-        v_distribusi_id := 1; -- Diproses
-    ELSE
-        v_distribusi_id := 4; -- Ambil Sendiri
-    END IF;
-
-    -- Buat record transaksi utama
-    INSERT INTO transaksi (created_at, catatan, users_id, status_transaksi, status_distribusi_id, metode_pembayaran, status_pembayaran)
-    VALUES (NOW(), 'Checkout pesanan ID ' || p_pesanan_id, v_users_id, 'Diproses', v_distribusi_id, 'Cash', 'belum lunas')
-    RETURNING transaksi_id INTO v_transaksi_id;
-
-    -- Salin detail pembelian ke transaksi
-    FOR r_detail_pembelian IN 
-        SELECT quantity, harga_per_item, barang_id 
-        FROM detail_pesanan_pembelian 
-        WHERE pesanan_id = p_pesanan_id
-    LOOP
-        INSERT INTO detail_transaksi_pembelian (quantity, harga_per_item, transaksi_id, barang_id)
-        VALUES (r_detail_pembelian.quantity, r_detail_pembelian.harga_per_item, v_transaksi_id, r_detail_pembelian.barang_id);
+    SELECT users_id, opsi_pengiriman INTO v_users_id, v_opsi FROM pesanan WHERE pesanan_id = p_pesanan_id AND status_pesanan = 'Belum Checkout';
+    IF v_users_id IS NULL THEN RAISE EXCEPTION 'Pesanan tidak ditemukan atau sudah di-checkout.'; END IF;
+    UPDATE pesanan SET status_pesanan = 'Sudah Checkout' WHERE pesanan_id = p_pesanan_id;
+    IF v_opsi = 'diantar' THEN v_distribusi_id := 1; ELSE v_distribusi_id := 4; END IF;
+    INSERT INTO transaksi (created_at, catatan, users_id, status_transaksi, status_distribusi_id, status_pembayaran, pesanan_id)
+    VALUES (NOW(), 'Checkout pesanan ID ' || p_pesanan_id, v_users_id, 'Diproses', v_distribusi_id, 'belum lunas', p_pesanan_id) RETURNING transaksi_id INTO v_transaksi_id;
+    FOR r_detail_pembelian IN SELECT quantity, harga_per_item, barang_id FROM detail_pesanan_pembelian WHERE pesanan_id = p_pesanan_id LOOP
+        INSERT INTO detail_transaksi_pembelian (quantity, harga_per_item, transaksi_id, barang_id) VALUES (r_detail_pembelian.quantity, r_detail_pembelian.harga_per_item, v_transaksi_id, r_detail_pembelian.barang_id);
     END LOOP;
-
-    -- Salin detail sewa ke transaksi
-    FOR r_detail_sewa IN 
-        SELECT quantity, tgl_sewa, tgl_pengembalian, harga_sewa_perhari, alat_sewa_id 
-        FROM detail_pesanan_sewa 
-        WHERE pesanan_id = p_pesanan_id
-    LOOP
+    FOR r_detail_sewa IN SELECT quantity, tgl_sewa, tgl_pengembalian, harga_sewa_perhari, alat_sewa_id, opsi_pengembalian_id FROM detail_pesanan_sewa WHERE pesanan_id = p_pesanan_id LOOP
         INSERT INTO detail_transaksi_sewa (quantity, tgl_sewa, tgl_pengembalian, harga_sewa_perhari, denda, status_sewa, transaksi_id, alat_sewa_id, opsi_pengembalian_id)
-        VALUES (r_detail_sewa.quantity, r_detail_sewa.tgl_sewa, r_detail_sewa.tgl_pengembalian, r_detail_sewa.harga_sewa_perhari, 0, 'Belum Kembali', v_transaksi_id, r_detail_sewa.alat_sewa_id, 1);
+        VALUES (r_detail_sewa.quantity, r_detail_sewa.tgl_sewa, r_detail_sewa.tgl_pengembalian, r_detail_sewa.harga_sewa_perhari, 0, 'Belum Kembali', v_transaksi_id, r_detail_sewa.alat_sewa_id, r_detail_sewa.opsi_pengembalian_id);
     END LOOP;
+END; $$;
+
+
+ALTER PROCEDURE public.petani_checkout_pesanan(IN p_pesanan_id integer) OWNER TO postgres;
+
+--
+-- TOC entry 272 (class 1255 OID 83222)
+-- Name: checkout_petani(integer); Type: PROCEDURE; Schema: public; Owner: postgres
+--
+
+CREATE PROCEDURE public.checkout_petani(IN p_id integer)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    -- Mengubah status pesanan dari 'Belum Checkout' menjadi 'Sudah Checkout'
+    UPDATE pesanan 
+    SET status_pesanan = 'Sudah Checkout'
+    WHERE pesanan_id = p_id;
+    
 END;
 $$;
 
 
-ALTER PROCEDURE public.checkout_pesanan(IN p_pesanan_id integer) OWNER TO postgres;
+ALTER PROCEDURE public.checkout_petani(IN p_id integer) OWNER TO postgres;
 
 --
--- TOC entry 289 (class 1255 OID 74558)
--- Name: f_get_dashboard_stats(date); Type: FUNCTION; Schema: public; Owner: postgres
+-- TOC entry 296 (class 1255 OID 83180)
+-- Name: f_get_dashboard_stats(); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
-CREATE FUNCTION public.f_get_dashboard_stats(p_tanggal date) RETURNS TABLE(total_transaksi bigint, barang_dikirim bigint)
+CREATE FUNCTION public.f_get_dashboard_stats() RETURNS TABLE(total_transaksi_diproses bigint, total_transaksi_diantar bigint, total_pesanan_masuk bigint)
     LANGUAGE plpgsql
     AS $$
 BEGIN
     RETURN QUERY
     SELECT 
-        COUNT(DISTINCT t.transaksi_id)::bigint,
-        COALESCE(SUM(dp.quantity), 0)::bigint + COALESCE(SUM(ds.quantity), 0)::bigint
-    FROM transaksi t
-    LEFT JOIN detail_transaksi_pembelian dp ON t.transaksi_id = dp.transaksi_id
-    LEFT JOIN detail_transaksi_sewa ds ON t.transaksi_id = ds.transaksi_id
-    WHERE DATE(t.created_at) = p_tanggal;
+        (SELECT COUNT(transaksi_id) FROM transaksi WHERE status_transaksi = 'Diproses')::bigint AS total_transaksi_diproses,
+        (SELECT COUNT(t.transaksi_id) FROM transaksi t WHERE t.status_transaksi = 'Diproses' AND t.status_distribusi_id IN (1, 2))::bigint AS total_transaksi_diantar,
+        (SELECT COUNT(pesanan_id) FROM pesanan WHERE status_pesanan = 'Sudah Checkout')::bigint AS total_pesanan_masuk;
 END;
 $$;
 
 
-ALTER FUNCTION public.f_get_dashboard_stats(p_tanggal date) OWNER TO postgres;
+ALTER FUNCTION public.f_get_dashboard_stats() OWNER TO postgres;
 
 --
--- TOC entry 296 (class 1255 OID 74568)
--- Name: f_get_dashboard_stats(timestamp without time zone); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION public.f_get_dashboard_stats(p_tanggal timestamp without time zone) RETURNS TABLE(total_transaksi bigint, barang_dikirim bigint)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    RETURN QUERY SELECT * FROM f_get_dashboard_stats(p_tanggal::date);
-END;
-$$;
-
-
-ALTER FUNCTION public.f_get_dashboard_stats(p_tanggal timestamp without time zone) OWNER TO postgres;
-
---
--- TOC entry 267 (class 1255 OID 67307)
+-- TOC entry 265 (class 1255 OID 82817)
 -- Name: get_password_by_username(character varying); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -387,98 +436,151 @@ $$;
 ALTER FUNCTION public.get_password_by_username(p_username character varying) OWNER TO postgres;
 
 --
--- TOC entry 290 (class 1255 OID 74529)
+-- TOC entry 289 (class 1255 OID 82818)
 -- Name: get_pesanan_already_by_user(integer); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
-CREATE FUNCTION public.get_pesanan_already_by_user(p_users_id integer) RETURNS TABLE("ID" integer, "Jenis Pesanan" text, "Nama Item" character varying, "Harga Satuan" numeric, "Jumlah" integer, "Lama Sewa (Hari)" integer, "Tanggal Pemesanan" date, "Status" character varying)
+CREATE FUNCTION public.get_pesanan_already_by_user(p_users_id integer) RETURNS TABLE("ID" integer, "Jenis Pesanan" text, "Nama Item" character varying, "Harga Satuan" numeric, "Jumlah" integer, "Lama Sewa (Hari)" integer, "Tanggal Pemesanan" date, "Tanggal Pengembalian" date, "Opsi Pengembalian" character varying, "Status" character varying)
     LANGUAGE plpgsql
     AS $$
 BEGIN
     RETURN QUERY
-    -- === SEKSI 1: AMBIL DATA PEMBELIAN BARANG ===
-    SELECT 
-        p.pesanan_id AS "ID",
-        'Pembelian'::text AS "Jenis Pesanan",
-        b.nama_barang AS "Nama Item",
-        dpb.harga_per_item AS "Harga Satuan",
-        dpb.quantity AS "Jumlah",
-        0::integer AS "Lama Sewa (Hari)", -- Pembelian default 0 hari
-        p.tanggal_pesanan::date AS "Tanggal Pemesanan",
-        p.status_pesanan AS "Status"
+    SELECT p.pesanan_id, 'Pembelian'::text, b.nama_barang, dpb.harga_per_item,
+        dpb.quantity, 0::integer, p.tanggal_pesanan::date, NULL::date,
+        NULL::character varying, p.status_pesanan
     FROM pesanan p
-    JOIN detail_pesanan_pembelian dpb USING (pesanan_id)
-    JOIN barang b USING (barang_id)
+    JOIN detail_pesanan_pembelian dpb USING (pesanan_id) JOIN barang b USING (barang_id)
     WHERE p.users_id = p_users_id AND p.status_pesanan = 'Sudah Checkout'
-
     UNION ALL
-
-    -- === SEKSI 2: AMBIL DATA PENYEWAAN ALAT ===
-    SELECT 
-        p.pesanan_id AS "ID",
-        'Penyewaan'::text AS "Jenis Pesanan",
-        a.nama_alat AS "Nama Item",
-        dps.harga_sewa_perhari AS "Harga Satuan",
-        dps.quantity AS "Jumlah",
-        -- KARENA TIPE DATA DATE: Cukup kurangkan langsung tanpa casting ribet!
-        (dps.tgl_pengembalian - dps.tgl_sewa)::integer AS "Lama Sewa (Hari)",
-        p.tanggal_pesanan::date AS "Tanggal Pemesanan",
-        p.status_pesanan AS "Status"
+    SELECT p.pesanan_id, 'Penyewaan'::text, a.nama_alat, dps.harga_sewa_perhari,
+        dps.quantity, (dps.tgl_pengembalian - dps.tgl_sewa)::integer,
+        p.tanggal_pesanan::date, dps.tgl_pengembalian::date,
+        op.opsi_pengembalian, p.status_pesanan
     FROM pesanan p
-    JOIN detail_pesanan_sewa dps USING (pesanan_id)
-    JOIN alat_sewa a USING (alat_sewa_id)
+    JOIN detail_pesanan_sewa dps USING (pesanan_id) JOIN alat_sewa a USING (alat_sewa_id)
+    LEFT JOIN opsi_pengembalian op ON dps.opsi_pengembalian_id = op.opsi_pengembalian_id
     WHERE p.users_id = p_users_id AND p.status_pesanan = 'Sudah Checkout';
-END;
-$$;
+END; $$;
 
 
 ALTER FUNCTION public.get_pesanan_already_by_user(p_users_id integer) OWNER TO postgres;
 
 --
--- TOC entry 284 (class 1255 OID 74524)
+-- TOC entry 290 (class 1255 OID 82819)
 -- Name: get_pesanan_by_user(integer); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
-CREATE FUNCTION public.get_pesanan_by_user(p_users_id integer) RETURNS TABLE("ID" integer, "Jenis Pesanan" text, "Nama Item" character varying, "Harga Satuan" numeric, "Jumlah" integer, "Lama Sewa (Hari)" integer, "Tanggal Pemesanan" date, "Status" character varying)
+CREATE FUNCTION public.get_pesanan_by_user(p_users_id integer) RETURNS TABLE("ID" integer, "Jenis Pesanan" text, "Nama Item" character varying, "Harga Satuan" numeric, "Jumlah" integer, "Lama Sewa (Hari)" integer, "Tanggal Pemesanan" date, "Tanggal Pengembalian" date, "Opsi Pengembalian" character varying, "Status" character varying)
     LANGUAGE plpgsql
     AS $$
 BEGIN
     RETURN QUERY
-    SELECT p.pesanan_id AS "ID",
-        'Pembelian'::text AS "Jenis Pesanan",
-        b.nama_barang AS "Nama Item",
-        dpb.harga_per_item AS "Harga Satuan",
-        dpb.quantity AS "Jumlah",
-        0::integer AS "Lama Sewa (Hari)", -- <--- GANTI NULL MENJADI 0 DI SINI!
-        p.tanggal_pesanan::date AS "Tanggal Pemesanan",
-        p.status_pesanan AS "Status"
-       FROM pesanan p
-         JOIN detail_pesanan_pembelian dpb USING (pesanan_id)
-         JOIN barang b USING (barang_id)
-       WHERE p.users_id = p_users_id AND p.status_pesanan = 'Belum Checkout'
-
+    SELECT p.pesanan_id, 'Pembelian'::text, b.nama_barang, dpb.harga_per_item,
+        dpb.quantity, 0::integer, p.tanggal_pesanan::date, NULL::date,
+        NULL::character varying, p.status_pesanan
+    FROM pesanan p
+    JOIN detail_pesanan_pembelian dpb USING (pesanan_id) JOIN barang b USING (barang_id)
+    WHERE p.users_id = p_users_id AND p.status_pesanan = 'Belum Checkout'
     UNION ALL
-
-    SELECT p.pesanan_id AS "ID",
-        'Penyewaan'::text AS "Jenis Pesanan",
-        a.nama_alat AS "Nama Item",
-        dps.harga_sewa_perhari AS "Harga Satuan",
-        dps.quantity AS "Jumlah",
-        (dps.tgl_pengembalian - dps.tgl_sewa)::integer AS "Lama Sewa (Hari)", -- Tetap menghitung hari sewa asli
-        p.tanggal_pesanan::date AS "Tanggal Pemesanan",
-        p.status_pesanan AS "Status"
-       FROM pesanan p
-         JOIN detail_pesanan_sewa dps USING (pesanan_id)
-         JOIN alat_sewa a USING (alat_sewa_id)
-       WHERE p.users_id = p_users_id AND p.status_pesanan = 'Belum Checkout';
-END;
-$$;
+    SELECT p.pesanan_id, 'Penyewaan'::text, a.nama_alat, dps.harga_sewa_perhari,
+        dps.quantity, (dps.tgl_pengembalian - dps.tgl_sewa)::integer,
+        p.tanggal_pesanan::date, dps.tgl_pengembalian::date,
+        op.opsi_pengembalian, p.status_pesanan
+    FROM pesanan p
+    JOIN detail_pesanan_sewa dps USING (pesanan_id) JOIN alat_sewa a USING (alat_sewa_id)
+    LEFT JOIN opsi_pengembalian op ON dps.opsi_pengembalian_id = op.opsi_pengembalian_id
+    WHERE p.users_id = p_users_id AND p.status_pesanan = 'Belum Checkout';
+END; $$;
 
 
 ALTER FUNCTION public.get_pesanan_by_user(p_users_id integer) OWNER TO postgres;
 
 --
--- TOC entry 294 (class 1255 OID 74563)
+-- TOC entry 303 (class 1255 OID 83213)
+-- Name: get_tagihan_denda_by_user(integer); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.get_tagihan_denda_by_user(p_users_id integer) RETURNS TABLE(transaksi_id integer, created_at timestamp without time zone, status_transaksi character varying, metode_pembayaran character varying, status_pembayaran character varying, catatan text, nama_alat character varying, quantity integer, harga_sewa_perhari numeric, denda numeric, status_sewa character varying, tgl_sewa date, tgl_pengembalian date, opsi_pengembalian character varying)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    RETURN QUERY
+    SELECT t.transaksi_id, t.created_at, t.status_transaksi,
+           p.metode_pembayaran, t.status_pembayaran, t.catatan,
+           a.nama_alat, dts.quantity, dts.harga_sewa_perhari, dts.denda,
+           dts.status_sewa, dts.tgl_sewa, dts.tgl_pengembalian, op.opsi_pengembalian
+    FROM transaksi t
+    INNER JOIN pesanan p ON t.pesanan_id = p.pesanan_id
+    INNER JOIN detail_transaksi_sewa dts ON t.transaksi_id = dts.transaksi_id
+    INNER JOIN alat_sewa a ON dts.alat_sewa_id = a.alat_sewa_id
+    LEFT JOIN opsi_pengembalian op ON dts.opsi_pengembalian_id = op.opsi_pengembalian_id
+    WHERE t.users_id = p_users_id
+      AND t.status_transaksi = 'Diproses'
+      AND dts.denda <> 0
+      AND dts.status_sewa = 'Sedang disewa'
+    ORDER BY t.created_at DESC;
+END;
+$$;
+
+
+ALTER FUNCTION public.get_tagihan_denda_by_user(p_users_id integer) OWNER TO postgres;
+
+--
+-- TOC entry 302 (class 1255 OID 83212)
+-- Name: get_transaksi_berlangsung_by_user(integer); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.get_transaksi_berlangsung_by_user(p_users_id integer) RETURNS TABLE(transaksi_id integer, created_at timestamp without time zone, status_transaksi character varying, metode_pembayaran character varying, status_pembayaran character varying, catatan text, nama_alat character varying, quantity integer, harga_sewa_perhari numeric, denda numeric, status_sewa character varying, tgl_sewa date, tgl_pengembalian date, opsi_pengembalian character varying)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    RETURN QUERY
+    SELECT t.transaksi_id, t.created_at, t.status_transaksi,
+           p.metode_pembayaran, t.status_pembayaran, t.catatan,
+           a.nama_alat, dts.quantity, dts.harga_sewa_perhari, dts.denda,
+           dts.status_sewa, dts.tgl_sewa, dts.tgl_pengembalian, op.opsi_pengembalian
+    FROM transaksi t
+    LEFT JOIN pesanan p ON t.pesanan_id = p.pesanan_id
+    LEFT JOIN detail_transaksi_sewa dts ON t.transaksi_id = dts.transaksi_id
+    LEFT JOIN alat_sewa a ON dts.alat_sewa_id = a.alat_sewa_id
+    LEFT JOIN opsi_pengembalian op ON dts.opsi_pengembalian_id = op.opsi_pengembalian_id
+    WHERE t.users_id = p_users_id AND t.status_transaksi = 'Diproses'
+    ORDER BY t.created_at DESC;
+END;
+$$;
+
+
+ALTER FUNCTION public.get_transaksi_berlangsung_by_user(p_users_id integer) OWNER TO postgres;
+
+--
+-- TOC entry 301 (class 1255 OID 83211)
+-- Name: get_transaksi_selesai_by_user(integer); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.get_transaksi_selesai_by_user(p_users_id integer) RETURNS TABLE(transaksi_id integer, created_at timestamp without time zone, status_transaksi character varying, metode_pembayaran character varying, status_pembayaran character varying, catatan text, nama_alat character varying, quantity integer, harga_sewa_perhari numeric, denda numeric, status_sewa character varying, tgl_sewa date, tgl_pengembalian date, opsi_pengembalian character varying)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    RETURN QUERY
+    SELECT t.transaksi_id, t.created_at, t.status_transaksi,
+           p.metode_pembayaran, t.status_pembayaran, t.catatan,
+           a.nama_alat, dts.quantity, dts.harga_sewa_perhari, dts.denda,
+           dts.status_sewa, dts.tgl_sewa, dts.tgl_pengembalian, op.opsi_pengembalian
+    FROM transaksi t
+    LEFT JOIN pesanan p ON t.pesanan_id = p.pesanan_id
+    LEFT JOIN detail_transaksi_sewa dts ON t.transaksi_id = dts.transaksi_id
+    LEFT JOIN alat_sewa a ON dts.alat_sewa_id = a.alat_sewa_id
+    LEFT JOIN opsi_pengembalian op ON dts.opsi_pengembalian_id = op.opsi_pengembalian_id
+    WHERE t.users_id = p_users_id AND t.status_transaksi = 'Selesai'
+    ORDER BY t.created_at DESC;
+END;
+$$;
+
+
+ALTER FUNCTION public.get_transaksi_selesai_by_user(p_users_id integer) OWNER TO postgres;
+
+--
+-- TOC entry 270 (class 1255 OID 83176)
 -- Name: log_audit_stok_alat(); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -503,7 +605,7 @@ $$;
 ALTER FUNCTION public.log_audit_stok_alat() OWNER TO postgres;
 
 --
--- TOC entry 293 (class 1255 OID 74562)
+-- TOC entry 271 (class 1255 OID 83178)
 -- Name: log_audit_stok_barang(); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -528,40 +630,7 @@ $$;
 ALTER FUNCTION public.log_audit_stok_barang() OWNER TO postgres;
 
 --
--- TOC entry 295 (class 1255 OID 74566)
--- Name: log_audit_transaksi(); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION public.log_audit_transaksi() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-DECLARE
-    v_user_id int;
-BEGIN
-    v_user_id := NULLIF(current_setting('myapp.current_user_id', true), '')::int;
-    IF v_user_id IS NULL THEN
-        v_user_id := NEW.users_id; -- fallback ke user pemilik transaksi
-    END IF;
-
-    INSERT INTO audit_transaksi(aksi, waktu_perubahan, kolom_perubahan, value_lama, value_baru, transaksi_id, users_id)
-    VALUES (
-        'UPDATE', 
-        NOW(), 
-        'status_pembayaran / status_transaksi', 
-        'Pembayaran: ' || OLD.status_pembayaran || ', Transaksi: ' || OLD.status_transaksi, 
-        'Pembayaran: ' || NEW.status_pembayaran || ', Transaksi: ' || NEW.status_transaksi,
-        NEW.transaksi_id,
-        v_user_id
-    );
-    RETURN NEW;
-END;
-$$;
-
-
-ALTER FUNCTION public.log_audit_transaksi() OWNER TO postgres;
-
---
--- TOC entry 298 (class 1255 OID 74575)
+-- TOC entry 268 (class 1255 OID 82826)
 -- Name: p_batal_pesanan(integer, text); Type: PROCEDURE; Schema: public; Owner: postgres
 --
 
@@ -580,7 +649,7 @@ $$;
 ALTER PROCEDURE public.p_batal_pesanan(IN p_pesanan_id integer, IN p_alasan text) OWNER TO postgres;
 
 --
--- TOC entry 297 (class 1255 OID 74574)
+-- TOC entry 295 (class 1255 OID 82827)
 -- Name: p_terima_pesanan(integer, character varying); Type: PROCEDURE; Schema: public; Owner: postgres
 --
 
@@ -604,58 +673,54 @@ BEGIN
         RAISE EXCEPTION 'Pesanan dengan ID % tidak ditemukan atau statusnya bukan Sudah Checkout.', p_pesanan_id;
     END IF;
 
-    -- Validasi & Pengurangan Stok Barang
+    -- Validasi Stok Barang
     FOR r_detail_pembelian IN 
-        SELECT dp.barang_id, dp.quantity, b.nama_barang, b.stok 
+        SELECT dp.quantity, b.stok, b.nama_barang 
         FROM detail_pesanan_pembelian dp
         JOIN barang b ON dp.barang_id = b.barang_id
         WHERE dp.pesanan_id = p_pesanan_id
     LOOP
         IF r_detail_pembelian.stok < r_detail_pembelian.quantity THEN
-            RAISE EXCEPTION 'Stok barang % tidak mencukupi! Stok saat ini: %, dipesan: %', 
-                r_detail_pembelian.nama_barang, r_detail_pembelian.stok, r_detail_pembelian.quantity;
+            RAISE EXCEPTION 'Stok barang % tidak mencukupi.', r_detail_pembelian.nama_barang;
         END IF;
-        
-        UPDATE barang SET stok = stok - r_detail_pembelian.quantity WHERE barang_id = r_detail_pembelian.barang_id;
     END LOOP;
 
-    -- Validasi & Pengurangan Stok Alat
+    -- Validasi Stok Alat Sewa
     FOR r_detail_sewa IN 
-        SELECT ds.alat_sewa_id, ds.quantity, a.nama_alat, a.stok 
+        SELECT ds.quantity, a.stok, a.nama_alat 
         FROM detail_pesanan_sewa ds
         JOIN alat_sewa a ON ds.alat_sewa_id = a.alat_sewa_id
         WHERE ds.pesanan_id = p_pesanan_id
     LOOP
         IF r_detail_sewa.stok < r_detail_sewa.quantity THEN
-            RAISE EXCEPTION 'Stok alat sewa % tidak mencukupi! Stok saat ini: %, dipesan: %', 
-                r_detail_sewa.nama_alat, r_detail_sewa.stok, r_detail_sewa.quantity;
+            RAISE EXCEPTION 'Stok alat % tidak mencukupi.', r_detail_sewa.nama_alat;
         END IF;
-        
-        UPDATE alat_sewa SET stok = stok - r_detail_sewa.quantity WHERE alat_sewa_id = r_detail_sewa.alat_sewa_id;
     END LOOP;
 
     -- Update status pesanan
     UPDATE pesanan SET status_pesanan = 'Selesai' WHERE pesanan_id = p_pesanan_id;
 
     -- Tentukan status distribusi
-    IF v_opsi = 'diantar' THEN
-        v_distribusi_id := 1;
+    IF v_opsi = 'Diambil Sendiri' THEN
+        v_distribusi_id := 1; 
+    ELSIF v_opsi = 'Diantar' THEN
+        v_distribusi_id := 2; 
     ELSE
-        v_distribusi_id := NULL;
+        v_distribusi_id := 1; 
     END IF;
 
-    -- Buat transaksi
-    INSERT INTO transaksi (created_at, catatan, users_id, status_transaksi, status_distribusi_id, metode_pembayaran, status_pembayaran)
-    VALUES (NOW(), 'Penerimaan pesanan ID ' || p_pesanan_id || ' oleh ' || p_karyawan_username, v_users_id, 'Diproses', v_distribusi_id, 'Cash', 'belum lunas')
+    -- Bikin transaksi (metode_pembayaran dihapus dari sini)
+    INSERT INTO transaksi (created_at, catatan, users_id, status_transaksi, status_distribusi_id, status_pembayaran, pesanan_id)
+    VALUES (NOW(), 'Penerimaan pesanan ID ' || p_pesanan_id || ' oleh ' || p_karyawan_username, v_users_id, 'Diproses', v_distribusi_id, 'belum lunas', p_pesanan_id)
     RETURNING transaksi_id INTO v_transaksi_id;
 
-    -- Copy detail pembelian
+    -- Salin ke detail transaksi pembelian
     FOR r_detail_pembelian IN SELECT quantity, harga_per_item, barang_id FROM detail_pesanan_pembelian WHERE pesanan_id = p_pesanan_id LOOP
         INSERT INTO detail_transaksi_pembelian (quantity, harga_per_item, transaksi_id, barang_id)
         VALUES (r_detail_pembelian.quantity, r_detail_pembelian.harga_per_item, v_transaksi_id, r_detail_pembelian.barang_id);
     END LOOP;
 
-    -- Copy detail sewa
+    -- Salin ke detail transaksi sewa
     FOR r_detail_sewa IN SELECT quantity, tgl_sewa, tgl_pengembalian, harga_sewa_perhari, alat_sewa_id FROM detail_pesanan_sewa WHERE pesanan_id = p_pesanan_id LOOP
         INSERT INTO detail_transaksi_sewa (quantity, tgl_sewa, tgl_pengembalian, harga_sewa_perhari, denda, status_sewa, transaksi_id, alat_sewa_id, opsi_pengembalian_id)
         VALUES (r_detail_sewa.quantity, r_detail_sewa.tgl_sewa, r_detail_sewa.tgl_pengembalian, r_detail_sewa.harga_sewa_perhari, 0, 'Belum Kembali', v_transaksi_id, r_detail_sewa.alat_sewa_id, 1);
@@ -667,7 +732,7 @@ $$;
 ALTER PROCEDURE public.p_terima_pesanan(IN p_pesanan_id integer, IN p_karyawan_username character varying) OWNER TO postgres;
 
 --
--- TOC entry 288 (class 1255 OID 74559)
+-- TOC entry 291 (class 1255 OID 82828)
 -- Name: p_update_status_pembayaran(integer, character varying, integer); Type: PROCEDURE; Schema: public; Owner: postgres
 --
 
@@ -684,7 +749,7 @@ $$;
 ALTER PROCEDURE public.p_update_status_pembayaran(IN p_transaksi_id integer, IN p_status character varying, IN p_karyawan_id integer) OWNER TO postgres;
 
 --
--- TOC entry 291 (class 1255 OID 74560)
+-- TOC entry 292 (class 1255 OID 82829)
 -- Name: p_update_status_transaksi(integer, character varying, integer); Type: PROCEDURE; Schema: public; Owner: postgres
 --
 
@@ -717,7 +782,7 @@ $$;
 ALTER PROCEDURE public.p_update_status_transaksi(IN p_transaksi_id integer, IN p_status character varying, IN p_karyawan_id integer) OWNER TO postgres;
 
 --
--- TOC entry 292 (class 1255 OID 74561)
+-- TOC entry 293 (class 1255 OID 82830)
 -- Name: p_update_stok(integer, integer, character varying, integer); Type: PROCEDURE; Schema: public; Owner: postgres
 --
 
@@ -740,7 +805,47 @@ $$;
 ALTER PROCEDURE public.p_update_stok(IN p_id integer, IN p_stok_baru integer, IN p_jenis character varying, IN p_karyawan_id integer) OWNER TO postgres;
 
 --
--- TOC entry 286 (class 1255 OID 74528)
+-- TOC entry 297 (class 1255 OID 83236)
+-- Name: search_alat_sewa(character varying); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.search_alat_sewa(search_keyword character varying) RETURNS TABLE(alat_sewa_id integer, nama_alat character varying, stok integer, harga_sewa_perhari numeric, harga_denda_perhari numeric, kategori character varying)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    RETURN QUERY
+    SELECT a.alat_sewa_id, a.nama_alat::VARCHAR, a.stok, a.harga_sewa_perhari, a.harga_denda_perhari, k.kategori::VARCHAR
+    FROM alat_sewa a
+    JOIN kategori k ON a.kategori_id = k.kategori_id
+    WHERE a.nama_alat ILIKE '%' || search_keyword || '%';
+END;
+$$;
+
+
+ALTER FUNCTION public.search_alat_sewa(search_keyword character varying) OWNER TO postgres;
+
+--
+-- TOC entry 273 (class 1255 OID 83235)
+-- Name: search_barang_petani(character varying); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.search_barang_petani(search_keyword character varying) RETURNS TABLE(barang_id integer, "nama barang" character varying, stok integer, "harga per unit" numeric, kategori character varying)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    RETURN QUERY
+    SELECT b.barang_id, b.nama_barang::VARCHAR, b.stok, b.harga_per_item, k.kategori::VARCHAR
+    FROM barang b
+    JOIN kategori k ON b.kategori_id = k.kategori_id
+    WHERE b.nama_barang ILIKE '%' || search_keyword || '%';
+END;
+$$;
+
+
+ALTER FUNCTION public.search_barang_petani(search_keyword character varying) OWNER TO postgres;
+
+--
+-- TOC entry 294 (class 1255 OID 82831)
 -- Name: update_users(text, text, text, text, text, boolean, text, text, text, text); Type: PROCEDURE; Schema: public; Owner: postgres
 --
 
@@ -802,7 +907,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 236 (class 1259 OID 67099)
+-- TOC entry 217 (class 1259 OID 82832)
 -- Name: alat_sewa; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -820,7 +925,7 @@ CREATE TABLE public.alat_sewa (
 ALTER TABLE public.alat_sewa OWNER TO postgres;
 
 --
--- TOC entry 235 (class 1259 OID 67098)
+-- TOC entry 218 (class 1259 OID 82835)
 -- Name: alat_sewa_alat_sewa_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -837,7 +942,7 @@ ALTER SEQUENCE public.alat_sewa_alat_sewa_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 5198 (class 0 OID 0)
--- Dependencies: 235
+-- Dependencies: 218
 -- Name: alat_sewa_alat_sewa_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -845,7 +950,7 @@ ALTER SEQUENCE public.alat_sewa_alat_sewa_id_seq OWNED BY public.alat_sewa.alat_
 
 
 --
--- TOC entry 242 (class 1259 OID 67174)
+-- TOC entry 219 (class 1259 OID 82836)
 -- Name: audit_stok_barang_alat; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -864,7 +969,7 @@ CREATE TABLE public.audit_stok_barang_alat (
 ALTER TABLE public.audit_stok_barang_alat OWNER TO postgres;
 
 --
--- TOC entry 241 (class 1259 OID 67173)
+-- TOC entry 220 (class 1259 OID 82842)
 -- Name: audit_stok_barang_alat_audit_stok_barang_alat_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -881,7 +986,7 @@ ALTER SEQUENCE public.audit_stok_barang_alat_audit_stok_barang_alat_id_seq OWNER
 
 --
 -- TOC entry 5199 (class 0 OID 0)
--- Dependencies: 241
+-- Dependencies: 220
 -- Name: audit_stok_barang_alat_audit_stok_barang_alat_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -889,7 +994,7 @@ ALTER SEQUENCE public.audit_stok_barang_alat_audit_stok_barang_alat_id_seq OWNED
 
 
 --
--- TOC entry 252 (class 1259 OID 67283)
+-- TOC entry 221 (class 1259 OID 82843)
 -- Name: audit_transaksi; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -908,7 +1013,7 @@ CREATE TABLE public.audit_transaksi (
 ALTER TABLE public.audit_transaksi OWNER TO postgres;
 
 --
--- TOC entry 251 (class 1259 OID 67282)
+-- TOC entry 222 (class 1259 OID 82849)
 -- Name: audit_transaksi_audit_transaksi_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -925,7 +1030,7 @@ ALTER SEQUENCE public.audit_transaksi_audit_transaksi_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 5200 (class 0 OID 0)
--- Dependencies: 251
+-- Dependencies: 222
 -- Name: audit_transaksi_audit_transaksi_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -933,7 +1038,7 @@ ALTER SEQUENCE public.audit_transaksi_audit_transaksi_id_seq OWNED BY public.aud
 
 
 --
--- TOC entry 234 (class 1259 OID 67087)
+-- TOC entry 223 (class 1259 OID 82850)
 -- Name: barang; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -950,7 +1055,7 @@ CREATE TABLE public.barang (
 ALTER TABLE public.barang OWNER TO postgres;
 
 --
--- TOC entry 233 (class 1259 OID 67086)
+-- TOC entry 224 (class 1259 OID 82853)
 -- Name: barang_barang_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -967,7 +1072,7 @@ ALTER SEQUENCE public.barang_barang_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 5201 (class 0 OID 0)
--- Dependencies: 233
+-- Dependencies: 224
 -- Name: barang_barang_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -975,7 +1080,7 @@ ALTER SEQUENCE public.barang_barang_id_seq OWNED BY public.barang.barang_id;
 
 
 --
--- TOC entry 218 (class 1259 OID 66960)
+-- TOC entry 225 (class 1259 OID 82854)
 -- Name: desa; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -989,7 +1094,7 @@ CREATE TABLE public.desa (
 ALTER TABLE public.desa OWNER TO postgres;
 
 --
--- TOC entry 217 (class 1259 OID 66959)
+-- TOC entry 226 (class 1259 OID 82857)
 -- Name: desa_desa_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1006,7 +1111,7 @@ ALTER SEQUENCE public.desa_desa_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 5202 (class 0 OID 0)
--- Dependencies: 217
+-- Dependencies: 226
 -- Name: desa_desa_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1014,7 +1119,7 @@ ALTER SEQUENCE public.desa_desa_id_seq OWNED BY public.desa.desa_id;
 
 
 --
--- TOC entry 244 (class 1259 OID 67199)
+-- TOC entry 227 (class 1259 OID 82858)
 -- Name: detail_pesanan_pembelian; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1030,7 +1135,7 @@ CREATE TABLE public.detail_pesanan_pembelian (
 ALTER TABLE public.detail_pesanan_pembelian OWNER TO postgres;
 
 --
--- TOC entry 243 (class 1259 OID 67198)
+-- TOC entry 228 (class 1259 OID 82861)
 -- Name: detail_pesanan_pembelian_detail_pesanan_pembelian_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1047,7 +1152,7 @@ ALTER SEQUENCE public.detail_pesanan_pembelian_detail_pesanan_pembelian_id_seq O
 
 --
 -- TOC entry 5203 (class 0 OID 0)
--- Dependencies: 243
+-- Dependencies: 228
 -- Name: detail_pesanan_pembelian_detail_pesanan_pembelian_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1055,7 +1160,7 @@ ALTER SEQUENCE public.detail_pesanan_pembelian_detail_pesanan_pembelian_id_seq O
 
 
 --
--- TOC entry 246 (class 1259 OID 67216)
+-- TOC entry 229 (class 1259 OID 82862)
 -- Name: detail_pesanan_sewa; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1074,7 +1179,7 @@ CREATE TABLE public.detail_pesanan_sewa (
 ALTER TABLE public.detail_pesanan_sewa OWNER TO postgres;
 
 --
--- TOC entry 245 (class 1259 OID 67215)
+-- TOC entry 230 (class 1259 OID 82865)
 -- Name: detail_pesanan_sewa_detail_pesanan_sewa_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1091,7 +1196,7 @@ ALTER SEQUENCE public.detail_pesanan_sewa_detail_pesanan_sewa_id_seq OWNER TO po
 
 --
 -- TOC entry 5204 (class 0 OID 0)
--- Dependencies: 245
+-- Dependencies: 230
 -- Name: detail_pesanan_sewa_detail_pesanan_sewa_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1099,7 +1204,7 @@ ALTER SEQUENCE public.detail_pesanan_sewa_detail_pesanan_sewa_id_seq OWNED BY pu
 
 
 --
--- TOC entry 248 (class 1259 OID 67238)
+-- TOC entry 231 (class 1259 OID 82866)
 -- Name: detail_transaksi_pembelian; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1115,7 +1220,7 @@ CREATE TABLE public.detail_transaksi_pembelian (
 ALTER TABLE public.detail_transaksi_pembelian OWNER TO postgres;
 
 --
--- TOC entry 247 (class 1259 OID 67237)
+-- TOC entry 232 (class 1259 OID 82869)
 -- Name: detail_transaksi_pembelian_detail_transaksi_pembelian_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1132,7 +1237,7 @@ ALTER SEQUENCE public.detail_transaksi_pembelian_detail_transaksi_pembelian_id_s
 
 --
 -- TOC entry 5205 (class 0 OID 0)
--- Dependencies: 247
+-- Dependencies: 232
 -- Name: detail_transaksi_pembelian_detail_transaksi_pembelian_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1140,7 +1245,7 @@ ALTER SEQUENCE public.detail_transaksi_pembelian_detail_transaksi_pembelian_id_s
 
 
 --
--- TOC entry 250 (class 1259 OID 67255)
+-- TOC entry 233 (class 1259 OID 82870)
 -- Name: detail_transaksi_sewa; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1161,7 +1266,7 @@ CREATE TABLE public.detail_transaksi_sewa (
 ALTER TABLE public.detail_transaksi_sewa OWNER TO postgres;
 
 --
--- TOC entry 249 (class 1259 OID 67254)
+-- TOC entry 234 (class 1259 OID 82876)
 -- Name: detail_transaksi_sewa_detail_transaksi_sewa_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1178,7 +1283,7 @@ ALTER SEQUENCE public.detail_transaksi_sewa_detail_transaksi_sewa_id_seq OWNER T
 
 --
 -- TOC entry 5206 (class 0 OID 0)
--- Dependencies: 249
+-- Dependencies: 234
 -- Name: detail_transaksi_sewa_detail_transaksi_sewa_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1186,7 +1291,7 @@ ALTER SEQUENCE public.detail_transaksi_sewa_detail_transaksi_sewa_id_seq OWNED B
 
 
 --
--- TOC entry 224 (class 1259 OID 66981)
+-- TOC entry 235 (class 1259 OID 82877)
 -- Name: kategori; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1200,7 +1305,7 @@ CREATE TABLE public.kategori (
 ALTER TABLE public.kategori OWNER TO postgres;
 
 --
--- TOC entry 223 (class 1259 OID 66980)
+-- TOC entry 236 (class 1259 OID 82882)
 -- Name: kategori_kategori_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1217,7 +1322,7 @@ ALTER SEQUENCE public.kategori_kategori_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 5207 (class 0 OID 0)
--- Dependencies: 223
+-- Dependencies: 236
 -- Name: kategori_kategori_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1225,7 +1330,7 @@ ALTER SEQUENCE public.kategori_kategori_id_seq OWNED BY public.kategori.kategori
 
 
 --
--- TOC entry 220 (class 1259 OID 66967)
+-- TOC entry 237 (class 1259 OID 82883)
 -- Name: kecamatan; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1238,7 +1343,7 @@ CREATE TABLE public.kecamatan (
 ALTER TABLE public.kecamatan OWNER TO postgres;
 
 --
--- TOC entry 219 (class 1259 OID 66966)
+-- TOC entry 238 (class 1259 OID 82886)
 -- Name: kecamatan_kecamatan_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1255,7 +1360,7 @@ ALTER SEQUENCE public.kecamatan_kecamatan_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 5208 (class 0 OID 0)
--- Dependencies: 219
+-- Dependencies: 238
 -- Name: kecamatan_kecamatan_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1263,7 +1368,7 @@ ALTER SEQUENCE public.kecamatan_kecamatan_id_seq OWNED BY public.kecamatan.kecam
 
 
 --
--- TOC entry 228 (class 1259 OID 67018)
+-- TOC entry 239 (class 1259 OID 82887)
 -- Name: kurir; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1278,7 +1383,7 @@ CREATE TABLE public.kurir (
 ALTER TABLE public.kurir OWNER TO postgres;
 
 --
--- TOC entry 227 (class 1259 OID 67017)
+-- TOC entry 240 (class 1259 OID 82892)
 -- Name: kurir_kurir_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1295,7 +1400,7 @@ ALTER SEQUENCE public.kurir_kurir_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 5209 (class 0 OID 0)
--- Dependencies: 227
+-- Dependencies: 240
 -- Name: kurir_kurir_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1303,7 +1408,7 @@ ALTER SEQUENCE public.kurir_kurir_id_seq OWNED BY public.kurir.kurir_id;
 
 
 --
--- TOC entry 258 (class 1259 OID 74496)
+-- TOC entry 241 (class 1259 OID 82893)
 -- Name: lihat_alat; Type: VIEW; Schema: public; Owner: postgres
 --
 
@@ -1322,7 +1427,7 @@ CREATE VIEW public.lihat_alat AS
 ALTER VIEW public.lihat_alat OWNER TO postgres;
 
 --
--- TOC entry 259 (class 1259 OID 74519)
+-- TOC entry 242 (class 1259 OID 82897)
 -- Name: lihat_barang_petani; Type: VIEW; Schema: public; Owner: postgres
 --
 
@@ -1331,15 +1436,17 @@ CREATE VIEW public.lihat_barang_petani AS
     b.nama_barang AS "nama barang",
     b.stok,
     b.harga_per_item AS "harga per unit",
-    k.kategori
+    k.kategori,
+    b.added_at
    FROM (public.barang b
-     JOIN public.kategori k USING (kategori_id));
+     JOIN public.kategori k USING (kategori_id))
+  ORDER BY b.barang_id;
 
 
 ALTER VIEW public.lihat_barang_petani OWNER TO postgres;
 
 --
--- TOC entry 253 (class 1259 OID 67431)
+-- TOC entry 243 (class 1259 OID 82901)
 -- Name: lihatbarangpetani; Type: VIEW; Schema: public; Owner: postgres
 --
 
@@ -1355,7 +1462,7 @@ CREATE VIEW public.lihatbarangpetani AS
 ALTER VIEW public.lihatbarangpetani OWNER TO postgres;
 
 --
--- TOC entry 230 (class 1259 OID 67034)
+-- TOC entry 244 (class 1259 OID 82905)
 -- Name: opsi_pengembalian; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1368,7 +1475,7 @@ CREATE TABLE public.opsi_pengembalian (
 ALTER TABLE public.opsi_pengembalian OWNER TO postgres;
 
 --
--- TOC entry 229 (class 1259 OID 67033)
+-- TOC entry 245 (class 1259 OID 82908)
 -- Name: opsi_pengembalian_opsi_pengembalian_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1385,7 +1492,7 @@ ALTER SEQUENCE public.opsi_pengembalian_opsi_pengembalian_id_seq OWNER TO postgr
 
 --
 -- TOC entry 5210 (class 0 OID 0)
--- Dependencies: 229
+-- Dependencies: 245
 -- Name: opsi_pengembalian_opsi_pengembalian_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1393,7 +1500,7 @@ ALTER SEQUENCE public.opsi_pengembalian_opsi_pengembalian_id_seq OWNED BY public
 
 
 --
--- TOC entry 238 (class 1259 OID 67111)
+-- TOC entry 246 (class 1259 OID 82909)
 -- Name: pesanan; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1402,14 +1509,15 @@ CREATE TABLE public.pesanan (
     tanggal_pesanan timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
     users_id integer NOT NULL,
     status_pesanan character varying NOT NULL,
-    opsi_pengiriman character varying
+    opsi_pengiriman character varying,
+    metode_pembayaran character varying
 );
 
 
 ALTER TABLE public.pesanan OWNER TO postgres;
 
 --
--- TOC entry 237 (class 1259 OID 67110)
+-- TOC entry 247 (class 1259 OID 82915)
 -- Name: pesanan_pesanan_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1426,7 +1534,7 @@ ALTER SEQUENCE public.pesanan_pesanan_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 5211 (class 0 OID 0)
--- Dependencies: 237
+-- Dependencies: 247
 -- Name: pesanan_pesanan_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1434,7 +1542,7 @@ ALTER SEQUENCE public.pesanan_pesanan_id_seq OWNED BY public.pesanan.pesanan_id;
 
 
 --
--- TOC entry 222 (class 1259 OID 66974)
+-- TOC entry 248 (class 1259 OID 82916)
 -- Name: roles; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1447,7 +1555,7 @@ CREATE TABLE public.roles (
 ALTER TABLE public.roles OWNER TO postgres;
 
 --
--- TOC entry 221 (class 1259 OID 66973)
+-- TOC entry 249 (class 1259 OID 82919)
 -- Name: roles_roles_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1464,7 +1572,7 @@ ALTER SEQUENCE public.roles_roles_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 5212 (class 0 OID 0)
--- Dependencies: 221
+-- Dependencies: 249
 -- Name: roles_roles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1472,7 +1580,7 @@ ALTER SEQUENCE public.roles_roles_id_seq OWNED BY public.roles.roles_id;
 
 
 --
--- TOC entry 226 (class 1259 OID 67011)
+-- TOC entry 250 (class 1259 OID 82920)
 -- Name: status_distribusi; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1485,7 +1593,7 @@ CREATE TABLE public.status_distribusi (
 ALTER TABLE public.status_distribusi OWNER TO postgres;
 
 --
--- TOC entry 225 (class 1259 OID 67010)
+-- TOC entry 251 (class 1259 OID 82923)
 -- Name: status_distribusi_status_distribusi_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1502,7 +1610,7 @@ ALTER SEQUENCE public.status_distribusi_status_distribusi_id_seq OWNER TO postgr
 
 --
 -- TOC entry 5213 (class 0 OID 0)
--- Dependencies: 225
+-- Dependencies: 251
 -- Name: status_distribusi_status_distribusi_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1510,7 +1618,7 @@ ALTER SEQUENCE public.status_distribusi_status_distribusi_id_seq OWNED BY public
 
 
 --
--- TOC entry 240 (class 1259 OID 67134)
+-- TOC entry 252 (class 1259 OID 82924)
 -- Name: transaksi; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1518,20 +1626,19 @@ CREATE TABLE public.transaksi (
     transaksi_id integer NOT NULL,
     created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
     catatan text,
-    ongkos_kirim numeric(15,2),
     users_id integer NOT NULL,
     kurir_id integer,
     status_transaksi character varying NOT NULL,
     status_distribusi_id integer NOT NULL,
-    metode_pembayaran character varying NOT NULL,
-    status_pembayaran character varying NOT NULL
+    status_pembayaran character varying NOT NULL,
+    pesanan_id integer
 );
 
 
 ALTER TABLE public.transaksi OWNER TO postgres;
 
 --
--- TOC entry 239 (class 1259 OID 67133)
+-- TOC entry 253 (class 1259 OID 82930)
 -- Name: transaksi_transaksi_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1548,7 +1655,7 @@ ALTER SEQUENCE public.transaksi_transaksi_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 5214 (class 0 OID 0)
--- Dependencies: 239
+-- Dependencies: 253
 -- Name: transaksi_transaksi_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1556,7 +1663,7 @@ ALTER SEQUENCE public.transaksi_transaksi_id_seq OWNED BY public.transaksi.trans
 
 
 --
--- TOC entry 232 (class 1259 OID 67055)
+-- TOC entry 254 (class 1259 OID 82931)
 -- Name: users; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1579,7 +1686,7 @@ CREATE TABLE public.users (
 ALTER TABLE public.users OWNER TO postgres;
 
 --
--- TOC entry 231 (class 1259 OID 67054)
+-- TOC entry 255 (class 1259 OID 82938)
 -- Name: users_users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1596,7 +1703,7 @@ ALTER SEQUENCE public.users_users_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 5215 (class 0 OID 0)
--- Dependencies: 231
+-- Dependencies: 255
 -- Name: users_users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1604,7 +1711,7 @@ ALTER SEQUENCE public.users_users_id_seq OWNED BY public.users.users_id;
 
 
 --
--- TOC entry 260 (class 1259 OID 74530)
+-- TOC entry 263 (class 1259 OID 83206)
 -- Name: v_karyawan_dashboard_transaksi; Type: VIEW; Schema: public; Owner: postgres
 --
 
@@ -1626,11 +1733,11 @@ CREATE VIEW public.v_karyawan_dashboard_transaksi AS
             WHEN (ds.detail_transaksi_sewa_id IS NOT NULL) THEN op.opsi_pengembalian
             ELSE '-'::character varying
         END AS opsi_pengembalian,
-    t.metode_pembayaran,
+    p.metode_pembayaran,
     t.status_pembayaran
    FROM (((((((((public.transaksi t
      LEFT JOIN public.users u ON ((t.users_id = u.users_id)))
-     LEFT JOIN public.pesanan p ON (((t.users_id = p.users_id) AND ((p.status_pesanan)::text = 'Sudah Checkout'::text))))
+     LEFT JOIN public.pesanan p ON ((t.pesanan_id = p.pesanan_id)))
      LEFT JOIN public.kurir k ON ((t.kurir_id = k.kurir_id)))
      LEFT JOIN public.status_distribusi sd ON ((t.status_distribusi_id = sd.status_distribusi_id)))
      LEFT JOIN public.detail_transaksi_pembelian dp ON ((t.transaksi_id = dp.transaksi_id)))
@@ -1643,49 +1750,61 @@ CREATE VIEW public.v_karyawan_dashboard_transaksi AS
 ALTER VIEW public.v_karyawan_dashboard_transaksi OWNER TO postgres;
 
 --
--- TOC entry 265 (class 1259 OID 74553)
--- Name: v_karyawan_keuangan; Type: VIEW; Schema: public; Owner: postgres
+-- TOC entry 264 (class 1259 OID 83223)
+-- Name: v_karyawan_dashboard_transaksi_detail; Type: VIEW; Schema: public; Owner: postgres
 --
 
-CREATE VIEW public.v_karyawan_keuangan AS
- SELECT 'Penjualan'::character varying AS tipe,
-    b.nama_barang AS keterangan,
-    ((dp.quantity)::numeric * dp.harga_per_item) AS jumlah,
+CREATE VIEW public.v_karyawan_dashboard_transaksi_detail AS
+ SELECT t.transaksi_id,
     t.created_at,
-    u.nama AS oleh
-   FROM (((public.detail_transaksi_pembelian dp
-     JOIN public.transaksi t ON ((dp.transaksi_id = t.transaksi_id)))
+    u.nama AS nama_user,
+    'Pembelian'::text AS jenis_pesanan,
+    b.nama_barang AS nama_item,
+    dp.quantity,
+    dp.harga_per_item AS harga,
+    ((dp.quantity)::numeric * dp.harga_per_item) AS total,
+    NULL::date AS tgl_sewa,
+    NULL::date AS tgl_pengembalian,
+    (0)::numeric AS denda,
+    '-'::character varying AS status_sewa,
+    '-'::character varying AS opsi_pengembalian,
+    p.metode_pembayaran,
+    t.status_pembayaran,
+    t.status_transaksi
+   FROM ((((public.transaksi t
+     JOIN public.users u ON ((t.users_id = u.users_id)))
+     JOIN public.pesanan p ON ((t.pesanan_id = p.pesanan_id)))
+     JOIN public.detail_transaksi_pembelian dp ON ((t.transaksi_id = dp.transaksi_id)))
      JOIN public.barang b ON ((dp.barang_id = b.barang_id)))
-     JOIN public.users u ON ((t.users_id = u.users_id)))
-  WHERE ((t.status_pembayaran)::text = 'lunas'::text)
 UNION ALL
- SELECT 'Sewa Alat'::character varying AS tipe,
-    a.nama_alat AS keterangan,
-    (((ds.quantity)::numeric * ds.harga_sewa_perhari) * ((ds.tgl_pengembalian - ds.tgl_sewa))::numeric) AS jumlah,
+ SELECT t.transaksi_id,
     t.created_at,
-    u.nama AS oleh
-   FROM (((public.detail_transaksi_sewa ds
-     JOIN public.transaksi t ON ((ds.transaksi_id = t.transaksi_id)))
-     JOIN public.alat_sewa a ON ((ds.alat_sewa_id = a.alat_sewa_id)))
+    u.nama AS nama_user,
+    'Penyewaan'::text AS jenis_pesanan,
+    a.nama_alat AS nama_item,
+    ds.quantity,
+    ds.harga_sewa_perhari AS harga,
+    ((ds.quantity)::numeric * ds.harga_sewa_perhari) AS total,
+    ds.tgl_sewa,
+    ds.tgl_pengembalian,
+    ds.denda,
+    ds.status_sewa,
+    COALESCE(op.opsi_pengembalian, '-'::character varying) AS opsi_pengembalian,
+    p.metode_pembayaran,
+    t.status_pembayaran,
+    t.status_transaksi
+   FROM (((((public.transaksi t
      JOIN public.users u ON ((t.users_id = u.users_id)))
-  WHERE ((t.status_pembayaran)::text = 'lunas'::text)
-UNION ALL
- SELECT 'Denda'::character varying AS tipe,
-    ('Denda keterlambatan '::text || (a.nama_alat)::text) AS keterangan,
-    ds.denda AS jumlah,
-    t.created_at,
-    u.nama AS oleh
-   FROM (((public.detail_transaksi_sewa ds
-     JOIN public.transaksi t ON ((ds.transaksi_id = t.transaksi_id)))
+     JOIN public.pesanan p ON ((t.pesanan_id = p.pesanan_id)))
+     JOIN public.detail_transaksi_sewa ds ON ((t.transaksi_id = ds.transaksi_id)))
      JOIN public.alat_sewa a ON ((ds.alat_sewa_id = a.alat_sewa_id)))
-     JOIN public.users u ON ((t.users_id = u.users_id)))
-  WHERE ((ds.denda > (0)::numeric) AND ((ds.status_sewa)::text = 'Lunas'::text));
+     LEFT JOIN public.opsi_pengembalian op ON ((ds.opsi_pengembalian_id = op.opsi_pengembalian_id)));
 
 
-ALTER VIEW public.v_karyawan_keuangan OWNER TO postgres;
+ALTER VIEW public.v_karyawan_dashboard_transaksi_detail OWNER TO postgres;
 
 --
--- TOC entry 255 (class 1259 OID 67475)
+-- TOC entry 256 (class 1259 OID 82949)
 -- Name: v_karyawandatauser; Type: VIEW; Schema: public; Owner: postgres
 --
 
@@ -1713,7 +1832,7 @@ CREATE VIEW public.v_karyawandatauser AS
 ALTER VIEW public.v_karyawandatauser OWNER TO postgres;
 
 --
--- TOC entry 264 (class 1259 OID 74548)
+-- TOC entry 257 (class 1259 OID 82954)
 -- Name: v_laporan_denda; Type: VIEW; Schema: public; Owner: postgres
 --
 
@@ -1742,7 +1861,7 @@ CREATE VIEW public.v_laporan_denda AS
 ALTER VIEW public.v_laporan_denda OWNER TO postgres;
 
 --
--- TOC entry 263 (class 1259 OID 74543)
+-- TOC entry 258 (class 1259 OID 82959)
 -- Name: v_manajemen_distribusi; Type: VIEW; Schema: public; Owner: postgres
 --
 
@@ -1751,7 +1870,11 @@ CREATE VIEW public.v_manajemen_distribusi AS
     u.nama AS nama_user,
     COALESCE(b.nama_barang, a.nama_alat) AS nama_barang_alat,
     COALESCE(dp.quantity, ds.quantity) AS jumlah,
-    ((COALESCE(dp.quantity, ds.quantity))::numeric * COALESCE(dp.harga_per_item, ds.harga_sewa_perhari)) AS total,
+        CASE
+            WHEN (dp.detail_transaksi_pembelian_id IS NOT NULL) THEN ((dp.quantity)::numeric * dp.harga_per_item)
+            WHEN (ds.detail_transaksi_sewa_id IS NOT NULL) THEN (((ds.quantity)::numeric * ds.harga_sewa_perhari) * ((ds.tgl_pengembalian - ds.tgl_sewa))::numeric)
+            ELSE (0)::numeric
+        END AS total,
     t.status_pembayaran,
     COALESCE(sd.status_distribusi, '-'::character varying) AS status_distribusi,
     COALESCE(k.nama_kurir, '-'::character varying) AS nama_kurir,
@@ -1770,7 +1893,7 @@ CREATE VIEW public.v_manajemen_distribusi AS
 ALTER VIEW public.v_manajemen_distribusi OWNER TO postgres;
 
 --
--- TOC entry 266 (class 1259 OID 74569)
+-- TOC entry 262 (class 1259 OID 83181)
 -- Name: v_pesanan_checkout; Type: VIEW; Schema: public; Owner: postgres
 --
 
@@ -1782,6 +1905,7 @@ CREATE VIEW public.v_pesanan_checkout AS
     b.nama_barang AS "Nama Item",
     dp.quantity AS "Jumlah",
     b.stok AS "Stok Sekarang",
+    ((dp.quantity)::numeric * dp.harga_per_item) AS "Total Harga",
     'Pembelian'::text AS "Jenis",
     b.barang_id AS "Item ID",
     p.status_pesanan AS "Status"
@@ -1798,6 +1922,7 @@ UNION ALL
     a.nama_alat AS "Nama Item",
     ds.quantity AS "Jumlah",
     a.stok AS "Stok Sekarang",
+    (((ds.quantity)::numeric * ds.harga_sewa_perhari) * ((ds.tgl_pengembalian - ds.tgl_sewa))::numeric) AS "Total Harga",
     'Penyewaan'::text AS "Jenis",
     a.alat_sewa_id AS "Item ID",
     p.status_pesanan AS "Status"
@@ -1811,7 +1936,7 @@ UNION ALL
 ALTER VIEW public.v_pesanan_checkout OWNER TO postgres;
 
 --
--- TOC entry 257 (class 1259 OID 74487)
+-- TOC entry 259 (class 1259 OID 82969)
 -- Name: v_pesanan_for_user; Type: VIEW; Schema: public; Owner: postgres
 --
 
@@ -1844,7 +1969,7 @@ UNION ALL
 ALTER VIEW public.v_pesanan_for_user OWNER TO postgres;
 
 --
--- TOC entry 256 (class 1259 OID 67480)
+-- TOC entry 260 (class 1259 OID 82974)
 -- Name: v_petanidatauser; Type: VIEW; Schema: public; Owner: postgres
 --
 
@@ -1872,7 +1997,7 @@ CREATE VIEW public.v_petanidatauser AS
 ALTER VIEW public.v_petanidatauser OWNER TO postgres;
 
 --
--- TOC entry 254 (class 1259 OID 67470)
+-- TOC entry 261 (class 1259 OID 82979)
 -- Name: v_semuadatauser; Type: VIEW; Schema: public; Owner: postgres
 --
 
@@ -1899,37 +2024,7 @@ CREATE VIEW public.v_semuadatauser AS
 ALTER VIEW public.v_semuadatauser OWNER TO postgres;
 
 --
--- TOC entry 262 (class 1259 OID 74539)
--- Name: v_update_stok_alat; Type: VIEW; Schema: public; Owner: postgres
---
-
-CREATE VIEW public.v_update_stok_alat AS
- SELECT alat_sewa_id AS id,
-    nama_alat AS nama,
-    harga_sewa_perhari AS harga,
-    stok
-   FROM public.alat_sewa;
-
-
-ALTER VIEW public.v_update_stok_alat OWNER TO postgres;
-
---
--- TOC entry 261 (class 1259 OID 74535)
--- Name: v_update_stok_barang; Type: VIEW; Schema: public; Owner: postgres
---
-
-CREATE VIEW public.v_update_stok_barang AS
- SELECT barang_id AS id,
-    nama_barang AS nama,
-    harga_per_item AS harga,
-    stok
-   FROM public.barang;
-
-
-ALTER VIEW public.v_update_stok_barang OWNER TO postgres;
-
---
--- TOC entry 4915 (class 2604 OID 67102)
+-- TOC entry 4903 (class 2604 OID 82992)
 -- Name: alat_sewa alat_sewa_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1937,7 +2032,7 @@ ALTER TABLE ONLY public.alat_sewa ALTER COLUMN alat_sewa_id SET DEFAULT nextval(
 
 
 --
--- TOC entry 4920 (class 2604 OID 67177)
+-- TOC entry 4904 (class 2604 OID 82993)
 -- Name: audit_stok_barang_alat audit_stok_barang_alat_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1945,7 +2040,7 @@ ALTER TABLE ONLY public.audit_stok_barang_alat ALTER COLUMN audit_stok_barang_al
 
 
 --
--- TOC entry 4927 (class 2604 OID 67286)
+-- TOC entry 4906 (class 2604 OID 82994)
 -- Name: audit_transaksi audit_transaksi_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1953,7 +2048,7 @@ ALTER TABLE ONLY public.audit_transaksi ALTER COLUMN audit_transaksi_id SET DEFA
 
 
 --
--- TOC entry 4914 (class 2604 OID 67090)
+-- TOC entry 4908 (class 2604 OID 82995)
 -- Name: barang barang_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1961,7 +2056,7 @@ ALTER TABLE ONLY public.barang ALTER COLUMN barang_id SET DEFAULT nextval('publi
 
 
 --
--- TOC entry 4904 (class 2604 OID 66963)
+-- TOC entry 4909 (class 2604 OID 82996)
 -- Name: desa desa_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1969,7 +2064,7 @@ ALTER TABLE ONLY public.desa ALTER COLUMN desa_id SET DEFAULT nextval('public.de
 
 
 --
--- TOC entry 4922 (class 2604 OID 67202)
+-- TOC entry 4910 (class 2604 OID 82997)
 -- Name: detail_pesanan_pembelian detail_pesanan_pembelian_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1977,7 +2072,7 @@ ALTER TABLE ONLY public.detail_pesanan_pembelian ALTER COLUMN detail_pesanan_pem
 
 
 --
--- TOC entry 4923 (class 2604 OID 67219)
+-- TOC entry 4911 (class 2604 OID 82998)
 -- Name: detail_pesanan_sewa detail_pesanan_sewa_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1985,7 +2080,7 @@ ALTER TABLE ONLY public.detail_pesanan_sewa ALTER COLUMN detail_pesanan_sewa_id 
 
 
 --
--- TOC entry 4924 (class 2604 OID 67241)
+-- TOC entry 4912 (class 2604 OID 82999)
 -- Name: detail_transaksi_pembelian detail_transaksi_pembelian_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1993,7 +2088,7 @@ ALTER TABLE ONLY public.detail_transaksi_pembelian ALTER COLUMN detail_transaksi
 
 
 --
--- TOC entry 4925 (class 2604 OID 67258)
+-- TOC entry 4913 (class 2604 OID 83000)
 -- Name: detail_transaksi_sewa detail_transaksi_sewa_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2001,7 +2096,7 @@ ALTER TABLE ONLY public.detail_transaksi_sewa ALTER COLUMN detail_transaksi_sewa
 
 
 --
--- TOC entry 4907 (class 2604 OID 66984)
+-- TOC entry 4915 (class 2604 OID 83001)
 -- Name: kategori kategori_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2009,7 +2104,7 @@ ALTER TABLE ONLY public.kategori ALTER COLUMN kategori_id SET DEFAULT nextval('p
 
 
 --
--- TOC entry 4905 (class 2604 OID 66970)
+-- TOC entry 4916 (class 2604 OID 83002)
 -- Name: kecamatan kecamatan_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2017,7 +2112,7 @@ ALTER TABLE ONLY public.kecamatan ALTER COLUMN kecamatan_id SET DEFAULT nextval(
 
 
 --
--- TOC entry 4909 (class 2604 OID 67021)
+-- TOC entry 4917 (class 2604 OID 83003)
 -- Name: kurir kurir_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2025,7 +2120,7 @@ ALTER TABLE ONLY public.kurir ALTER COLUMN kurir_id SET DEFAULT nextval('public.
 
 
 --
--- TOC entry 4910 (class 2604 OID 67037)
+-- TOC entry 4918 (class 2604 OID 83004)
 -- Name: opsi_pengembalian opsi_pengembalian_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2033,7 +2128,7 @@ ALTER TABLE ONLY public.opsi_pengembalian ALTER COLUMN opsi_pengembalian_id SET 
 
 
 --
--- TOC entry 4916 (class 2604 OID 67114)
+-- TOC entry 4919 (class 2604 OID 83005)
 -- Name: pesanan pesanan_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2041,7 +2136,7 @@ ALTER TABLE ONLY public.pesanan ALTER COLUMN pesanan_id SET DEFAULT nextval('pub
 
 
 --
--- TOC entry 4906 (class 2604 OID 66977)
+-- TOC entry 4921 (class 2604 OID 83006)
 -- Name: roles roles_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2049,7 +2144,7 @@ ALTER TABLE ONLY public.roles ALTER COLUMN roles_id SET DEFAULT nextval('public.
 
 
 --
--- TOC entry 4908 (class 2604 OID 67014)
+-- TOC entry 4922 (class 2604 OID 83007)
 -- Name: status_distribusi status_distribusi_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2057,7 +2152,7 @@ ALTER TABLE ONLY public.status_distribusi ALTER COLUMN status_distribusi_id SET 
 
 
 --
--- TOC entry 4918 (class 2604 OID 67137)
+-- TOC entry 4923 (class 2604 OID 83008)
 -- Name: transaksi transaksi_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2065,7 +2160,7 @@ ALTER TABLE ONLY public.transaksi ALTER COLUMN transaksi_id SET DEFAULT nextval(
 
 
 --
--- TOC entry 4911 (class 2604 OID 67058)
+-- TOC entry 4925 (class 2604 OID 83009)
 -- Name: users users_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2073,43 +2168,55 @@ ALTER TABLE ONLY public.users ALTER COLUMN users_id SET DEFAULT nextval('public.
 
 
 --
--- TOC entry 5176 (class 0 OID 67099)
--- Dependencies: 236
+-- TOC entry 5157 (class 0 OID 82832)
+-- Dependencies: 217
 -- Data for Name: alat_sewa; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.alat_sewa VALUES (3, 'Sekop', 3, 3500.00, 2000.00, 4, '2026-06-12 03:45:13.926722');
+INSERT INTO public.alat_sewa VALUES (3, 'Sekop', 5, 6000.00, 2000.00, 4, '2026-06-12 03:45:13.926722');
+INSERT INTO public.alat_sewa VALUES (9, 'Cangkul', 3, 10000.00, 5000.00, 4, '2026-06-17 05:00:56.342384');
 
 
 --
--- TOC entry 5182 (class 0 OID 67174)
--- Dependencies: 242
+-- TOC entry 5159 (class 0 OID 82836)
+-- Dependencies: 219
 -- Data for Name: audit_stok_barang_alat; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO public.audit_stok_barang_alat VALUES (1, 3, 3, 'Update stok alat Cangkul', '2026-06-17 02:53:26.181829', 4, NULL, 3);
+INSERT INTO public.audit_stok_barang_alat VALUES (2, 3, 3, 'Update stok alat Sekop', '2026-06-17 04:01:00.057514', 4, NULL, 3);
+INSERT INTO public.audit_stok_barang_alat VALUES (3, 10, 10, 'Update stok barang biji mengkudu', '2026-06-17 04:24:51.767264', 4, 1, NULL);
+INSERT INTO public.audit_stok_barang_alat VALUES (5, 3, 5, 'Update stok alat Sekop', '2026-06-17 04:50:42.62909', 4, NULL, 3);
+INSERT INTO public.audit_stok_barang_alat VALUES (7, 10, 10, 'Update stok barang biji nanas', '2026-06-17 05:01:28.959767', 4, 1, NULL);
 
 
 --
--- TOC entry 5192 (class 0 OID 67283)
--- Dependencies: 252
+-- TOC entry 5161 (class 0 OID 82843)
+-- Dependencies: 221
 -- Data for Name: audit_transaksi; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
 
 --
--- TOC entry 5174 (class 0 OID 67087)
--- Dependencies: 234
+-- TOC entry 5163 (class 0 OID 82850)
+-- Dependencies: 223
 -- Data for Name: barang; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.barang VALUES (1, 'biji wortel', 10, 2000.00, 2, '2026-06-02 13:48:38.315861');
 INSERT INTO public.barang VALUES (2, 'biji apel', 9, 10000.00, 3, '2026-06-02 13:49:12.44456');
+INSERT INTO public.barang VALUES (3, 'biji semangka', 44, 1000.00, NULL, NULL);
+INSERT INTO public.barang VALUES (4, 'biji mangga', 5, 3000.00, NULL, NULL);
+INSERT INTO public.barang VALUES (5, 'biji nangka', 3, 3000.00, NULL, NULL);
+INSERT INTO public.barang VALUES (6, 'apel', 4, 5000.00, 3, '2026-06-17 04:00:26.045732');
+INSERT INTO public.barang VALUES (7, 'benih kol', 9, 7000.00, 2, '2026-06-17 04:25:27.589644');
+INSERT INTO public.barang VALUES (1, 'biji nanas', 10, 2000.00, 2, '2026-06-02 13:48:38.315861');
+INSERT INTO public.barang VALUES (8, 'benih cabe', 3, 3000.00, 2, '2026-06-17 05:02:02.85675');
 
 
 --
--- TOC entry 5158 (class 0 OID 66960)
--- Dependencies: 218
+-- TOC entry 5165 (class 0 OID 82854)
+-- Dependencies: 225
 -- Data for Name: desa; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -2118,53 +2225,55 @@ INSERT INTO public.desa VALUES (5, 'ambulu', 2);
 
 
 --
--- TOC entry 5184 (class 0 OID 67199)
--- Dependencies: 244
+-- TOC entry 5167 (class 0 OID 82858)
+-- Dependencies: 227
 -- Data for Name: detail_pesanan_pembelian; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.detail_pesanan_pembelian VALUES (2, 8, 2000.00, 2, 1);
+INSERT INTO public.detail_pesanan_pembelian VALUES (4, 4, 2000.00, 5, 1);
 
 
 --
--- TOC entry 5186 (class 0 OID 67216)
--- Dependencies: 246
+-- TOC entry 5169 (class 0 OID 82862)
+-- Dependencies: 229
 -- Data for Name: detail_pesanan_sewa; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.detail_pesanan_sewa VALUES (1, 9, 3500.00, '2026-06-13', '2026-06-15', 2, 3, NULL);
+INSERT INTO public.detail_pesanan_sewa VALUES (3, 1, 3500.00, '2026-06-16', '2026-06-23', 5, 3, 1);
 
 
 --
--- TOC entry 5188 (class 0 OID 67238)
--- Dependencies: 248
+-- TOC entry 5171 (class 0 OID 82866)
+-- Dependencies: 231
 -- Data for Name: detail_transaksi_pembelian; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
 
 --
--- TOC entry 5190 (class 0 OID 67255)
--- Dependencies: 250
+-- TOC entry 5173 (class 0 OID 82870)
+-- Dependencies: 233
 -- Data for Name: detail_transaksi_sewa; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
 
 --
--- TOC entry 5164 (class 0 OID 66981)
--- Dependencies: 224
+-- TOC entry 5175 (class 0 OID 82877)
+-- Dependencies: 235
 -- Data for Name: kategori; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 INSERT INTO public.kategori VALUES (2, 'Sayur', NULL);
 INSERT INTO public.kategori VALUES (3, 'buah', NULL);
 INSERT INTO public.kategori VALUES (4, 'alat', NULL);
+INSERT INTO public.kategori VALUES (5, 'Kendaraan', 'Kategori otomatis dibuat');
+INSERT INTO public.kategori VALUES (6, 'Perawatan', 'Kategori otomatis dibuat');
 
 
 --
--- TOC entry 5160 (class 0 OID 66967)
--- Dependencies: 220
+-- TOC entry 5177 (class 0 OID 82883)
+-- Dependencies: 237
 -- Data for Name: kecamatan; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -2172,33 +2281,37 @@ INSERT INTO public.kecamatan VALUES (2, 'sumbersari');
 
 
 --
--- TOC entry 5168 (class 0 OID 67018)
--- Dependencies: 228
+-- TOC entry 5179 (class 0 OID 82887)
+-- Dependencies: 239
 -- Data for Name: kurir; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO public.kurir VALUES (1, 'fajril maulana hidayat', '089394991393', 'jl halmahera');
+INSERT INTO public.kurir VALUES (2, 'Farel Pratama', '0834455624', 'Jl Krawu');
 
 
 --
--- TOC entry 5170 (class 0 OID 67034)
--- Dependencies: 230
+-- TOC entry 5181 (class 0 OID 82905)
+-- Dependencies: 244
 -- Data for Name: opsi_pengembalian; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO public.opsi_pengembalian VALUES (1, 'Diambil kurir');
+INSERT INTO public.opsi_pengembalian VALUES (2, 'Antar sendiri');
 
 
 --
--- TOC entry 5178 (class 0 OID 67111)
--- Dependencies: 238
+-- TOC entry 5183 (class 0 OID 82909)
+-- Dependencies: 246
 -- Data for Name: pesanan; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.pesanan VALUES (2, '2026-06-13 00:00:00', 3, 'Sudah Checkout', 'Ambil sendiri');
+INSERT INTO public.pesanan VALUES (5, '2026-06-16 19:26:35.739536', 3, 'Sudah Checkout', 'Ambil sendiri', 'Transfer Bank');
 
 
 --
--- TOC entry 5162 (class 0 OID 66974)
--- Dependencies: 222
+-- TOC entry 5185 (class 0 OID 82916)
+-- Dependencies: 248
 -- Data for Name: roles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -2208,8 +2321,8 @@ INSERT INTO public.roles VALUES (3, 'admin');
 
 
 --
--- TOC entry 5166 (class 0 OID 67011)
--- Dependencies: 226
+-- TOC entry 5187 (class 0 OID 82920)
+-- Dependencies: 250
 -- Data for Name: status_distribusi; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -2220,46 +2333,48 @@ INSERT INTO public.status_distribusi VALUES (4, 'Ambil Sendiri');
 
 
 --
--- TOC entry 5180 (class 0 OID 67134)
--- Dependencies: 240
+-- TOC entry 5189 (class 0 OID 82924)
+-- Dependencies: 252
 -- Data for Name: transaksi; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
 
 --
--- TOC entry 5172 (class 0 OID 67055)
--- Dependencies: 232
+-- TOC entry 5191 (class 0 OID 82931)
+-- Dependencies: 254
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 INSERT INTO public.users VALUES (4, 'tiwi', '0845678786754', 'tiwi@gmailcom', 'tiwi', '123', true, 'mastrip', '2026-06-08 22:56:32.806906', NULL, 1, 5);
-INSERT INTO public.users VALUES (1, 'Marsha Jahat', '0857462735', 'marshaadmin@gmail.com', 'adminmar', '321', true, 'jawa', '2026-06-10 16:28:20.083858', NULL, 3, 5);
-INSERT INTO public.users VALUES (5, 'YunitaRamadhani', '098767890', 'YuniJember@gmail.com', 'Yuni', '999', true, 'jln.Sumatera', '2026-06-14 17:25:39.637669', NULL, 2, 4);
-INSERT INTO public.users VALUES (3, 'Marsha Devara', '0832435464535', 'marsha@gmail.com', 'marsha', '123', true, 'raung', '2026-06-04 23:29:45.548503', '2026-06-15 19:32:45.327612', 1, 4);
+INSERT INTO public.users VALUES (3, 'Marsha Devara', '0832435464535', 'marsha@gmail.com', 'devara', '123', true, 'raung', '2026-06-04 23:29:45.548503', '2026-06-16 11:37:05.575728', 1, 4);
+INSERT INTO public.users VALUES (6, 'Mirza Super', '08657454424', 'mirz@gmail.com', 'mirza', '666', true, 'Jl Kalimantan', '2026-06-17 02:35:36.102109', NULL, 2, NULL);
+INSERT INTO public.users VALUES (5, 'YunitaRamadhani', '098767890', 'YuniJember@gmail.com', 'yunik', '123', true, 'jln.Sumatera', '2026-06-14 17:25:39.637669', '2026-06-17 02:36:06.575632', 2, 4);
+INSERT INTO public.users VALUES (7, 'Ferdiansyah Jubung', '08218418478', 'ferdi@', 'ferdi', '123', true, 'jl kaliurang', '2026-06-17 02:52:22.655575', NULL, 2, 4);
+INSERT INTO public.users VALUES (1, 'Marsha Admin', '0857462735', 'marshaadmin@gmail.com', 'mar', '321', true, 'jawa', '2026-06-10 16:28:20.083858', '2026-06-17 04:49:11.758747', 3, 5);
 
 
 --
 -- TOC entry 5216 (class 0 OID 0)
--- Dependencies: 235
+-- Dependencies: 218
 -- Name: alat_sewa_alat_sewa_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.alat_sewa_alat_sewa_id_seq', 3, true);
+SELECT pg_catalog.setval('public.alat_sewa_alat_sewa_id_seq', 9, true);
 
 
 --
 -- TOC entry 5217 (class 0 OID 0)
--- Dependencies: 241
+-- Dependencies: 220
 -- Name: audit_stok_barang_alat_audit_stok_barang_alat_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.audit_stok_barang_alat_audit_stok_barang_alat_id_seq', 1, false);
+SELECT pg_catalog.setval('public.audit_stok_barang_alat_audit_stok_barang_alat_id_seq', 7, true);
 
 
 --
 -- TOC entry 5218 (class 0 OID 0)
--- Dependencies: 251
+-- Dependencies: 222
 -- Name: audit_transaksi_audit_transaksi_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2268,16 +2383,16 @@ SELECT pg_catalog.setval('public.audit_transaksi_audit_transaksi_id_seq', 1, fal
 
 --
 -- TOC entry 5219 (class 0 OID 0)
--- Dependencies: 233
+-- Dependencies: 224
 -- Name: barang_barang_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.barang_barang_id_seq', 2, true);
+SELECT pg_catalog.setval('public.barang_barang_id_seq', 8, true);
 
 
 --
 -- TOC entry 5220 (class 0 OID 0)
--- Dependencies: 217
+-- Dependencies: 226
 -- Name: desa_desa_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2286,25 +2401,25 @@ SELECT pg_catalog.setval('public.desa_desa_id_seq', 5, true);
 
 --
 -- TOC entry 5221 (class 0 OID 0)
--- Dependencies: 243
+-- Dependencies: 228
 -- Name: detail_pesanan_pembelian_detail_pesanan_pembelian_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.detail_pesanan_pembelian_detail_pesanan_pembelian_id_seq', 2, true);
+SELECT pg_catalog.setval('public.detail_pesanan_pembelian_detail_pesanan_pembelian_id_seq', 6, true);
 
 
 --
 -- TOC entry 5222 (class 0 OID 0)
--- Dependencies: 245
+-- Dependencies: 230
 -- Name: detail_pesanan_sewa_detail_pesanan_sewa_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.detail_pesanan_sewa_detail_pesanan_sewa_id_seq', 1, true);
+SELECT pg_catalog.setval('public.detail_pesanan_sewa_detail_pesanan_sewa_id_seq', 3, true);
 
 
 --
 -- TOC entry 5223 (class 0 OID 0)
--- Dependencies: 247
+-- Dependencies: 232
 -- Name: detail_transaksi_pembelian_detail_transaksi_pembelian_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2313,7 +2428,7 @@ SELECT pg_catalog.setval('public.detail_transaksi_pembelian_detail_transaksi_pem
 
 --
 -- TOC entry 5224 (class 0 OID 0)
--- Dependencies: 249
+-- Dependencies: 234
 -- Name: detail_transaksi_sewa_detail_transaksi_sewa_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2322,16 +2437,16 @@ SELECT pg_catalog.setval('public.detail_transaksi_sewa_detail_transaksi_sewa_id_
 
 --
 -- TOC entry 5225 (class 0 OID 0)
--- Dependencies: 223
+-- Dependencies: 236
 -- Name: kategori_kategori_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.kategori_kategori_id_seq', 4, true);
+SELECT pg_catalog.setval('public.kategori_kategori_id_seq', 6, true);
 
 
 --
 -- TOC entry 5226 (class 0 OID 0)
--- Dependencies: 219
+-- Dependencies: 238
 -- Name: kecamatan_kecamatan_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2340,34 +2455,34 @@ SELECT pg_catalog.setval('public.kecamatan_kecamatan_id_seq', 2, true);
 
 --
 -- TOC entry 5227 (class 0 OID 0)
--- Dependencies: 227
+-- Dependencies: 240
 -- Name: kurir_kurir_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.kurir_kurir_id_seq', 1, false);
+SELECT pg_catalog.setval('public.kurir_kurir_id_seq', 2, true);
 
 
 --
 -- TOC entry 5228 (class 0 OID 0)
--- Dependencies: 229
+-- Dependencies: 245
 -- Name: opsi_pengembalian_opsi_pengembalian_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.opsi_pengembalian_opsi_pengembalian_id_seq', 1, false);
+SELECT pg_catalog.setval('public.opsi_pengembalian_opsi_pengembalian_id_seq', 2, true);
 
 
 --
 -- TOC entry 5229 (class 0 OID 0)
--- Dependencies: 237
+-- Dependencies: 247
 -- Name: pesanan_pesanan_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.pesanan_pesanan_id_seq', 2, true);
+SELECT pg_catalog.setval('public.pesanan_pesanan_id_seq', 7, true);
 
 
 --
 -- TOC entry 5230 (class 0 OID 0)
--- Dependencies: 221
+-- Dependencies: 249
 -- Name: roles_roles_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2376,7 +2491,7 @@ SELECT pg_catalog.setval('public.roles_roles_id_seq', 3, true);
 
 --
 -- TOC entry 5231 (class 0 OID 0)
--- Dependencies: 225
+-- Dependencies: 251
 -- Name: status_distribusi_status_distribusi_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2385,7 +2500,7 @@ SELECT pg_catalog.setval('public.status_distribusi_status_distribusi_id_seq', 1,
 
 --
 -- TOC entry 5232 (class 0 OID 0)
--- Dependencies: 239
+-- Dependencies: 253
 -- Name: transaksi_transaksi_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2394,15 +2509,15 @@ SELECT pg_catalog.setval('public.transaksi_transaksi_id_seq', 1, false);
 
 --
 -- TOC entry 5233 (class 0 OID 0)
--- Dependencies: 231
+-- Dependencies: 255
 -- Name: users_users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.users_users_id_seq', 5, true);
+SELECT pg_catalog.setval('public.users_users_id_seq', 7, true);
 
 
 --
--- TOC entry 4954 (class 2606 OID 67104)
+-- TOC entry 4929 (class 2606 OID 83011)
 -- Name: alat_sewa alat_sewa_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2411,7 +2526,7 @@ ALTER TABLE ONLY public.alat_sewa
 
 
 --
--- TOC entry 4960 (class 2606 OID 67182)
+-- TOC entry 4931 (class 2606 OID 83013)
 -- Name: audit_stok_barang_alat audit_stok_barang_alat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2420,7 +2535,7 @@ ALTER TABLE ONLY public.audit_stok_barang_alat
 
 
 --
--- TOC entry 4970 (class 2606 OID 67291)
+-- TOC entry 4933 (class 2606 OID 83015)
 -- Name: audit_transaksi audit_transaksi_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2429,7 +2544,7 @@ ALTER TABLE ONLY public.audit_transaksi
 
 
 --
--- TOC entry 4952 (class 2606 OID 67092)
+-- TOC entry 4935 (class 2606 OID 83017)
 -- Name: barang barang_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2438,7 +2553,7 @@ ALTER TABLE ONLY public.barang
 
 
 --
--- TOC entry 4930 (class 2606 OID 66965)
+-- TOC entry 4937 (class 2606 OID 83019)
 -- Name: desa desa_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2447,7 +2562,7 @@ ALTER TABLE ONLY public.desa
 
 
 --
--- TOC entry 4962 (class 2606 OID 67204)
+-- TOC entry 4939 (class 2606 OID 83021)
 -- Name: detail_pesanan_pembelian detail_pesanan_pembelian_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2456,7 +2571,7 @@ ALTER TABLE ONLY public.detail_pesanan_pembelian
 
 
 --
--- TOC entry 4964 (class 2606 OID 67221)
+-- TOC entry 4941 (class 2606 OID 83023)
 -- Name: detail_pesanan_sewa detail_pesanan_sewa_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2465,7 +2580,7 @@ ALTER TABLE ONLY public.detail_pesanan_sewa
 
 
 --
--- TOC entry 4966 (class 2606 OID 67243)
+-- TOC entry 4943 (class 2606 OID 83025)
 -- Name: detail_transaksi_pembelian detail_transaksi_pembelian_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2474,7 +2589,7 @@ ALTER TABLE ONLY public.detail_transaksi_pembelian
 
 
 --
--- TOC entry 4968 (class 2606 OID 67261)
+-- TOC entry 4945 (class 2606 OID 83027)
 -- Name: detail_transaksi_sewa detail_transaksi_sewa_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2483,7 +2598,7 @@ ALTER TABLE ONLY public.detail_transaksi_sewa
 
 
 --
--- TOC entry 4936 (class 2606 OID 66988)
+-- TOC entry 4947 (class 2606 OID 83029)
 -- Name: kategori kategori_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2492,7 +2607,7 @@ ALTER TABLE ONLY public.kategori
 
 
 --
--- TOC entry 4932 (class 2606 OID 66972)
+-- TOC entry 4949 (class 2606 OID 83031)
 -- Name: kecamatan kecamatan_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2501,7 +2616,7 @@ ALTER TABLE ONLY public.kecamatan
 
 
 --
--- TOC entry 4940 (class 2606 OID 67025)
+-- TOC entry 4951 (class 2606 OID 83033)
 -- Name: kurir kurir_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2510,7 +2625,7 @@ ALTER TABLE ONLY public.kurir
 
 
 --
--- TOC entry 4942 (class 2606 OID 67039)
+-- TOC entry 4953 (class 2606 OID 83035)
 -- Name: opsi_pengembalian opsi_pengembalian_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2519,7 +2634,7 @@ ALTER TABLE ONLY public.opsi_pengembalian
 
 
 --
--- TOC entry 4956 (class 2606 OID 67117)
+-- TOC entry 4955 (class 2606 OID 83037)
 -- Name: pesanan pesanan_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2528,7 +2643,7 @@ ALTER TABLE ONLY public.pesanan
 
 
 --
--- TOC entry 4934 (class 2606 OID 66979)
+-- TOC entry 4957 (class 2606 OID 83039)
 -- Name: roles roles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2537,7 +2652,7 @@ ALTER TABLE ONLY public.roles
 
 
 --
--- TOC entry 4938 (class 2606 OID 67016)
+-- TOC entry 4959 (class 2606 OID 83041)
 -- Name: status_distribusi status_distribusi_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2546,7 +2661,16 @@ ALTER TABLE ONLY public.status_distribusi
 
 
 --
--- TOC entry 4958 (class 2606 OID 67142)
+-- TOC entry 4961 (class 2606 OID 83234)
+-- Name: transaksi transaksi_pesanan_id_unique; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.transaksi
+    ADD CONSTRAINT transaksi_pesanan_id_unique UNIQUE (pesanan_id);
+
+
+--
+-- TOC entry 4963 (class 2606 OID 83043)
 -- Name: transaksi transaksi_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2555,7 +2679,7 @@ ALTER TABLE ONLY public.transaksi
 
 
 --
--- TOC entry 4944 (class 2606 OID 67068)
+-- TOC entry 4965 (class 2606 OID 83045)
 -- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2564,7 +2688,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 4946 (class 2606 OID 67066)
+-- TOC entry 4967 (class 2606 OID 83047)
 -- Name: users users_no_telp_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2573,7 +2697,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 4948 (class 2606 OID 67064)
+-- TOC entry 4969 (class 2606 OID 83049)
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2582,7 +2706,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 4950 (class 2606 OID 67070)
+-- TOC entry 4971 (class 2606 OID 83051)
 -- Name: users users_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2591,7 +2715,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 4996 (class 2620 OID 74565)
+-- TOC entry 4997 (class 2620 OID 83177)
 -- Name: alat_sewa t_audit_stok_alat; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
@@ -2599,7 +2723,7 @@ CREATE TRIGGER t_audit_stok_alat AFTER UPDATE OF stok ON public.alat_sewa FOR EA
 
 
 --
--- TOC entry 4995 (class 2620 OID 74564)
+-- TOC entry 4998 (class 2620 OID 83179)
 -- Name: barang t_audit_stok_barang; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
@@ -2607,15 +2731,15 @@ CREATE TRIGGER t_audit_stok_barang AFTER UPDATE OF stok ON public.barang FOR EAC
 
 
 --
--- TOC entry 4997 (class 2620 OID 74567)
--- Name: transaksi t_audit_transaksi; Type: TRIGGER; Schema: public; Owner: postgres
+-- TOC entry 4999 (class 2620 OID 83238)
+-- Name: transaksi trg_audit_transaksi; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
-CREATE TRIGGER t_audit_transaksi AFTER UPDATE OF status_pembayaran, status_transaksi ON public.transaksi FOR EACH ROW EXECUTE FUNCTION public.log_audit_transaksi();
+CREATE TRIGGER trg_audit_transaksi AFTER INSERT OR UPDATE ON public.transaksi FOR EACH ROW EXECUTE FUNCTION public.audit_transaksi_trigger_func();
 
 
 --
--- TOC entry 4975 (class 2606 OID 67105)
+-- TOC entry 4972 (class 2606 OID 83055)
 -- Name: alat_sewa alat_sewa_kategori_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2624,7 +2748,7 @@ ALTER TABLE ONLY public.alat_sewa
 
 
 --
--- TOC entry 4980 (class 2606 OID 67193)
+-- TOC entry 4973 (class 2606 OID 83060)
 -- Name: audit_stok_barang_alat audit_stok_barang_alat_alat_sewa_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2633,7 +2757,7 @@ ALTER TABLE ONLY public.audit_stok_barang_alat
 
 
 --
--- TOC entry 4981 (class 2606 OID 67188)
+-- TOC entry 4974 (class 2606 OID 83065)
 -- Name: audit_stok_barang_alat audit_stok_barang_alat_barang_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2642,7 +2766,7 @@ ALTER TABLE ONLY public.audit_stok_barang_alat
 
 
 --
--- TOC entry 4982 (class 2606 OID 67183)
+-- TOC entry 4975 (class 2606 OID 83070)
 -- Name: audit_stok_barang_alat audit_stok_barang_alat_users_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2651,7 +2775,7 @@ ALTER TABLE ONLY public.audit_stok_barang_alat
 
 
 --
--- TOC entry 4993 (class 2606 OID 67292)
+-- TOC entry 4976 (class 2606 OID 83075)
 -- Name: audit_transaksi audit_transaksi_transaksi_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2660,7 +2784,7 @@ ALTER TABLE ONLY public.audit_transaksi
 
 
 --
--- TOC entry 4994 (class 2606 OID 67297)
+-- TOC entry 4977 (class 2606 OID 83080)
 -- Name: audit_transaksi audit_transaksi_users_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2669,7 +2793,7 @@ ALTER TABLE ONLY public.audit_transaksi
 
 
 --
--- TOC entry 4974 (class 2606 OID 67093)
+-- TOC entry 4978 (class 2606 OID 83085)
 -- Name: barang barang_kategori_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2678,7 +2802,7 @@ ALTER TABLE ONLY public.barang
 
 
 --
--- TOC entry 4983 (class 2606 OID 67210)
+-- TOC entry 4980 (class 2606 OID 83090)
 -- Name: detail_pesanan_pembelian detail_pesanan_pembelian_barang_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2687,7 +2811,7 @@ ALTER TABLE ONLY public.detail_pesanan_pembelian
 
 
 --
--- TOC entry 4984 (class 2606 OID 67205)
+-- TOC entry 4981 (class 2606 OID 83095)
 -- Name: detail_pesanan_pembelian detail_pesanan_pembelian_pesanan_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2696,7 +2820,7 @@ ALTER TABLE ONLY public.detail_pesanan_pembelian
 
 
 --
--- TOC entry 4985 (class 2606 OID 67227)
+-- TOC entry 4982 (class 2606 OID 83100)
 -- Name: detail_pesanan_sewa detail_pesanan_sewa_alat_sewa_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2705,7 +2829,7 @@ ALTER TABLE ONLY public.detail_pesanan_sewa
 
 
 --
--- TOC entry 4986 (class 2606 OID 67232)
+-- TOC entry 4983 (class 2606 OID 83105)
 -- Name: detail_pesanan_sewa detail_pesanan_sewa_opsi_pengembalian_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2714,7 +2838,7 @@ ALTER TABLE ONLY public.detail_pesanan_sewa
 
 
 --
--- TOC entry 4987 (class 2606 OID 67222)
+-- TOC entry 4984 (class 2606 OID 83110)
 -- Name: detail_pesanan_sewa detail_pesanan_sewa_pesanan_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2723,7 +2847,7 @@ ALTER TABLE ONLY public.detail_pesanan_sewa
 
 
 --
--- TOC entry 4988 (class 2606 OID 67249)
+-- TOC entry 4985 (class 2606 OID 83115)
 -- Name: detail_transaksi_pembelian detail_transaksi_pembelian_barang_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2732,7 +2856,7 @@ ALTER TABLE ONLY public.detail_transaksi_pembelian
 
 
 --
--- TOC entry 4989 (class 2606 OID 67244)
+-- TOC entry 4986 (class 2606 OID 83120)
 -- Name: detail_transaksi_pembelian detail_transaksi_pembelian_transaksi_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2741,7 +2865,7 @@ ALTER TABLE ONLY public.detail_transaksi_pembelian
 
 
 --
--- TOC entry 4990 (class 2606 OID 67267)
+-- TOC entry 4987 (class 2606 OID 83125)
 -- Name: detail_transaksi_sewa detail_transaksi_sewa_alat_sewa_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2750,7 +2874,7 @@ ALTER TABLE ONLY public.detail_transaksi_sewa
 
 
 --
--- TOC entry 4991 (class 2606 OID 67277)
+-- TOC entry 4988 (class 2606 OID 83130)
 -- Name: detail_transaksi_sewa detail_transaksi_sewa_opsi_pengembalian_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2759,7 +2883,7 @@ ALTER TABLE ONLY public.detail_transaksi_sewa
 
 
 --
--- TOC entry 4992 (class 2606 OID 67262)
+-- TOC entry 4989 (class 2606 OID 83135)
 -- Name: detail_transaksi_sewa detail_transaksi_sewa_transaksi_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2768,7 +2892,7 @@ ALTER TABLE ONLY public.detail_transaksi_sewa
 
 
 --
--- TOC entry 4971 (class 2606 OID 67426)
+-- TOC entry 4979 (class 2606 OID 83140)
 -- Name: desa fk_desa_kecamatan; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2777,7 +2901,7 @@ ALTER TABLE ONLY public.desa
 
 
 --
--- TOC entry 4976 (class 2606 OID 67118)
+-- TOC entry 4990 (class 2606 OID 83145)
 -- Name: pesanan pesanan_users_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2786,7 +2910,7 @@ ALTER TABLE ONLY public.pesanan
 
 
 --
--- TOC entry 4977 (class 2606 OID 67148)
+-- TOC entry 4991 (class 2606 OID 83150)
 -- Name: transaksi transaksi_kurir_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2795,7 +2919,16 @@ ALTER TABLE ONLY public.transaksi
 
 
 --
--- TOC entry 4978 (class 2606 OID 67158)
+-- TOC entry 4992 (class 2606 OID 83228)
+-- Name: transaksi transaksi_pesanan_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.transaksi
+    ADD CONSTRAINT transaksi_pesanan_id_fkey FOREIGN KEY (pesanan_id) REFERENCES public.pesanan(pesanan_id) ON DELETE SET NULL;
+
+
+--
+-- TOC entry 4993 (class 2606 OID 83155)
 -- Name: transaksi transaksi_status_distribusi_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2804,7 +2937,7 @@ ALTER TABLE ONLY public.transaksi
 
 
 --
--- TOC entry 4979 (class 2606 OID 67143)
+-- TOC entry 4994 (class 2606 OID 83160)
 -- Name: transaksi transaksi_users_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2813,7 +2946,7 @@ ALTER TABLE ONLY public.transaksi
 
 
 --
--- TOC entry 4972 (class 2606 OID 67076)
+-- TOC entry 4995 (class 2606 OID 83165)
 -- Name: users users_desa_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2822,7 +2955,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 4973 (class 2606 OID 67071)
+-- TOC entry 4996 (class 2606 OID 83170)
 -- Name: users users_roles_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2830,11 +2963,38 @@ ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_roles_id_fkey FOREIGN KEY (roles_id) REFERENCES public.roles(roles_id) ON DELETE SET NULL;
 
 
--- Completed on 2026-06-15 20:50:42
+--
+-- TOC entry: View stok tersedikit (UNION barang + alat_sewa, diurutkan dari stok paling sedikit)
+--
+
+CREATE VIEW public.view_stok_tersedikit AS
+ SELECT 'Barang'::text AS jenis,
+    b.barang_id AS id,
+    b.nama_barang AS nama,
+    b.stok,
+    b.harga_per_item AS harga,
+    k.kategori
+   FROM (public.barang b
+     JOIN public.kategori k USING (kategori_id))
+UNION ALL
+ SELECT 'Alat Sewa'::text AS jenis,
+    a.alat_sewa_id AS id,
+    a.nama_alat AS nama,
+    a.stok,
+    a.harga_sewa_perhari AS harga,
+    k.kategori
+   FROM (public.alat_sewa a
+     JOIN public.kategori k USING (kategori_id))
+ ORDER BY stok ASC;
+
+
+ALTER VIEW public.view_stok_tersedikit OWNER TO postgres;
+
+-- Completed on 2026-06-17 07:50:38
 
 --
 -- PostgreSQL database dump complete
 --
 
-\unrestrict XbMjKz50ULmerFaYoEgroEYnGkVl9rJksBvs4Z0AZTc9zakAFm2bVuaJMLYzK0z
+\unrestrict gDbhnHq5Qo9jIycmyxV4QhperdFlesqkA3zyWypUfKIWOpLt68WDwQAdNBvadGj
 

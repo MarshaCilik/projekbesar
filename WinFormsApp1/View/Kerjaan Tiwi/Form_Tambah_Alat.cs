@@ -13,56 +13,13 @@ namespace WinFormsApp1.View
     public partial class Form_Tambah_Alat : Form
     {
         private c_barangtani controller = new c_barangtani();
-        private TextBox Tb_Kategori;
-        private Label labelKategori;
 
         public Form_Tambah_Alat()
         {
             InitializeComponent();
-            TambahInputKategori();
-            RegisterEvents();
-            this.Text = "Tambah Alat Sewa";
-            label2.Text = "TAMBAH ALAT";
         }
 
-        private void TambahInputKategori()
-        {
-            labelKategori = new Label();
-            labelKategori.Text = "Kategori:";
-            labelKategori.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelKategori.ForeColor = Color.Black;
-            labelKategori.Location = new Point(62, 305);
-            labelKategori.Size = new Size(100, 15);
-
-            Tb_Kategori = new TextBox();
-            Tb_Kategori.BackColor = Color.FromArgb(74, 103, 65);
-            Tb_Kategori.ForeColor = Color.White;
-            Tb_Kategori.Font = new Font("Segoe UI", 11F);
-            Tb_Kategori.Location = new Point(62, 322);
-            Tb_Kategori.Size = new Size(374, 27);
-            Tb_Kategori.TabIndex = 3;
-
-            this.Controls.Add(labelKategori);
-            this.Controls.Add(Tb_Kategori);
-
-            // Sesuaikan posisi komponen Stok di Form_Tambah_Alat
-            if (this.Controls.ContainsKey("label4"))
-            {
-                this.Controls["label4"].Location = new Point(222, 355);
-            }
-            if (this.Controls.ContainsKey("Tb_Stok"))
-            {
-                this.Controls["Tb_Stok"].Location = new Point(208, 375);
-                this.Controls["Tb_Stok"].Size = new Size(67, 30);
-            }
-        }
-
-        private void RegisterEvents()
-        {
-
-        }
-
-        private void Btn_Simpan_Click(object sender, EventArgs e)
+        private void btn_selesai_alat_Click(object sender, EventArgs e)
         {
             try
             {
@@ -93,8 +50,10 @@ namespace WinFormsApp1.View
                     return;
                 }
 
-                // Buat objek AlatTani (ID = 0 untuk insert)
+                // Membuat objek AlatTani (Id diset 0 karena akan auto-increment di database)
                 AlatTani alat = new AlatTani(0, nama, stok, hargaSewa, hargaDenda, kategori);
+                
+                // Memanggil method di controller
                 string hasil = controller.AddAlatTani(alat);
 
                 MessageBox.Show(hasil, "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -111,7 +70,7 @@ namespace WinFormsApp1.View
             }
         }
 
-        private void Btn_Batal_Click(object sender, EventArgs e)
+        private void btn_batal_alat_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();

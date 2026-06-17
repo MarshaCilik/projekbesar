@@ -9,32 +9,6 @@ namespace WinFormsApp1.Models.Context
 {
     public class barangTaniContext
     {
-        public List<barangTani> ReadBarangTaniForAdmin()
-        {
-            List<barangTani> list = new List<barangTani>();
-            using(NpgsqlConnection conn = connectDB.GetConnection())
-            {
-                string sql = "select * from barang";
-                using(NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
-                {
-                    using (NpgsqlDataReader dr = cmd.ExecuteReader())
-                    {
-                        while (dr.Read())
-                        {
-                            list.Add(new barangTani(
-                                Convert.ToInt32(dr["barang_id"]),
-                                dr["nama barang"].ToString(),
-                                Convert.ToInt32(dr["stok"]),
-                                Convert.ToDecimal(dr["harga per unit"]),
-                                dr["kategori"].ToString(),
-                                Convert.ToDateTime(dr["created_at"])
-                                ));
-                        }
-                    }
-                }
-            }
-            return list;
-        }
         public List<barangTani> ReadBarangTani()
         {
             List<barangTani> listbarang = new List<barangTani>();
@@ -111,18 +85,19 @@ namespace WinFormsApp1.Models.Context
             }
         }
 
-        public void AddBarangTani(barangTani barang)
+        public void AddAlatSewa(AlatTani barang)
         {
             using (NpgsqlConnection conn = connectDB.GetConnection())
             {
-                int kategoriId = GetOrCreateKategoriId(barang.kategori, conn);
-                string sql = "INSERT INTO barang (nama_barang, stok, harga_per_item, kategori_id) VALUES (@nama, @stok, @harga, @kategori_id)";
+                
+                string sql = "CALL add_alat_sewa(@nama, @stok, @harga, @hargadenda, @kategori)";
                 using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                 {
-                    cmd.Parameters.AddWithValue("nama", barang.nama_barang);
-                    cmd.Parameters.AddWithValue("stok", barang.stok);
-                    cmd.Parameters.AddWithValue("harga", barang.harga);
-                    cmd.Parameters.AddWithValue("kategori_id", kategoriId);
+                    cmd.Parameters.AddWithValue("nama", barang.Nama);
+                    cmd.Parameters.AddWithValue("stok", barang.Stok);
+                    cmd.Parameters.AddWithValue("harga", barang.Harga_sewa_perhari);
+                    cmd.Parameters.AddWithValue("hargadenda", barang.Harga_denda_perhari);
+                    cmd.Parameters.AddWithValue("kategori", barang.Kategori);
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -207,6 +182,95 @@ namespace WinFormsApp1.Models.Context
                     cmd.ExecuteNonQuery();
                 }
             }
+        }
+
+        public List<barangTani> SearchBarangTani(string keyword)
+        {
+            List<barangTani> listbarang = new List<barangTani>();
+            using (NpgsqlConnection conn = connectDB.GetConnection())
+            {
+                string sql = "SELECT * FROM search_barang_petani(@keyword)";
+                using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("keyword", keyword);
+                    using (NpgsqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            listbarang.Add(new barangTani(
+                                Convert.ToInt32(dr["barang_id"]),
+                                dr["nama barang"].ToString(),
+                                Convert.ToInt32(dr["stok"]),
+                                Convert.ToDecimal(dr["harga per unit"]),
+                                dr["kategori"].ToString()
+                                ));
+                        }
+                    }
+                }
+            }
+            return listbarang;
+        }
+
+        public List<AlatTani> SearchAlatTani(string keyword)
+        {
+            List<AlatTani> list = new List<AlatTani>();
+            using (NpgsqlConnection conn = connectDB.GetConnection())
+            {
+                string sql = "SELECT * FROM search_alat_sewa(@keyword)";
+                using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("keyword", keyword);
+                    using (NpgsqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            list.Add(new AlatTani(
+                                Convert.ToInt32(dr["alat_sewa_id"]),
+                                dr["nama_alat"].ToString(),
+                                Convert.ToInt32(dr["stok"]),
+                                Convert.ToDecimal(dr["harga_sewa_perhari"]),
+                                Convert.ToDecimal(dr["harga_denda_perhari"]),
+                                dr["kategori"].ToString()
+                                ));
+                        }
+                    }
+                }
+            }
+            return list;
+        }
+
+        public System.Data.DataTable GetStokTersedikit()
+        {
+            var dt = new System.Data.DataTable();
+            using (NpgsqlConnection conn = connectDB.GetConnection())
+            {
+                string sql = "SELECT * FROM view_stok_tersedikit";
+                using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
+                {
+                    using (NpgsqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        dt.Load(dr);
+                    }
+                }
+            }
+            return dt;
+        }
+
+        public System.Data.DataTable GetProdukTerlaris()
+        {
+            var dt = new System.Data.DataTable();
+            using (NpgsqlConnection conn = connectDB.GetConnection())
+            {
+                string sql = "SELECT * FROM view_produk_terlaris";
+                using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
+                {
+                    using (NpgsqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        dt.Load(dr);
+                    }
+                }
+            }
+            return dt;
         }
     }
 }

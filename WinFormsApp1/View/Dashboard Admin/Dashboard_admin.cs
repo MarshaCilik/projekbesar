@@ -33,8 +33,14 @@ namespace WinFormsApp1.View.Dashboard_Admin
         public Dashboard_admin(Users user)
         {
             InitializeComponent();
+            this.user = user;
             this.Username = user.Username;
             this.StartPosition = FormStartPosition.CenterScreen;
+
+            // Menampilkan username admin saat ini ke label
+            Lbl_UsernameAdmin.Text = this.Username;
+            Lbl_UsernameAdmin1.Text = this.Username;
+
             dgv_AllUser.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             Load("semua");
 
@@ -45,8 +51,9 @@ namespace WinFormsApp1.View.Dashboard_Admin
             // Wire up CRUD Produk events programmatically
             Btn_Barang.Click += Btn_Barang_Click;
             Btn_AlatSewa.Click += Btn_AlatSewa_Click;
-            button1.Click += Btn_TambahProduk_Click;
-            button2.Click += Btn_EditProduk_Click;
+            btn_editData.Click += Btn_EditProduk_Click;
+            btn_TambahUser.Click += Btn_TambahUser_Click;
+            Btn_Simpan.Click += Btn_Simpan_Click;
 
             // Setup right-click delete menu
             SetupContextMenu();
@@ -69,25 +76,7 @@ namespace WinFormsApp1.View.Dashboard_Admin
         /// <summary>
         /// Mengatur warna dinamis untuk menu utama di panel sebelah kiri
         /// </summary>
-        private void SetMenuKiriAktif(Button tombolAktif)
-        {
-            // Reset semua tombol kiri ke warna default (Tulisan hijau/hitam, background transparan)
-            btn_Dashboard.BackColor = warnaDefaultKiri;
-            btn_Dashboard.ForeColor = Color.FromArgb(40, 78, 34); // Atau Color.Black tergantung desain awalmu
 
-            btn_CRUDProduk.BackColor = warnaDefaultKiri;
-            btn_CRUDProduk.ForeColor = Color.FromArgb(40, 78, 34);
-
-            btn_TambahKaryawan.BackColor = warnaDefaultKiri;
-            btn_TambahKaryawan.ForeColor = Color.FromArgb(40, 78, 34);
-
-            btn_Profil.BackColor = warnaDefaultKiri;
-            btn_Profil.ForeColor = Color.FromArgb(40, 78, 34);
-
-            // Set hanya tombol yang diklik menjadi Hijau PASTANI dengan tulisan putih
-            tombolAktif.BackColor = warnaHijauPastani;
-            tombolAktif.ForeColor = Color.White;
-        }
 
         /// <summary>
         /// Mengatur warna dinamis untuk sub-menu filter user di bagian atas
@@ -110,6 +99,15 @@ namespace WinFormsApp1.View.Dashboard_Admin
             // Set hanya sub-menu yang diklik menjadi Hijau PASTANI dengan tulisan putih
             tombolAktif.BackColor = warnaHijauPastani;
             tombolAktif.ForeColor = Color.White;
+
+            if (tombolAktif == Btn_Karyawan || tombolAktif == Btn_Kurir)
+            {
+                btn_TambahUser.Visible = true;
+            }
+            else
+            {
+                btn_TambahUser.Visible = false;
+            }
         }
 
 
@@ -126,16 +124,65 @@ namespace WinFormsApp1.View.Dashboard_Admin
             LoadProduk("barang");
         }
 
-        private void btn_TambahKaryawan_Click(object sender, EventArgs e)
-        {
-            SetMenuKiriAktif(btn_TambahKaryawan);
-            tabControl1.SelectedIndex = 2;
-        }
-
         private void btn_Profil_Click(object sender, EventArgs e)
         {
             SetMenuKiriAktif(btn_Profil);
-            tabControl1.SelectedIndex = 3;
+            tabControl1.SelectedIndex = 4;
+
+            // Populate textboxes with current admin data
+            Tb_Nama.Text = this.user.Nama;
+            Tb_NoTelp.Text = this.user.NoTelp;
+            Tb_Email.Text = this.user.Email;
+            Tb_Username.Text = this.user.Username;
+            Tb_Password.Text = this.user.Password;
+            Tb_Alamat.Text = this.user.Alamat;
+            Tb_Kecamatan.Text = this.user.NamaKecamatan;
+            Tb_Desa.Text = this.user.NamaDesa;
+        }
+
+        private void Btn_Simpan_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Minta konfirmasi sebelum menyimpan
+                var confirmResult = MessageBox.Show("Apakah Anda yakin ingin menyimpan perubahan data profil?",
+                                     "Konfirmasi Simpan",
+                                     MessageBoxButtons.YesNo,
+                                     MessageBoxIcon.Question);
+
+                if (confirmResult == DialogResult.Yes)
+                {
+                    // Buat object user baru berdasarkan input form
+                    Users userUpdate = new AdminUser(
+                        this.user.UsersId,
+                        Tb_Username.Text.Trim(),
+                        Tb_Password.Text.Trim(),
+                        Tb_Nama.Text.Trim(),
+                        Tb_NoTelp.Text.Trim(),
+                        Tb_Email.Text.Trim(),
+                        this.user.IsActive,
+                        this.user.CreatedAt,
+                        this.user.UpdateAt,
+                        Tb_Alamat.Text.Trim(),
+                        Tb_Desa.Text.Trim(),
+                        Tb_Kecamatan.Text.Trim()
+                    );
+
+                    string result = controller.Update(userUpdate, this.user.Username);
+                    MessageBox.Show(result, "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    if (result.ToLower().Contains("update") || result.ToLower().Contains("berhasil"))
+                    {
+                        this.user = userUpdate;
+                        this.Username = userUpdate.Username;
+                        Lbl_UsernameAdmin.Text = this.Username;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Terjadi kesalahan: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
 
@@ -166,8 +213,55 @@ namespace WinFormsApp1.View.Dashboard_Admin
             dgv_AllUser.DataSource = listKurir;
         }
 
+        private void Btn_TambahUser_Click(object sender, EventArgs e)
+        {
+            if (Btn_Karyawan.BackColor == warnaHijauPastani)
+            {
+                EditDataUserKaryawan form = new EditDataUserKaryawan(null);
+                if (form.ShowDialog() == DialogResult.OK && form.UserData != null)
+                {
+                    string result = controller.CreateKaryawan(form.UserData);
+                    MessageBox.Show(result, "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Load("karyawan");
+                }
+            }
+            else if (Btn_Kurir.BackColor == warnaHijauPastani)
+            {
+                EditDataKurir form = new EditDataKurir(null);
+                if (form.ShowDialog() == DialogResult.OK && form.KurirData != null)
+                {
+                    string result = controller.CreateKurir(form.KurirData);
+                    MessageBox.Show(result, "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    listKurir = controller.ReadKurir();
+                    dgv_AllUser.DataSource = null;
+                    dgv_AllUser.DataSource = listKurir;
+                }
+            }
+        }
+
         private void Btn_Edit_Click(object sender, EventArgs e)
         {
+            if (Btn_Kurir.BackColor == warnaHijauPastani)
+            {
+                if (dgv_AllUser.CurrentRow != null && dgv_AllUser.CurrentRow.DataBoundItem is Kurir selectedKurir)
+                {
+                    EditDataKurir form = new EditDataKurir(selectedKurir);
+                    if (form.ShowDialog() == DialogResult.OK && form.KurirData != null)
+                    {
+                        string result = controller.UpdateKurir(form.KurirData);
+                        MessageBox.Show(result, "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        listKurir = controller.ReadKurir();
+                        dgv_AllUser.DataSource = null;
+                        dgv_AllUser.DataSource = listKurir;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Pilih kurir yang ingin diedit dari tabel!", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                return;
+            }
+
             Users selecteduser = (Users)dgv_AllUser.CurrentRow.DataBoundItem;
             string roleTerpilih = dgv_AllUser.CurrentRow.Cells["Roles"].Value.ToString().ToLower();
 
@@ -210,7 +304,7 @@ namespace WinFormsApp1.View.Dashboard_Admin
                         kecamatan
                         );
 
-                    EditDataUserKaryawan form = new EditDataUserKaryawan(selecteduser);
+                    EditDataUserKaryawan form = new EditDataUserKaryawan(dataYangMauDiedit);
                     string usernameLamaKaryawan = selecteduser.Username;
                     if (form.ShowDialog() == DialogResult.OK)
                     {
@@ -252,7 +346,7 @@ namespace WinFormsApp1.View.Dashboard_Admin
                         kecamatan
                         );
 
-                    EditDataUserPetani form = new EditDataUserPetani(selecteduser);
+                    EditDataUserPetani form = new EditDataUserPetani(dataYangMauDiedit);
                     if (form.ShowDialog() == DialogResult.OK)
                     {
                         MessageBox.Show(
@@ -284,6 +378,7 @@ namespace WinFormsApp1.View.Dashboard_Admin
 
         private string activeProdukTab = "barang";
         private c_barangtani controllerBarang = new c_barangtani();
+        private c_transaksi controllerTransaksi = new c_transaksi();
 
         private void LoadProduk(string tipe)
         {
@@ -295,12 +390,14 @@ namespace WinFormsApp1.View.Dashboard_Admin
                 Btn_AlatSewa.BackColor = warnaDefaultAtas;
                 Btn_AlatSewa.ForeColor = Color.Black;
 
-                Dgv_Barang.Visible = true;
-                dataGridView1.Visible = false;
+                dgv_Produk.Visible = true;
+                dgv_Produk.BringToFront();
 
-                Dgv_Barang.DataSource = null;
-                Dgv_Barang.DataSource = controllerBarang.ReadBarangTani();
-                Dgv_Barang.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                if (menuBarang != null) dgv_Produk.ContextMenuStrip = menuBarang;
+
+                dgv_Produk.DataSource = null;
+                dgv_Produk.DataSource = controllerBarang.ReadBarangTani();
+                dgv_Produk.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             }
             else if (tipe == "alat_sewa")
             {
@@ -309,12 +406,14 @@ namespace WinFormsApp1.View.Dashboard_Admin
                 Btn_Barang.BackColor = warnaDefaultAtas;
                 Btn_Barang.ForeColor = Color.Black;
 
-                dataGridView1.Visible = true;
-                Dgv_Barang.Visible = false;
+                dgv_Produk.Visible = true;
+                dgv_Produk.BringToFront();
 
-                dataGridView1.DataSource = null;
-                dataGridView1.DataSource = controllerBarang.ReadAlatTani();
-                dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                if (menuAlat != null) dgv_Produk.ContextMenuStrip = menuAlat;
+
+                dgv_Produk.DataSource = null;
+                dgv_Produk.DataSource = controllerBarang.ReadAlatTani();
+                dgv_Produk.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             }
         }
 
@@ -328,7 +427,94 @@ namespace WinFormsApp1.View.Dashboard_Admin
             LoadProduk("alat_sewa");
         }
 
-        private void Btn_TambahProduk_Click(object sender, EventArgs e)
+
+
+        private void Btn_EditProduk_Click(object sender, EventArgs e)
+        {
+            if (activeProdukTab == "barang")
+            {
+                if (dgv_Produk.CurrentRow != null && dgv_Produk.CurrentRow.DataBoundItem is barangTani selectedBarang)
+                {
+                    Form_Edit_barang form = new Form_Edit_barang(selectedBarang);
+                    if (form.ShowDialog() == DialogResult.OK)
+                    {
+                        LoadProduk("barang");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Silakan pilih data barang yang ingin diedit dari tabel!", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            else if (activeProdukTab == "alat_sewa")
+            {
+                if (dgv_Produk.CurrentRow != null && dgv_Produk.CurrentRow.DataBoundItem is AlatTani selectedAlat)
+                {
+                    Form_Edit_Alat form = new Form_Edit_Alat(selectedAlat);
+                    if (form.ShowDialog() == DialogResult.OK)
+                    {
+                        LoadProduk("alat_sewa");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Silakan pilih data alat sewa yang ingin diedit dari tabel!", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+        }
+
+        private ContextMenuStrip menuBarang;
+        private ContextMenuStrip menuAlat;
+
+        private void SetupContextMenu()
+        {
+            menuBarang = new ContextMenuStrip();
+            ToolStripMenuItem hapusBarang = new ToolStripMenuItem("Hapus Barang");
+            hapusBarang.Click += HapusBarang_Click;
+            menuBarang.Items.Add(hapusBarang);
+
+            menuAlat = new ContextMenuStrip();
+            ToolStripMenuItem hapusAlat = new ToolStripMenuItem("Hapus Alat Sewa");
+            hapusAlat.Click += HapusAlat_Click;
+            menuAlat.Items.Add(hapusAlat);
+        }
+
+        private void HapusBarang_Click(object sender, EventArgs e)
+        {
+            if (dgv_Produk.CurrentRow != null && dgv_Produk.CurrentRow.DataBoundItem is barangTani selectedBarang)
+            {
+                var confirm = MessageBox.Show($"Apakah Anda yakin ingin menghapus barang '{selectedBarang.nama_barang}'?",
+                    "Konfirmasi Hapus", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (confirm == DialogResult.Yes)
+                {
+                    string hasil = controllerBarang.DeleteBarangTani(selectedBarang.Id);
+                    MessageBox.Show(hasil, "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadProduk("barang");
+                }
+            }
+        }
+
+        private void HapusAlat_Click(object sender, EventArgs e)
+        {
+            if (dgv_Produk.CurrentRow != null && dgv_Produk.CurrentRow.DataBoundItem is AlatTani selectedAlat)
+            {
+                var confirm = MessageBox.Show($"Apakah Anda yakin ingin menghapus alat sewa '{selectedAlat.Nama}'?",
+                    "Konfirmasi Hapus", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (confirm == DialogResult.Yes)
+                {
+                    string hasil = controllerBarang.DeleteAlatTani(selectedAlat.Id);
+                    MessageBox.Show(hasil, "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadProduk("alat_sewa");
+                }
+            }
+        }
+
+        private void Dashboard_admin_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void btn_tambahBarang_Click(object sender, EventArgs e)
         {
             if (activeProdukTab == "barang")
             {
@@ -348,151 +534,173 @@ namespace WinFormsApp1.View.Dashboard_Admin
             }
         }
 
-        private void Btn_EditProduk_Click(object sender, EventArgs e)
+        private void btn_Hapus_Click(object sender, EventArgs e)
         {
             if (activeProdukTab == "barang")
             {
-                if (Dgv_Barang.CurrentRow != null && Dgv_Barang.CurrentRow.DataBoundItem is barangTani selectedBarang)
-                {
-                    Form_Edit_barang form = new Form_Edit_barang(selectedBarang);
-                    if (form.ShowDialog() == DialogResult.OK)
-                    {
-                        LoadProduk("barang");
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Silakan pilih data barang yang ingin diedit dari tabel!", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+                HapusBarang_Click(sender, e);
             }
             else if (activeProdukTab == "alat_sewa")
             {
-                if (dataGridView1.CurrentRow != null && dataGridView1.CurrentRow.DataBoundItem is AlatTani selectedAlat)
+                HapusAlat_Click(sender, e);
+            }
+        }
+
+        private void SetMenuLaporanAktif(Button tombolAktif)
+        {
+            // Reset warna tombol laporan ke abu-abu default
+            btnLaporanTransaksi.BackColor = Color.FromArgb(217, 217, 217);
+            btnLaporanTransaksi.ForeColor = Color.Black;
+
+            btnLaporanStok.BackColor = Color.FromArgb(217, 217, 217);
+            btnLaporanStok.ForeColor = Color.Black;
+
+            btnLaporanDenda.BackColor = Color.FromArgb(217, 217, 217);
+            btnLaporanDenda.ForeColor = Color.Black;
+
+            // Set tombol yang aktif ke warna hijau sesuai permintaan (49, 106, 14)
+            tombolAktif.BackColor = Color.FromArgb(49, 106, 14);
+            tombolAktif.ForeColor = Color.White;
+        }
+
+        private void btnLaporanStok_Click(object sender, EventArgs e)
+        {
+            tabControl2.SelectedTab = tabPage7;
+            SetMenuLaporanAktif(btnLaporanStok);
+        }
+
+        private void btnLaporanDenda_Click(object sender, EventArgs e)
+        {
+            tabControl2.SelectedTab = tabPage8;
+            SetMenuLaporanAktif(btnLaporanDenda);
+        }
+
+        private void btnLaporanTransaksi_Click(object sender, EventArgs e)
+        {
+            tabControl2.SelectedTab = tabPage6;
+            SetMenuLaporanAktif(btnLaporanTransaksi);
+        }
+
+        private void btn_LaporanRekap_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectedTab = tabPage4;
+            SetMenuKiriAktif(btn_LaporanRekap);
+        }
+
+        private void SetMenuKiriAktif(Button tombolAktif)
+        {
+            // Reset semua tombol kiri ke warna default (Tulisan hijau/hitam, background transparan)
+            btn_Dashboard.BackColor = warnaDefaultKiri;
+            btn_Dashboard.ForeColor = Color.FromArgb(40, 78, 34); // Atau Color.Black tergantung desain awalmu
+
+            btn_CRUDProduk.BackColor = warnaDefaultKiri;
+            btn_CRUDProduk.ForeColor = Color.FromArgb(40, 78, 34);
+
+            btn_Profil.BackColor = warnaDefaultKiri;
+            btn_Profil.ForeColor = Color.FromArgb(40, 78, 34);
+
+            btn_LaporanRekap.BackColor = warnaDefaultKiri;
+            btn_LaporanRekap.ForeColor = Color.FromArgb(40, 78, 34);
+            // Set hanya tombol yang diklik menjadi Hijau PASTANI dengan tulisan putih
+            tombolAktif.BackColor = warnaHijauPastani;
+            tombolAktif.ForeColor = Color.White;
+        }
+
+        private void Tb_pencarian_TextChanged(object sender, EventArgs e)
+        {
+            // Cek apakah textbox itu sendiri belum dinisialisasi
+            if (sender is TextBox tb)
+            {
+                string keyword = tb.Text.Trim();
+
+                if (string.IsNullOrEmpty(keyword))
                 {
-                    Form_Edit_Alat form = new Form_Edit_Alat(selectedAlat);
-                    if (form.ShowDialog() == DialogResult.OK)
-                    {
-                        LoadProduk("alat_sewa");
-                    }
+                    // Jika kosong, load semua data
+                    LoadProduk(activeProdukTab);
                 }
                 else
                 {
-                    MessageBox.Show("Silakan pilih data alat sewa yang ingin diedit dari tabel!", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-        }
-
-        private void SetupContextMenu()
-        {
-            ContextMenuStrip menuBarang = new ContextMenuStrip();
-            ToolStripMenuItem hapusBarang = new ToolStripMenuItem("Hapus Barang");
-            hapusBarang.Click += HapusBarang_Click;
-            menuBarang.Items.Add(hapusBarang);
-            Dgv_Barang.ContextMenuStrip = menuBarang;
-
-            ContextMenuStrip menuAlat = new ContextMenuStrip();
-            ToolStripMenuItem hapusAlat = new ToolStripMenuItem("Hapus Alat Sewa");
-            hapusAlat.Click += HapusAlat_Click;
-            menuAlat.Items.Add(hapusAlat);
-            dataGridView1.ContextMenuStrip = menuAlat;
-        }
-
-        private void HapusBarang_Click(object sender, EventArgs e)
-        {
-            if (Dgv_Barang.CurrentRow != null && Dgv_Barang.CurrentRow.DataBoundItem is barangTani selectedBarang)
-            {
-                var confirm = MessageBox.Show($"Apakah Anda yakin ingin menghapus barang '{selectedBarang.nama_barang}'?",
-                    "Konfirmasi Hapus", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (confirm == DialogResult.Yes)
-                {
-                    string hasil = controllerBarang.DeleteBarangTani(selectedBarang.Id);
-                    MessageBox.Show(hasil, "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    LoadProduk("barang");
-                }
-            }
-        }
-
-        private void HapusAlat_Click(object sender, EventArgs e)
-        {
-            if (dataGridView1.CurrentRow != null && dataGridView1.CurrentRow.DataBoundItem is AlatTani selectedAlat)
-            {
-                var confirm = MessageBox.Show($"Apakah Anda yakin ingin menghapus alat sewa '{selectedAlat.Nama}'?",
-                    "Konfirmasi Hapus", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (confirm == DialogResult.Yes)
-                {
-                    string hasil = controllerBarang.DeleteAlatTani(selectedAlat.Id);
-                    MessageBox.Show(hasil, "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    LoadProduk("alat_sewa");
-                }
-            }
-        }
-        private void TampilDataBarang()
-        {
-            // 1. Setup koneksi ke database 'pastani'
-            // PENTING: Ganti "password_kamu" sama password asli postgres-mu di laptop
-            string connString = "Host=localhost;Username=postgres;Password=password_kamu;Database=pastani";
-
-            try
-            {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connString))
-                {
-                    conn.Open();
-
-                    // 2. Ini query SQL-nya, nyesuaiin sama kolom di gambarmu
-                    string query = "SELECT barang_id, nama_barang, stok, harga_per_item, kategori_id, added_at FROM barang ORDER BY barang_id ASC";
-
-                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, conn))
+                    // Lakukan pencarian melalui controller
+                    if (activeProdukTab == "barang")
                     {
-                        using (NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd))
-                        {
-                            // 3. Bikin tabel penampung sementara di memori
-                            DataTable dt = new DataTable();
-                            da.Fill(dt);
-
-                            // 4. Lempar datanya ke UI
-                            // INGAT: Ganti "dataGridView1" sama nama asli komponen tabel di desainmu!
-                            dataGridView1.DataSource = dt;
-
-                            // Opsional: Bikin nama kolom di UI jadi lebih enak dibaca (nggak kaku pakai underscore)
-                            dataGridView1.Columns["barang_id"].HeaderText = "ID Barang";
-                            dataGridView1.Columns["nama_barang"].HeaderText = "Nama Barang";
-                            dataGridView1.Columns["stok"].HeaderText = "Stok Sisa";
-                            dataGridView1.Columns["harga_per_item"].HeaderText = "Harga per Item";
-                            dataGridView1.Columns["kategori_id"].HeaderText = "Kategori";
-                            dataGridView1.Columns["added_at"].HeaderText = "Tanggal Ditambahkan";
-                        }
+                        dgv_Produk.DataSource = null;
+                        dgv_Produk.DataSource = controllerBarang.SearchBarangTani(keyword);
+                        dgv_Produk.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                    }
+                    else if (activeProdukTab == "alat_sewa")
+                    {
+                        dgv_Produk.DataSource = null;
+                        dgv_Produk.DataSource = controllerBarang.SearchAlatTani(keyword);
+                        dgv_Produk.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                     }
                 }
             }
+        }
+
+        private void btn_TerapkanFilter_Click(object sender, EventArgs e)
+        {
+            DateTime dariTanggal = dtp_DariTanggal.Value.Date;
+            DateTime keTanggal = dtp_KeTanggal.Value.Date;
+            string searchId = Tb_CariID.Text.Trim();
+
+            // Panggil method controller untuk GetAllTransaksiSelesai (filter untuk Admin)
+            var listTransaksi = controllerTransaksi.GetAllTransaksiSelesai(dariTanggal, keTanggal, searchId);
+
+            dgvTransaksi.DataSource = null;
+            dgvTransaksi.DataSource = listTransaksi;
+            dgvTransaksi.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        }
+
+        private void btn_AuditTransaksi_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Ambil data DataTable dari Audit Log dan bind ke dgvTransaksi
+                System.Data.DataTable dtAudit = controllerTransaksi.GetAuditTransaksi();
+
+                dgvTransaksi.DataSource = null;
+                dgvTransaksi.DataSource = dtAudit;
+                dgvTransaksi.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            }
             catch (Exception ex)
             {
-                // Kalau ada error (misal lupa nyalain server postgres), muncul popup ini
-                MessageBox.Show("Gagal menarik data, coba lagi: " + ex.Message, "Error Database", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Gagal mengambil log audit: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-
-        private void Dashboard_admin_FormClosed(object sender, FormClosedEventArgs e)
+        private void btn_StokTersedikit_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            try
+            {
+                var dtStok = controllerBarang.GetStokTersedikit();
+                dgvStok.DataSource = null;
+                dgvStok.DataSource = dtStok;
+                dgvStok.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Gagal memuat Laporan Stok Tersedikit: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
-        private void Btn_Barang_Click_1(object sender, EventArgs e)
+        private void btn_ProdukTerlaris_Click(object sender, EventArgs e)
         {
-            // Biarin aja fungsi ini tetep narik data
-            TampilDataBarang();
-
-            // NAH, ini kuncinya biar pop-up View_barang keluar!
-            View.View_barang popUpBarang = new View.View_barang();
-            popUpBarang.ShowDialog();
+            try
+            {
+                var dtLaris = controllerBarang.GetProdukTerlaris();
+                dgvStok.DataSource = null;
+                dgvStok.DataSource = dtLaris;
+                dgvStok.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Gagal memuat Laporan Produk Terlaris: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
-        private void Btn_AlatSewa_Click_1(object sender, EventArgs e)
+        private void btnRiwayat_Click(object sender, EventArgs e)
         {
-            // Kodingan yang merah-merah tadi udah dihapus, diganti sama yang bener ini:
-            View.view_alatSewa popUpAlat = new View.view_alatSewa();
-            popUpAlat.ShowDialog();
 
         }
     }
-}    
+}

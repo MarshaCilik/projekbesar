@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualBasic.ApplicationServices;
+using Microsoft.VisualBasic.ApplicationServices;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,6 +21,8 @@ namespace WinFormsApp1
         c_user controllerUser = new c_user();
         c_pesanan controller_pesanan = new c_pesanan();
         c_barangtani controller = new c_barangtani();
+        c_transaksi controller_transaksi = new c_transaksi();
+        private Button btn_TerimaPesanan;
 
 
         public Users User;
@@ -39,7 +41,26 @@ namespace WinFormsApp1
             this.StartPosition = FormStartPosition.CenterScreen;
             Dgv_BarangTani.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             Dgv_Pesanan.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            InitializeCustomControls();
             LoadData("barang");
+        }
+
+        private void InitializeCustomControls()
+        {
+            btn_TerimaPesanan = new Button();
+            btn_TerimaPesanan.Name = "btn_TerimaPesanan";
+            btn_TerimaPesanan.Text = "Terima Pesanan";
+            btn_TerimaPesanan.BackColor = Color.LightGray;
+            btn_TerimaPesanan.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btn_TerimaPesanan.ForeColor = Color.Black;
+            btn_TerimaPesanan.Size = new Size(149, 32);
+            btn_TerimaPesanan.Location = new Point(479, 274);
+            btn_TerimaPesanan.Visible = false;
+            btn_TerimaPesanan.Click += btn_TerimaPesanan_Click;
+            this.tabPage3.Controls.Add(btn_TerimaPesanan);
+
+            dgv_RiwayatDanTagihan.SelectionChanged += dgv_RiwayatDanTagihan_SelectionChanged;
+            dgv_RiwayatDanTagihan.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
         public void LoadUsernameDinamis(Users user)
@@ -377,5 +398,67 @@ namespace WinFormsApp1
         }
 
 
+        private void btn_TransaksiBerlangsung_Click(object sender, EventArgs e)
+        {
+            dgv_RiwayatDanTagihan.DataSource = controller_transaksi.GetTransaksiBerlangsung(this.User);
+            if (btn_TerimaPesanan != null) btn_TerimaPesanan.Visible = true;
+        }
+
+        private void btn_TagihanDenda_Click(object sender, EventArgs e)
+        {
+            dgv_RiwayatDanTagihan.DataSource = controller_transaksi.GetTagihanDenda(this.User);
+            if (btn_TerimaPesanan != null) btn_TerimaPesanan.Visible = false;
+        }
+
+        private void btn_RiwayatTransaksi_Click(object sender, EventArgs e)
+        {
+            dgv_RiwayatDanTagihan.DataSource = controller_transaksi.GetRiwayatTransaksi(this.User);
+            if (btn_TerimaPesanan != null) btn_TerimaPesanan.Visible = false;
+        }
+
+        private void dgv_RiwayatDanTagihan_SelectionChanged(object sender, EventArgs e)
+        {
+            // Tidak perlu mengatur visibilitas di sini, diatur oleh tombol filter
+        }
+
+        private void btn_TerimaPesanan_Click(object sender, EventArgs e)
+        {
+            if (dgv_RiwayatDanTagihan.CurrentRow != null)
+            {
+                int transaksiId = Convert.ToInt32(dgv_RiwayatDanTagihan.CurrentRow.Cells["TransaksiId"].Value);
+                string statusDistribusi = controller_transaksi.GetStatusDistribusi(transaksiId);
+
+                if (statusDistribusi == "Diproses")
+                {
+                    MessageBox.Show("Pesanan tidak dapat dirubah status distribusinya ke 'Diterima' karena masih 'Diproses'.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (controller_transaksi.TerimaPesanan(transaksiId))
+                {
+                    MessageBox.Show("Pesanan berhasil diterima!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    btn_TransaksiBerlangsung_Click(sender, e); // Refresh tabel
+                }
+                else
+                {
+                    MessageBox.Show("Gagal menerima pesanan.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void btn_TransaksiBerlangsung_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_TagihanDenda_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_RiwayatTransaksi_Click_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

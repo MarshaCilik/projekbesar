@@ -1,4 +1,4 @@
-﻿namespace WinFormsApp1.View.Dashboard_Admin
+namespace WinFormsApp1.View.Dashboard_Admin
 {
     partial class Dashboard_admin
     {
@@ -38,9 +38,8 @@
             dgv_AllUser = new DataGridView();
             pictureBox7 = new PictureBox();
             panel3 = new Panel();
-            button8 = new Button();
+            btn_LaporanRekap = new Button();
             btn_Profil = new Button();
-            btn_TambahKaryawan = new Button();
             btn_CRUDProduk = new Button();
             btn_Dashboard = new Button();
             pictureBox1 = new PictureBox();
@@ -51,11 +50,12 @@
             panel1 = new Panel();
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
-            maskedTextBox1 = new MaskedTextBox();
+            Lbl_UsernameAdmin = new Label();
+            btn_TambahUser = new Button();
             tabPage2 = new TabPage();
-            txtNamaAdmin1 = new MaskedTextBox();
+            Lbl_UsernameAdmin1 = new Label();
             btn_Hapus = new Button();
-            textBox_pencarian = new TextBox();
+            Tb_pencarian = new TextBox();
             btn_tambahBarang = new Button();
             panel4 = new Panel();
             label1 = new Label();
@@ -63,17 +63,14 @@
             pictureBox2 = new PictureBox();
             btn_editData = new Button();
             panel5 = new Panel();
-            Dgv_Barang = new DataGridView();
+            dgv_Produk = new DataGridView();
             Btn_AlatSewa = new Button();
             Btn_Barang = new Button();
-            dataGridView1 = new DataGridView();
-            Dgv_Karyawan = new DataGridView();
             tabPage3 = new TabPage();
             maskedTextBox7 = new MaskedTextBox();
             button3 = new Button();
-            dataGridView3 = new DataGridView();
             panel6 = new Panel();
-            dataGridView2 = new DataGridView();
+            dgv_KurirKaryawan = new DataGridView();
             button4 = new Button();
             button5 = new Button();
             dataGridView4 = new DataGridView();
@@ -83,6 +80,39 @@
             label7 = new Label();
             button6 = new Button();
             tabPage4 = new TabPage();
+            tabControl2 = new TabControl();
+            tabPage6 = new TabPage();
+            panel19 = new Panel();
+            dgvTransaksi = new DataGridView();
+            panel23 = new Panel();
+            Lbl_JumlahTransaksi = new Label();
+            Lbl_Pemasukan = new Label();
+            label31 = new Label();
+            label30 = new Label();
+            btn_AuditTransaksi = new Button();
+            Tb_CariID = new TextBox();
+            btn_TerapkanFilter = new Button();
+            label20 = new Label();
+            dtp_KeTanggal = new DateTimePicker();
+            label21 = new Label();
+            dtp_DariTanggal = new DateTimePicker();
+            label22 = new Label();
+            tabPage7 = new TabPage();
+            btnRiwayat = new Button();
+            btn_ProdukTerlaris = new Button();
+            btn_StokTersedikit = new Button();
+            Lbl_Stok = new Label();
+            dgvStok = new DataGridView();
+            tabPage8 = new TabPage();
+            label23 = new Label();
+            dgvDenda = new DataGridView();
+            btnLaporanDenda = new Button();
+            btnLaporanTransaksi = new Button();
+            btnLaporanStok = new Button();
+            label10 = new Label();
+            button1 = new Button();
+            label4 = new Label();
+            pictureBox5 = new PictureBox();
             tabPage5 = new TabPage();
             panel15 = new Panel();
             Btn_Simpan = new Button();
@@ -129,16 +159,24 @@
             panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             panel5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)Dgv_Barang).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)Dgv_Karyawan).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgv_Produk).BeginInit();
             tabPage3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView3).BeginInit();
             panel6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgv_KurirKaryawan).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView4).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             panel7.SuspendLayout();
+            tabPage4.SuspendLayout();
+            tabControl2.SuspendLayout();
+            tabPage6.SuspendLayout();
+            panel19.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvTransaksi).BeginInit();
+            panel23.SuspendLayout();
+            tabPage7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvStok).BeginInit();
+            tabPage8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvDenda).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             tabPage5.SuspendLayout();
             panel15.SuspendLayout();
             panel14.SuspendLayout();
@@ -193,7 +231,7 @@
             Btn_Edit.Anchor = AnchorStyles.Right;
             Btn_Edit.BackColor = Color.FromArgb(217, 217, 217);
             Btn_Edit.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Btn_Edit.Location = new Point(795, 42);
+            Btn_Edit.Location = new Point(876, 182);
             Btn_Edit.Name = "Btn_Edit";
             Btn_Edit.Size = new Size(204, 45);
             Btn_Edit.TabIndex = 43;
@@ -229,9 +267,9 @@
             panel2.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             panel2.BackColor = Color.FromArgb(122, 148, 114);
             panel2.Controls.Add(dgv_AllUser);
-            panel2.Location = new Point(11, 96);
+            panel2.Location = new Point(11, 236);
             panel2.Name = "panel2";
-            panel2.Size = new Size(988, 803);
+            panel2.Size = new Size(1069, 803);
             panel2.TabIndex = 45;
             // 
             // dgv_AllUser
@@ -239,10 +277,10 @@
             dgv_AllUser.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgv_AllUser.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgv_AllUser.Location = new Point(18, 8);
-            dgv_AllUser.Margin = new Padding(2, 2, 2, 2);
+            dgv_AllUser.Margin = new Padding(2);
             dgv_AllUser.Name = "dgv_AllUser";
             dgv_AllUser.RowHeadersWidth = 62;
-            dgv_AllUser.Size = new Size(959, 608);
+            dgv_AllUser.Size = new Size(1040, 608);
             dgv_AllUser.TabIndex = 37;
             // 
             // pictureBox7
@@ -258,9 +296,8 @@
             // panel3
             // 
             panel3.BackColor = Color.FromArgb(168, 197, 152);
-            panel3.Controls.Add(button8);
+            panel3.Controls.Add(btn_LaporanRekap);
             panel3.Controls.Add(btn_Profil);
-            panel3.Controls.Add(btn_TambahKaryawan);
             panel3.Controls.Add(btn_CRUDProduk);
             panel3.Controls.Add(btn_Dashboard);
             panel3.Controls.Add(pictureBox7);
@@ -270,18 +307,19 @@
             panel3.Size = new Size(256, 1005);
             panel3.TabIndex = 46;
             // 
-            // button8
+            // btn_LaporanRekap
             // 
-            button8.FlatAppearance.BorderSize = 0;
-            button8.FlatStyle = FlatStyle.Flat;
-            button8.Font = new Font("Microsoft Sans Serif", 14.25F);
-            button8.ForeColor = Color.FromArgb(49, 106, 14);
-            button8.Location = new Point(31, 327);
-            button8.Name = "button8";
-            button8.Size = new Size(194, 57);
-            button8.TabIndex = 20;
-            button8.Text = "Laporan dan Rekap";
-            button8.UseVisualStyleBackColor = true;
+            btn_LaporanRekap.FlatAppearance.BorderSize = 0;
+            btn_LaporanRekap.FlatStyle = FlatStyle.Flat;
+            btn_LaporanRekap.Font = new Font("Microsoft Sans Serif", 14.25F);
+            btn_LaporanRekap.ForeColor = Color.FromArgb(49, 106, 14);
+            btn_LaporanRekap.Location = new Point(-1, 238);
+            btn_LaporanRekap.Name = "btn_LaporanRekap";
+            btn_LaporanRekap.Size = new Size(257, 57);
+            btn_LaporanRekap.TabIndex = 20;
+            btn_LaporanRekap.Text = "Laporan dan Rekap";
+            btn_LaporanRekap.UseVisualStyleBackColor = true;
+            btn_LaporanRekap.Click += btn_LaporanRekap_Click;
             // 
             // btn_Profil
             // 
@@ -289,27 +327,13 @@
             btn_Profil.FlatStyle = FlatStyle.Flat;
             btn_Profil.Font = new Font("Microsoft Sans Serif", 14.25F);
             btn_Profil.ForeColor = Color.FromArgb(49, 106, 14);
-            btn_Profil.Location = new Point(-3, 390);
+            btn_Profil.Location = new Point(-1, 301);
             btn_Profil.Name = "btn_Profil";
             btn_Profil.Size = new Size(256, 57);
             btn_Profil.TabIndex = 19;
             btn_Profil.Text = "Profil";
             btn_Profil.UseVisualStyleBackColor = true;
             btn_Profil.Click += btn_Profil_Click;
-            // 
-            // btn_TambahKaryawan
-            // 
-            btn_TambahKaryawan.FlatAppearance.BorderSize = 0;
-            btn_TambahKaryawan.FlatStyle = FlatStyle.Flat;
-            btn_TambahKaryawan.Font = new Font("Microsoft Sans Serif", 14.25F);
-            btn_TambahKaryawan.ForeColor = Color.FromArgb(49, 106, 14);
-            btn_TambahKaryawan.Location = new Point(11, 257);
-            btn_TambahKaryawan.Name = "btn_TambahKaryawan";
-            btn_TambahKaryawan.Size = new Size(228, 57);
-            btn_TambahKaryawan.TabIndex = 18;
-            btn_TambahKaryawan.Text = "Tambah Karyawan dan Kurir";
-            btn_TambahKaryawan.UseVisualStyleBackColor = true;
-            btn_TambahKaryawan.Click += btn_TambahKaryawan_Click;
             // 
             // btn_CRUDProduk
             // 
@@ -403,9 +427,9 @@
             panel1.BackColor = Color.FromArgb(49, 106, 14);
             panel1.Controls.Add(label8);
             panel1.Controls.Add(label9);
-            panel1.Location = new Point(6, -92);
+            panel1.Location = new Point(6, 48);
             panel1.Name = "panel1";
-            panel1.Size = new Size(993, 122);
+            panel1.Size = new Size(1074, 122);
             panel1.TabIndex = 44;
             // 
             // tabControl1
@@ -415,15 +439,16 @@
             tabControl1.Controls.Add(tabPage3);
             tabControl1.Controls.Add(tabPage4);
             tabControl1.Controls.Add(tabPage5);
-            tabControl1.Location = new Point(261, 280);
+            tabControl1.Location = new Point(261, 0);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(1022, 733);
+            tabControl1.Size = new Size(1103, 1013);
             tabControl1.TabIndex = 49;
             // 
             // tabPage1
             // 
-            tabPage1.Controls.Add(maskedTextBox1);
+            tabPage1.Controls.Add(Lbl_UsernameAdmin);
+            tabPage1.Controls.Add(btn_TambahUser);
             tabPage1.Controls.Add(Btn_Kurir);
             tabPage1.Controls.Add(pictureBox6);
             tabPage1.Controls.Add(panel1);
@@ -434,26 +459,37 @@
             tabPage1.Controls.Add(Btn_SeluruhUser);
             tabPage1.Location = new Point(4, 24);
             tabPage1.Name = "tabPage1";
-            tabPage1.Padding = new Padding(3, 3, 3, 3);
-            tabPage1.Size = new Size(1014, 705);
+            tabPage1.Padding = new Padding(3);
+            tabPage1.Size = new Size(1095, 985);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "tabPage1";
             tabPage1.UseVisualStyleBackColor = true;
             // 
-            // maskedTextBox1
+            // Lbl_UsernameAdmin
             // 
-            maskedTextBox1.Location = new Point(52, 14);
-            maskedTextBox1.Margin = new Padding(3, 2, 3, 2);
-            maskedTextBox1.Name = "maskedTextBox1";
-            maskedTextBox1.Size = new Size(213, 23);
-            maskedTextBox1.TabIndex = 49;
-            maskedTextBox1.Text = "txt nama admin 1";
+            Lbl_UsernameAdmin.AutoSize = true;
+            Lbl_UsernameAdmin.Location = new Point(53, 15);
+            Lbl_UsernameAdmin.Name = "Lbl_UsernameAdmin";
+            Lbl_UsernameAdmin.Size = new Size(96, 15);
+            Lbl_UsernameAdmin.TabIndex = 51;
+            Lbl_UsernameAdmin.Text = "UsernameAdmin";
+            // 
+            // btn_TambahUser
+            // 
+            btn_TambahUser.BackColor = Color.GreenYellow;
+            btn_TambahUser.Font = new Font("Microsoft Sans Serif", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btn_TambahUser.Location = new Point(821, 182);
+            btn_TambahUser.Name = "btn_TambahUser";
+            btn_TambahUser.Size = new Size(49, 45);
+            btn_TambahUser.TabIndex = 50;
+            btn_TambahUser.Text = "+";
+            btn_TambahUser.UseVisualStyleBackColor = false;
             // 
             // tabPage2
             // 
-            tabPage2.Controls.Add(txtNamaAdmin1);
+            tabPage2.Controls.Add(Lbl_UsernameAdmin1);
             tabPage2.Controls.Add(btn_Hapus);
-            tabPage2.Controls.Add(textBox_pencarian);
+            tabPage2.Controls.Add(Tb_pencarian);
             tabPage2.Controls.Add(btn_tambahBarang);
             tabPage2.Controls.Add(panel4);
             tabPage2.Controls.Add(pictureBox2);
@@ -461,57 +497,57 @@
             tabPage2.Controls.Add(panel5);
             tabPage2.Controls.Add(Btn_AlatSewa);
             tabPage2.Controls.Add(Btn_Barang);
-            tabPage2.Controls.Add(dataGridView1);
-            tabPage2.Controls.Add(Dgv_Karyawan);
             tabPage2.Location = new Point(4, 24);
             tabPage2.Name = "tabPage2";
-            tabPage2.Padding = new Padding(3, 3, 3, 3);
-            tabPage2.Size = new Size(1099, 985);
+            tabPage2.Padding = new Padding(3);
+            tabPage2.Size = new Size(1095, 985);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "tabPage2";
             tabPage2.UseVisualStyleBackColor = true;
             // 
-            // txtNamaAdmin1
+            // Lbl_UsernameAdmin1
             // 
-            txtNamaAdmin1.Location = new Point(58, 13);
-            txtNamaAdmin1.Margin = new Padding(3, 2, 3, 2);
-            txtNamaAdmin1.Name = "txtNamaAdmin1";
-            txtNamaAdmin1.Size = new Size(210, 23);
-            txtNamaAdmin1.TabIndex = 66;
-            txtNamaAdmin1.Text = "txt nama admin 2";
+            Lbl_UsernameAdmin1.AutoSize = true;
+            Lbl_UsernameAdmin1.Location = new Point(58, 14);
+            Lbl_UsernameAdmin1.Name = "Lbl_UsernameAdmin1";
+            Lbl_UsernameAdmin1.Size = new Size(96, 15);
+            Lbl_UsernameAdmin1.TabIndex = 62;
+            Lbl_UsernameAdmin1.Text = "UsernameAdmin";
             // 
             // btn_Hapus
             // 
             btn_Hapus.Anchor = AnchorStyles.Right;
             btn_Hapus.BackColor = Color.FromArgb(255, 128, 128);
             btn_Hapus.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btn_Hapus.Location = new Point(949, 210);
+            btn_Hapus.Location = new Point(970, 198);
             btn_Hapus.Name = "btn_Hapus";
             btn_Hapus.Size = new Size(107, 45);
             btn_Hapus.TabIndex = 61;
             btn_Hapus.Text = "Hapus";
             btn_Hapus.UseVisualStyleBackColor = false;
+            btn_Hapus.Click += btn_Hapus_Click;
             // 
-            // textBox_pencarian
+            // Tb_pencarian
             // 
-            textBox_pencarian.Location = new Point(11, 242);
-            textBox_pencarian.Margin = new Padding(3, 2, 3, 2);
-            textBox_pencarian.Name = "textBox_pencarian";
-            textBox_pencarian.Size = new Size(392, 23);
-            textBox_pencarian.TabIndex = 60;
-            textBox_pencarian.Text = "Cari Nama Barang/Alat";
+            Tb_pencarian.Location = new Point(11, 242);
+            Tb_pencarian.Margin = new Padding(3, 2, 3, 2);
+            Tb_pencarian.Name = "Tb_pencarian";
+            Tb_pencarian.Size = new Size(392, 23);
+            Tb_pencarian.TabIndex = 60;
+            Tb_pencarian.Text = "Cari Nama Barang/Alat";
             // 
             // btn_tambahBarang
             // 
             btn_tambahBarang.Anchor = AnchorStyles.Right;
             btn_tambahBarang.BackColor = Color.FromArgb(217, 217, 217);
             btn_tambahBarang.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btn_tambahBarang.Location = new Point(518, 226);
+            btn_tambahBarang.Location = new Point(550, 214);
             btn_tambahBarang.Name = "btn_tambahBarang";
             btn_tambahBarang.Size = new Size(204, 32);
             btn_tambahBarang.TabIndex = 59;
-            btn_tambahBarang.Text = "Tambah Barang";
+            btn_tambahBarang.Text = "Tambah Produk Baru";
             btn_tambahBarang.UseVisualStyleBackColor = false;
+            btn_tambahBarang.Click += btn_tambahBarang_Click;
             // 
             // panel4
             // 
@@ -519,7 +555,7 @@
             panel4.BackColor = Color.FromArgb(49, 106, 14);
             panel4.Controls.Add(label1);
             panel4.Controls.Add(label2);
-            panel4.Location = new Point(8, 44);
+            panel4.Location = new Point(6, 45);
             panel4.Name = "panel4";
             panel4.Size = new Size(1078, 137);
             panel4.TabIndex = 56;
@@ -566,7 +602,7 @@
             btn_editData.Anchor = AnchorStyles.Right;
             btn_editData.BackColor = Color.FromArgb(217, 217, 217);
             btn_editData.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btn_editData.Location = new Point(727, 226);
+            btn_editData.Location = new Point(760, 214);
             btn_editData.Name = "btn_editData";
             btn_editData.Size = new Size(204, 29);
             btn_editData.TabIndex = 55;
@@ -577,22 +613,22 @@
             // 
             panel5.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             panel5.BackColor = Color.FromArgb(122, 148, 114);
-            panel5.Controls.Add(Dgv_Barang);
-            panel5.Location = new Point(8, 275);
+            panel5.Controls.Add(dgv_Produk);
+            panel5.Location = new Point(3, 279);
             panel5.Name = "panel5";
-            panel5.Size = new Size(1082, 700);
+            panel5.Size = new Size(1089, 495);
             panel5.TabIndex = 57;
             // 
-            // Dgv_Barang
+            // dgv_Produk
             // 
-            Dgv_Barang.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            Dgv_Barang.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            Dgv_Barang.Location = new Point(13, 14);
-            Dgv_Barang.Margin = new Padding(2, 2, 2, 2);
-            Dgv_Barang.Name = "Dgv_Barang";
-            Dgv_Barang.RowHeadersWidth = 62;
-            Dgv_Barang.Size = new Size(1054, 565);
-            Dgv_Barang.TabIndex = 54;
+            dgv_Produk.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            dgv_Produk.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgv_Produk.Location = new Point(13, 24);
+            dgv_Produk.Margin = new Padding(2);
+            dgv_Produk.Name = "dgv_Produk";
+            dgv_Produk.RowHeadersWidth = 62;
+            dgv_Produk.Size = new Size(1061, 452);
+            dgv_Produk.TabIndex = 49;
             // 
             // Btn_AlatSewa
             // 
@@ -616,35 +652,11 @@
             Btn_Barang.TabIndex = 52;
             Btn_Barang.Text = "Barang";
             Btn_Barang.UseVisualStyleBackColor = false;
-            Btn_Barang.Click += Btn_Barang_Click_1;
-            // 
-            // dataGridView1
-            // 
-            dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(21, 346);
-            dataGridView1.Margin = new Padding(2, 2, 2, 2);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowHeadersWidth = 62;
-            dataGridView1.Size = new Size(930, 508);
-            dataGridView1.TabIndex = 51;
-            // 
-            // Dgv_Karyawan
-            // 
-            Dgv_Karyawan.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            Dgv_Karyawan.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            Dgv_Karyawan.Location = new Point(23, 346);
-            Dgv_Karyawan.Margin = new Padding(2, 2, 2, 2);
-            Dgv_Karyawan.Name = "Dgv_Karyawan";
-            Dgv_Karyawan.RowHeadersWidth = 62;
-            Dgv_Karyawan.Size = new Size(930, 508);
-            Dgv_Karyawan.TabIndex = 49;
             // 
             // tabPage3
             // 
             tabPage3.Controls.Add(maskedTextBox7);
             tabPage3.Controls.Add(button3);
-            tabPage3.Controls.Add(dataGridView3);
             tabPage3.Controls.Add(panel6);
             tabPage3.Controls.Add(button4);
             tabPage3.Controls.Add(button5);
@@ -656,7 +668,7 @@
             tabPage3.Margin = new Padding(3, 2, 3, 2);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new Padding(3, 2, 3, 2);
-            tabPage3.Size = new Size(1099, 985);
+            tabPage3.Size = new Size(1095, 985);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "tabPage3";
             tabPage3.UseVisualStyleBackColor = true;
@@ -675,44 +687,33 @@
             button3.Anchor = AnchorStyles.Right;
             button3.BackColor = Color.FromArgb(217, 217, 217);
             button3.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button3.Location = new Point(884, 190);
+            button3.Location = new Point(876, 190);
             button3.Name = "button3";
             button3.Size = new Size(204, 45);
             button3.TabIndex = 82;
             button3.Text = "Edit Data";
             button3.UseVisualStyleBackColor = false;
             // 
-            // dataGridView3
-            // 
-            dataGridView3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dataGridView3.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView3.Location = new Point(35, 346);
-            dataGridView3.Margin = new Padding(2, 2, 2, 2);
-            dataGridView3.Name = "dataGridView3";
-            dataGridView3.RowHeadersWidth = 62;
-            dataGridView3.Size = new Size(930, 508);
-            dataGridView3.TabIndex = 81;
-            // 
             // panel6
             // 
             panel6.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             panel6.BackColor = Color.FromArgb(122, 148, 114);
-            panel6.Controls.Add(dataGridView2);
+            panel6.Controls.Add(dgv_KurirKaryawan);
             panel6.Location = new Point(0, 250);
             panel6.Name = "panel6";
-            panel6.Size = new Size(1089, 726);
+            panel6.Size = new Size(1170, 726);
             panel6.TabIndex = 84;
             // 
-            // dataGridView2
+            // dgv_KurirKaryawan
             // 
-            dataGridView2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView2.Location = new Point(8, 14);
-            dataGridView2.Margin = new Padding(2, 2, 2, 2);
-            dataGridView2.Name = "dataGridView2";
-            dataGridView2.RowHeadersWidth = 62;
-            dataGridView2.Size = new Size(1072, 326);
-            dataGridView2.TabIndex = 76;
+            dgv_KurirKaryawan.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            dgv_KurirKaryawan.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgv_KurirKaryawan.Location = new Point(8, 14);
+            dgv_KurirKaryawan.Margin = new Padding(2);
+            dgv_KurirKaryawan.Name = "dgv_KurirKaryawan";
+            dgv_KurirKaryawan.RowHeadersWidth = 62;
+            dgv_KurirKaryawan.Size = new Size(1077, 490);
+            dgv_KurirKaryawan.TabIndex = 76;
             // 
             // button4
             // 
@@ -742,10 +743,10 @@
             dataGridView4.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView4.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView4.Location = new Point(34, 346);
-            dataGridView4.Margin = new Padding(2, 2, 2, 2);
+            dataGridView4.Margin = new Padding(2);
             dataGridView4.Name = "dataGridView4";
             dataGridView4.RowHeadersWidth = 62;
-            dataGridView4.Size = new Size(930, 508);
+            dataGridView4.Size = new Size(1011, 508);
             dataGridView4.TabIndex = 78;
             // 
             // pictureBox3
@@ -766,7 +767,7 @@
             panel7.Controls.Add(label7);
             panel7.Location = new Point(0, 45);
             panel7.Name = "panel7";
-            panel7.Size = new Size(1097, 128);
+            panel7.Size = new Size(1178, 128);
             panel7.TabIndex = 83;
             // 
             // label5
@@ -801,7 +802,7 @@
             button6.Anchor = AnchorStyles.Right;
             button6.BackColor = Color.FromArgb(217, 217, 217);
             button6.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button6.Location = new Point(669, 190);
+            button6.Location = new Point(661, 190);
             button6.Name = "button6";
             button6.Size = new Size(204, 45);
             button6.TabIndex = 86;
@@ -810,14 +811,390 @@
             // 
             // tabPage4
             // 
+            tabPage4.Controls.Add(tabControl2);
+            tabPage4.Controls.Add(btnLaporanDenda);
+            tabPage4.Controls.Add(btnLaporanTransaksi);
+            tabPage4.Controls.Add(btnLaporanStok);
+            tabPage4.Controls.Add(label10);
+            tabPage4.Controls.Add(button1);
+            tabPage4.Controls.Add(label4);
+            tabPage4.Controls.Add(pictureBox5);
             tabPage4.Location = new Point(4, 24);
             tabPage4.Margin = new Padding(3, 2, 3, 2);
             tabPage4.Name = "tabPage4";
             tabPage4.Padding = new Padding(3, 2, 3, 2);
-            tabPage4.Size = new Size(1099, 985);
+            tabPage4.Size = new Size(1095, 985);
             tabPage4.TabIndex = 4;
             tabPage4.Text = "tabPage4";
             tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // tabControl2
+            // 
+            tabControl2.Controls.Add(tabPage6);
+            tabControl2.Controls.Add(tabPage7);
+            tabControl2.Controls.Add(tabPage8);
+            tabControl2.Location = new Point(3, 172);
+            tabControl2.Name = "tabControl2";
+            tabControl2.SelectedIndex = 0;
+            tabControl2.Size = new Size(1096, 790);
+            tabControl2.TabIndex = 90;
+            // 
+            // tabPage6
+            // 
+            tabPage6.Controls.Add(panel19);
+            tabPage6.Location = new Point(4, 24);
+            tabPage6.Name = "tabPage6";
+            tabPage6.Padding = new Padding(3);
+            tabPage6.Size = new Size(1088, 762);
+            tabPage6.TabIndex = 0;
+            tabPage6.Text = "tabPage6";
+            tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // panel19
+            // 
+            panel19.BackColor = Color.FromArgb(122, 148, 114);
+            panel19.Controls.Add(dgvTransaksi);
+            panel19.Controls.Add(panel23);
+            panel19.Controls.Add(btn_AuditTransaksi);
+            panel19.Controls.Add(Tb_CariID);
+            panel19.Controls.Add(btn_TerapkanFilter);
+            panel19.Controls.Add(label20);
+            panel19.Controls.Add(dtp_KeTanggal);
+            panel19.Controls.Add(label21);
+            panel19.Controls.Add(dtp_DariTanggal);
+            panel19.Controls.Add(label22);
+            panel19.Location = new Point(4, 3);
+            panel19.Name = "panel19";
+            panel19.Size = new Size(1088, 756);
+            panel19.TabIndex = 0;
+            // 
+            // dgvTransaksi
+            // 
+            dgvTransaksi.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            dgvTransaksi.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
+            dgvTransaksi.BackgroundColor = SystemColors.ButtonHighlight;
+            dgvTransaksi.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvTransaksi.Location = new Point(124, 260);
+            dgvTransaksi.Name = "dgvTransaksi";
+            dgvTransaksi.Size = new Size(846, 375);
+            dgvTransaksi.TabIndex = 106;
+            // 
+            // panel23
+            // 
+            panel23.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            panel23.BackColor = Color.FromArgb(192, 255, 192);
+            panel23.Controls.Add(Lbl_JumlahTransaksi);
+            panel23.Controls.Add(Lbl_Pemasukan);
+            panel23.Controls.Add(label31);
+            panel23.Controls.Add(label30);
+            panel23.Location = new Point(124, 641);
+            panel23.Name = "panel23";
+            panel23.Size = new Size(846, 111);
+            panel23.TabIndex = 105;
+            // 
+            // Lbl_JumlahTransaksi
+            // 
+            Lbl_JumlahTransaksi.AutoSize = true;
+            Lbl_JumlahTransaksi.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            Lbl_JumlahTransaksi.Location = new Point(37, 63);
+            Lbl_JumlahTransaksi.Name = "Lbl_JumlahTransaksi";
+            Lbl_JumlahTransaksi.Size = new Size(154, 32);
+            Lbl_JumlahTransaksi.TabIndex = 3;
+            Lbl_JumlahTransaksi.Text = "50 Transaksi";
+            // 
+            // Lbl_Pemasukan
+            // 
+            Lbl_Pemasukan.AutoSize = true;
+            Lbl_Pemasukan.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            Lbl_Pemasukan.Location = new Point(654, 63);
+            Lbl_Pemasukan.Name = "Lbl_Pemasukan";
+            Lbl_Pemasukan.Size = new Size(143, 32);
+            Lbl_Pemasukan.TabIndex = 2;
+            Lbl_Pemasukan.Text = "Rp 100.000";
+            // 
+            // label31
+            // 
+            label31.AutoSize = true;
+            label31.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label31.Location = new Point(642, 27);
+            label31.Name = "label31";
+            label31.Size = new Size(155, 25);
+            label31.TabIndex = 1;
+            label31.Text = "Total Pemasukan";
+            // 
+            // label30
+            // 
+            label30.AutoSize = true;
+            label30.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label30.Location = new Point(44, 27);
+            label30.Name = "label30";
+            label30.Size = new Size(135, 25);
+            label30.TabIndex = 0;
+            label30.Text = "Total Transaksi";
+            // 
+            // btn_AuditTransaksi
+            // 
+            btn_AuditTransaksi.Anchor = AnchorStyles.Right;
+            btn_AuditTransaksi.Location = new Point(852, 221);
+            btn_AuditTransaksi.Name = "btn_AuditTransaksi";
+            btn_AuditTransaksi.Size = new Size(118, 23);
+            btn_AuditTransaksi.TabIndex = 104;
+            btn_AuditTransaksi.Text = "Audit Transaksi";
+            btn_AuditTransaksi.UseVisualStyleBackColor = true;
+            // 
+            // Tb_CariID
+            // 
+            Tb_CariID.Location = new Point(124, 224);
+            Tb_CariID.Name = "Tb_CariID";
+            Tb_CariID.Size = new Size(267, 23);
+            Tb_CariID.TabIndex = 103;
+            Tb_CariID.Text = "Cari Berdasarkan Id";
+            // 
+            // btn_TerapkanFilter
+            // 
+            btn_TerapkanFilter.Anchor = AnchorStyles.Right;
+            btn_TerapkanFilter.Location = new Point(852, 192);
+            btn_TerapkanFilter.Name = "btn_TerapkanFilter";
+            btn_TerapkanFilter.Size = new Size(118, 23);
+            btn_TerapkanFilter.TabIndex = 102;
+            btn_TerapkanFilter.Text = "Terapkan Filter";
+            btn_TerapkanFilter.UseVisualStyleBackColor = true;
+            btn_TerapkanFilter.Click += btn_TerapkanFilter_Click;
+            // 
+            // label20
+            // 
+            label20.AutoSize = true;
+            label20.BackColor = Color.Transparent;
+            label20.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label20.ForeColor = Color.Black;
+            label20.Location = new Point(352, 159);
+            label20.Name = "label20";
+            label20.Size = new Size(76, 17);
+            label20.TabIndex = 101;
+            label20.Text = "Ke Tanggal";
+            // 
+            // dtp_KeTanggal
+            // 
+            dtp_KeTanggal.Location = new Point(352, 179);
+            dtp_KeTanggal.Name = "dtp_KeTanggal";
+            dtp_KeTanggal.Size = new Size(200, 23);
+            dtp_KeTanggal.TabIndex = 100;
+            // 
+            // label21
+            // 
+            label21.AutoSize = true;
+            label21.BackColor = Color.Transparent;
+            label21.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label21.ForeColor = Color.Black;
+            label21.Location = new Point(124, 159);
+            label21.Name = "label21";
+            label21.Size = new Size(91, 17);
+            label21.TabIndex = 97;
+            label21.Text = "Dari Tanggal:";
+            // 
+            // dtp_DariTanggal
+            // 
+            dtp_DariTanggal.Location = new Point(124, 179);
+            dtp_DariTanggal.Name = "dtp_DariTanggal";
+            dtp_DariTanggal.Size = new Size(200, 23);
+            dtp_DariTanggal.TabIndex = 99;
+            // 
+            // label22
+            // 
+            label22.Anchor = AnchorStyles.None;
+            label22.AutoSize = true;
+            label22.BackColor = Color.FromArgb(49, 106, 14);
+            label22.Font = new Font("Segoe UI", 21.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label22.ForeColor = Color.White;
+            label22.Location = new Point(413, 49);
+            label22.Name = "label22";
+            label22.Size = new Size(273, 40);
+            label22.TabIndex = 98;
+            label22.Text = "Laporan Transaksi ";
+            // 
+            // tabPage7
+            // 
+            tabPage7.Controls.Add(btnRiwayat);
+            tabPage7.Controls.Add(btn_ProdukTerlaris);
+            tabPage7.Controls.Add(btn_StokTersedikit);
+            tabPage7.Controls.Add(Lbl_Stok);
+            tabPage7.Controls.Add(dgvStok);
+            tabPage7.Location = new Point(4, 24);
+            tabPage7.Name = "tabPage7";
+            tabPage7.Padding = new Padding(3);
+            tabPage7.Size = new Size(1088, 762);
+            tabPage7.TabIndex = 1;
+            tabPage7.Text = "tabPage7";
+            tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // btnRiwayat
+            // 
+            btnRiwayat.Anchor = AnchorStyles.Right;
+            btnRiwayat.Location = new Point(914, 44);
+            btnRiwayat.Name = "btnRiwayat";
+            btnRiwayat.Size = new Size(163, 31);
+            btnRiwayat.TabIndex = 68;
+            btnRiwayat.Text = "Riwayat Stok";
+            btnRiwayat.UseVisualStyleBackColor = true;
+            btnRiwayat.Click += btnRiwayat_Click;
+            // 
+            // btn_ProdukTerlaris
+            // 
+            btn_ProdukTerlaris.Location = new Point(176, 60);
+            btn_ProdukTerlaris.Name = "btn_ProdukTerlaris";
+            btn_ProdukTerlaris.Size = new Size(155, 23);
+            btn_ProdukTerlaris.TabIndex = 67;
+            btn_ProdukTerlaris.Text = "Produk Terlaris";
+            btn_ProdukTerlaris.UseVisualStyleBackColor = true;
+            btn_ProdukTerlaris.Click += btn_ProdukTerlaris_Click;
+            // 
+            // btn_StokTersedikit
+            // 
+            btn_StokTersedikit.Location = new Point(31, 60);
+            btn_StokTersedikit.Name = "btn_StokTersedikit";
+            btn_StokTersedikit.Size = new Size(139, 23);
+            btn_StokTersedikit.TabIndex = 66;
+            btn_StokTersedikit.Text = "Stok Tersedikit";
+            btn_StokTersedikit.UseVisualStyleBackColor = true;
+            btn_StokTersedikit.Click += btn_StokTersedikit_Click;
+            // 
+            // Lbl_Stok
+            // 
+            Lbl_Stok.AutoSize = true;
+            Lbl_Stok.BackColor = Color.FromArgb(49, 106, 14);
+            Lbl_Stok.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            Lbl_Stok.ForeColor = Color.White;
+            Lbl_Stok.Location = new Point(457, 18);
+            Lbl_Stok.Name = "Lbl_Stok";
+            Lbl_Stok.Size = new Size(163, 32);
+            Lbl_Stok.TabIndex = 65;
+            Lbl_Stok.Text = "Laporan Stok";
+            // 
+            // dgvStok
+            // 
+            dgvStok.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            dgvStok.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
+            dgvStok.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvStok.Location = new Point(27, 91);
+            dgvStok.Name = "dgvStok";
+            dgvStok.Size = new Size(1050, 653);
+            dgvStok.TabIndex = 64;
+            // 
+            // tabPage8
+            // 
+            tabPage8.Controls.Add(label23);
+            tabPage8.Controls.Add(dgvDenda);
+            tabPage8.Location = new Point(4, 24);
+            tabPage8.Name = "tabPage8";
+            tabPage8.Padding = new Padding(3);
+            tabPage8.Size = new Size(1088, 762);
+            tabPage8.TabIndex = 2;
+            tabPage8.Text = "tabPage8";
+            tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // label23
+            // 
+            label23.AutoSize = true;
+            label23.BackColor = Color.FromArgb(49, 106, 14);
+            label23.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label23.ForeColor = Color.White;
+            label23.Location = new Point(441, 14);
+            label23.Name = "label23";
+            label23.Size = new Size(188, 32);
+            label23.TabIndex = 63;
+            label23.Text = "Laporan Denda";
+            // 
+            // dgvDenda
+            // 
+            dgvDenda.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            dgvDenda.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
+            dgvDenda.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvDenda.Location = new Point(61, 115);
+            dgvDenda.Name = "dgvDenda";
+            dgvDenda.Size = new Size(964, 717);
+            dgvDenda.TabIndex = 62;
+            // 
+            // btnLaporanDenda
+            // 
+            btnLaporanDenda.BackColor = SystemColors.ButtonFace;
+            btnLaporanDenda.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnLaporanDenda.ForeColor = Color.FromArgb(49, 106, 14);
+            btnLaporanDenda.Location = new Point(300, 116);
+            btnLaporanDenda.Name = "btnLaporanDenda";
+            btnLaporanDenda.Size = new Size(137, 39);
+            btnLaporanDenda.TabIndex = 89;
+            btnLaporanDenda.Text = "Denda";
+            btnLaporanDenda.UseVisualStyleBackColor = false;
+            btnLaporanDenda.Click += btnLaporanDenda_Click;
+            // 
+            // btnLaporanTransaksi
+            // 
+            btnLaporanTransaksi.BackColor = SystemColors.ButtonFace;
+            btnLaporanTransaksi.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnLaporanTransaksi.ForeColor = Color.FromArgb(49, 106, 14);
+            btnLaporanTransaksi.Location = new Point(8, 115);
+            btnLaporanTransaksi.Name = "btnLaporanTransaksi";
+            btnLaporanTransaksi.Size = new Size(137, 39);
+            btnLaporanTransaksi.TabIndex = 87;
+            btnLaporanTransaksi.Text = "Transaksi";
+            btnLaporanTransaksi.UseVisualStyleBackColor = false;
+            btnLaporanTransaksi.Click += btnLaporanTransaksi_Click;
+            // 
+            // btnLaporanStok
+            // 
+            btnLaporanStok.BackColor = SystemColors.ButtonFace;
+            btnLaporanStok.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnLaporanStok.ForeColor = Color.FromArgb(49, 106, 14);
+            btnLaporanStok.Location = new Point(153, 115);
+            btnLaporanStok.Name = "btnLaporanStok";
+            btnLaporanStok.Size = new Size(137, 39);
+            btnLaporanStok.TabIndex = 88;
+            btnLaporanStok.Text = "Stok";
+            btnLaporanStok.UseVisualStyleBackColor = false;
+            btnLaporanStok.Click += btnLaporanStok_Click;
+            // 
+            // label10
+            // 
+            label10.Anchor = AnchorStyles.None;
+            label10.AutoSize = true;
+            label10.BackColor = Color.FromArgb(49, 106, 14);
+            label10.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label10.ForeColor = Color.White;
+            label10.Location = new Point(442, 61);
+            label10.Name = "label10";
+            label10.Size = new Size(185, 25);
+            label10.TabIndex = 83;
+            label10.Text = "Laporan dan Rekap";
+            // 
+            // button1
+            // 
+            button1.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            button1.BackColor = Color.FromArgb(49, 106, 14);
+            button1.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button1.Location = new Point(3, 43);
+            button1.Name = "button1";
+            button1.Size = new Size(1096, 62);
+            button1.TabIndex = 84;
+            button1.UseVisualStyleBackColor = false;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(48, 12);
+            label4.Name = "label4";
+            label4.Size = new Size(96, 15);
+            label4.TabIndex = 81;
+            label4.Text = "UsernameAdmin";
+            // 
+            // pictureBox5
+            // 
+            pictureBox5.BackgroundImage = Properties.Resources.Proifl;
+            pictureBox5.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox5.Location = new Point(8, 5);
+            pictureBox5.Name = "pictureBox5";
+            pictureBox5.Size = new Size(32, 32);
+            pictureBox5.TabIndex = 80;
+            pictureBox5.TabStop = false;
             // 
             // tabPage5
             // 
@@ -828,7 +1205,7 @@
             tabPage5.Margin = new Padding(3, 2, 3, 2);
             tabPage5.Name = "tabPage5";
             tabPage5.Padding = new Padding(3, 2, 3, 2);
-            tabPage5.Size = new Size(1099, 985);
+            tabPage5.Size = new Size(1095, 985);
             tabPage5.TabIndex = 3;
             tabPage5.Text = "tabPage5";
             tabPage5.UseVisualStyleBackColor = true;
@@ -870,6 +1247,7 @@
             Btn_Simpan.TabIndex = 41;
             Btn_Simpan.Text = "SIMPAN";
             Btn_Simpan.UseVisualStyleBackColor = false;
+            Btn_Simpan.Click += Btn_Simpan_Click;
             // 
             // panel14
             // 
@@ -1168,7 +1546,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1361, 796);
+            ClientSize = new Size(1361, 995);
             Controls.Add(tabControl1);
             Controls.Add(label3);
             Controls.Add(panel3);
@@ -1193,18 +1571,31 @@
             panel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             panel5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)Dgv_Barang).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)Dgv_Karyawan).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgv_Produk).EndInit();
             tabPage3.ResumeLayout(false);
             tabPage3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView3).EndInit();
             panel6.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgv_KurirKaryawan).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView4).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
             panel7.ResumeLayout(false);
             panel7.PerformLayout();
+            tabPage4.ResumeLayout(false);
+            tabPage4.PerformLayout();
+            tabControl2.ResumeLayout(false);
+            tabPage6.ResumeLayout(false);
+            panel19.ResumeLayout(false);
+            panel19.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvTransaksi).EndInit();
+            panel23.ResumeLayout(false);
+            panel23.PerformLayout();
+            tabPage7.ResumeLayout(false);
+            tabPage7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvStok).EndInit();
+            tabPage8.ResumeLayout(false);
+            tabPage8.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvDenda).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
             tabPage5.ResumeLayout(false);
             panel15.ResumeLayout(false);
             panel15.PerformLayout();
@@ -1251,27 +1642,23 @@
         private Panel panel1;
         private Button btn_Dashboard;
         private Button btn_Profil;
-        private Button btn_TambahKaryawan;
         private Button btn_CRUDProduk;
         private TabControl tabControl1;
         private TabPage tabPage1;
         private TabPage p;
-        private Button button1;
+        private Button btn_TambahUser;
         private Panel panel4;
         private Label label1;
         private Label label2;
         private PictureBox pictureBox2;
-        private Button button2;
         private DataGridView Dgv_Barang;
         private Panel panel5;
         private Button Btn_AlatSewa;
         private Button Btn_Barang;
-        private DataGridView dataGridView1;
-        private DataGridView Dgv_Karyawan;
+        private DataGridView dgv_Produk;
         private TabPage tabPage3;
-        private DataGridView dataGridView2;
+        private DataGridView dgv_KurirKaryawan;
         private Button button3;
-        private DataGridView dataGridView3;
         private Panel panel6;
         private Button button4;
         private Button button5;
@@ -1314,21 +1701,53 @@
         private Panel panel18;
         private Label label19;
         private PictureBox pictureBox4;
-        private TextBox textBox_pencarian;
-        private Button button7;
-        private MaskedTextBox maskedTextBox1;
+        private TextBox Tb_pencarian;
         private MaskedTextBox maskedTextBox4;
         private MaskedTextBox maskedTextBox3;
         private MaskedTextBox maskedTextBox2;
         private MaskedTextBox maskedTextBox6;
         private MaskedTextBox maskedTextBox5;
         private MaskedTextBox maskedTextBox7;
-        private Button button8;
+        private Button btn_LaporanRekap;
         private TabPage tabPage2;
         private TabPage tabPage5;
-        private MaskedTextBox txtNamaAdmin1;
         private Button btn_Hapus;
         private Button btn_tambahBarang;
         private Button btn_editData;
+        private Label Lbl_UsernameAdmin;
+        private Label Lbl_UsernameAdmin1;
+        private Label label4;
+        private PictureBox pictureBox5;
+        private Label label10;
+        private Button button1;
+        private Button btnLaporanDenda;
+        private Button btnLaporanTransaksi;
+        private Button btnLaporanStok;
+        private TabControl tabControl2;
+        private TabPage tabPage6;
+        private Panel panel19;
+        private TabPage tabPage7;
+        private DataGridView dgvTransaksi;
+        private Panel panel23;
+        private Label Lbl_JumlahTransaksi;
+        private Label Lbl_Pemasukan;
+        private Label label31;
+        private Label label30;
+        private Button btn_AuditTransaksi;
+        private TextBox Tb_CariID;
+        private Button btn_TerapkanFilter;
+        private Label label20;
+        private DateTimePicker dtp_KeTanggal;
+        private Label label21;
+        private DateTimePicker dtp_DariTanggal;
+        private Label label22;
+        private Button btnRiwayat;
+        private Button btn_ProdukTerlaris;
+        private Button btn_StokTersedikit;
+        private Label Lbl_Stok;
+        private DataGridView dgvStok;
+        private TabPage tabPage8;
+        private Label label23;
+        private DataGridView dgvDenda;
     }
 }

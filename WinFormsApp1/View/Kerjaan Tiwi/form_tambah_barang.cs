@@ -11,38 +11,32 @@ namespace WinFormsApp1.View
             InitializeComponent();
         }
 
+        private Controller.c_admin controller = new Controller.c_admin();
+
         private void btn_selesai_barang_Click(object sender, EventArgs e)
         {
-            // Ngecek biar nggak ada isian yang dibiarin kosong
-            if (string.IsNullOrWhiteSpace(Tb_Nama_Barang.Text) || string.IsNullOrWhiteSpace(Tb_Harga.Text) || string.IsNullOrWhiteSpace(Tb_Stok.Text))
-            {
-                MessageBox.Show("Jangan ada yang kosong ya isiannya!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
             try
             {
-                // Langsung manggil koneksi dari helper buatan kelompokmu (udah otomatis kebuka koneksinya)
-                using (NpgsqlConnection conn = Helpers.connectDB.GetConnection())
+                int harga = int.Parse(Tb_Harga.Text);
+                int stok = int.Parse(Tb_Stok.Text);
+
+                Models.barangTani barang = new Models.barangTani(0, Tb_Nama_Barang.Text, stok, harga, Tb_Kategori.Text);
+                string result = controller.CreateBarangTani(barang);
+
+                if (result.Contains("berhasil"))
                 {
-                    // Query buat nyimpen data ke tabel barang
-                    string query = "INSERT INTO barang (nama_barang, harga_per_item, stok) VALUES (@nama, @harga, @stok)";
-
-                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, conn))
-                    {
-                        // Narik data dari textbox punya kamu
-                        cmd.Parameters.AddWithValue("nama", Tb_Nama_Barang.Text);
-                        cmd.Parameters.AddWithValue("harga", int.Parse(Tb_Harga.Text));
-                        cmd.Parameters.AddWithValue("stok", int.Parse(Tb_Stok.Text));
-
-                        cmd.ExecuteNonQuery();
-                    }
+                    MessageBox.Show(result, "Berhasil", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
                 }
-
-                MessageBox.Show("Data barang berhasil disimpan!", "Berhasil", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                // Nutup pop-up otomatis kalau udah sukses
-                this.Close();
+                else
+                {
+                    MessageBox.Show(result, "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Harga dan Stok harus berupa angka!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {

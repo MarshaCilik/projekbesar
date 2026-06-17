@@ -74,6 +74,7 @@
             pictureBox2 = new PictureBox();
             tabPage4 = new TabPage();
             tabPage3 = new TabPage();
+            btn_TerimaPesanan = new Button();
             btn_TransaksiBerlangsung = new Button();
             btn_TagihanDenda = new Button();
             btn_RiwayatTransaksi = new Button();
@@ -617,6 +618,7 @@
             // 
             // tabPage3
             // 
+            tabPage3.Controls.Add(btn_TerimaPesanan);
             tabPage3.Controls.Add(btn_TransaksiBerlangsung);
             tabPage3.Controls.Add(btn_TagihanDenda);
             tabPage3.Controls.Add(btn_RiwayatTransaksi);
@@ -630,6 +632,18 @@
             tabPage3.Text = "tabPage3";
             tabPage3.UseVisualStyleBackColor = true;
             // 
+            // btn_TerimaPesanan
+            // 
+            btn_TerimaPesanan.BackColor = Color.LightGray;
+            btn_TerimaPesanan.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btn_TerimaPesanan.ForeColor = Color.Black;
+            btn_TerimaPesanan.Location = new Point(923, 274);
+            btn_TerimaPesanan.Name = "btn_TerimaPesanan";
+            btn_TerimaPesanan.Size = new Size(149, 32);
+            btn_TerimaPesanan.TabIndex = 14;
+            btn_TerimaPesanan.Text = "Terima Pesanan";
+            btn_TerimaPesanan.UseVisualStyleBackColor = false;
+            // 
             // btn_TransaksiBerlangsung
             // 
             btn_TransaksiBerlangsung.BackColor = Color.LightGray;
@@ -641,6 +655,7 @@
             btn_TransaksiBerlangsung.TabIndex = 13;
             btn_TransaksiBerlangsung.Text = "Transaksi Berlangsung";
             btn_TransaksiBerlangsung.UseVisualStyleBackColor = false;
+            btn_TransaksiBerlangsung.Click += btn_TransaksiBerlangsung_Click_1;
             // 
             // btn_TagihanDenda
             // 
@@ -653,6 +668,7 @@
             btn_TagihanDenda.TabIndex = 12;
             btn_TagihanDenda.Text = "Tagihan Denda";
             btn_TagihanDenda.UseVisualStyleBackColor = false;
+            btn_TagihanDenda.Click += btn_TagihanDenda_Click_1;
             // 
             // btn_RiwayatTransaksi
             // 
@@ -665,6 +681,7 @@
             btn_RiwayatTransaksi.TabIndex = 11;
             btn_RiwayatTransaksi.Text = "Riwayat Transaksi";
             btn_RiwayatTransaksi.UseVisualStyleBackColor = false;
+            btn_RiwayatTransaksi.Click += btn_RiwayatTransaksi_Click_1;
             // 
             // panel18
             // 
@@ -783,14 +800,14 @@
             panel4.Controls.Add(Lbl_Pesanan);
             panel4.Location = new Point(11, 16);
             panel4.Name = "panel4";
-            panel4.Size = new Size(1061, 220);
+            panel4.Size = new Size(1061, 100);
             panel4.TabIndex = 5;
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.ForeColor = Color.White;
-            label2.Location = new Point(13, 193);
+            label2.Location = new Point(13, 70);
             label2.Name = "label2";
             label2.Size = new Size(334, 15);
             label2.TabIndex = 2;
