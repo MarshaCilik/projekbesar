@@ -23,9 +23,42 @@ namespace WinFormsApp1.View
         }
 
 
-
         private void WireEvents()
         {
+            // Tambahkan btnKirim secara dinamis untuk tabPage3 (Distribusi)
+            Button btnKirim = new Button();
+            btnKirim.Text = "Kirim / Update Status";
+            btnKirim.Size = new Size(180, 35);
+            btnKirim.Location = new Point(dgvDistribusi.Left, dgvDistribusi.Top - 40);
+            btnKirim.BackColor = Color.FromArgb(49, 106, 14);
+            btnKirim.ForeColor = Color.White;
+            btnKirim.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnKirim.Cursor = Cursors.Hand;
+            tabPage3.Controls.Add(btnKirim);
+            btnKirim.BringToFront();
+
+            btnKirim.Click += (s, e) => {
+                if (dgvDistribusi.SelectedRows.Count > 0)
+                {
+                    try
+                    {
+                        int transaksiId = Convert.ToInt32(dgvDistribusi.SelectedRows[0].Cells["transaksi_id"].Value);
+                        // Status 2 = Dikirim
+                        db.UpdateStatusDistribusi(transaksiId, 2);
+                        MessageBox.Show("Status distribusi berhasil diubah menjadi 'Dikirim'.", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        dgvDistribusi.DataSource = db.GetManajemenDistribusi();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Terjadi kesalahan: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Silakan pilih transaksi pada tabel terlebih dahulu.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            };
+
             this.Load += Dashboard_Karyawan_Load;
 
             // Sidebar Navigation
@@ -450,11 +483,11 @@ namespace WinFormsApp1.View
 
             DataGridViewRow row = dgvDistribusi.Rows[e.RowIndex];
             int pesananId = Convert.ToInt32(row.Cells["ID Pesanan"].Value);
-            string namaPetani = row.Cells["Nama Petani"].Value.ToString();
-            string namaItem = row.Cells["Nama Item"].Value.ToString();
+            string namaPetani = row.Cells["Nama Petani"].Value?.ToString() ?? "";
+            string namaItem = row.Cells["Nama Item"].Value?.ToString() ?? "";
             int jumlah = Convert.ToInt32(row.Cells["Jumlah"].Value);
             int stokSekarang = Convert.ToInt32(row.Cells["Stok Sekarang"].Value);
-            string jenis = row.Cells["Jenis"].Value.ToString();
+            string jenis = row.Cells["Jenis"].Value?.ToString() ?? "";
 
             string message = $"Detail Pesanan:\n" +
                              $"- ID Pesanan: {pesananId}\n" +
@@ -671,7 +704,7 @@ namespace WinFormsApp1.View
             }
 
             int dendaId = Convert.ToInt32(dgvDenda.SelectedRows[0].Cells["denda_id"].Value);
-            string namaAlat = dgvDenda.SelectedRows[0].Cells["nama_alat"].Value.ToString();
+            string namaAlat = dgvDenda.SelectedRows[0].Cells["nama_alat"].Value?.ToString() ?? "";
 
             DialogResult confirm = MessageBox.Show($"Tandai denda alat sewa {namaAlat} (ID: {dendaId}) sebagai LUNAS?", "Konfirmasi Pelunasan", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (confirm == DialogResult.Yes)
@@ -741,7 +774,7 @@ namespace WinFormsApp1.View
             if (e.RowIndex >= 0)
             {
                 int idDenda = Convert.ToInt32(dgvDenda.Rows[e.RowIndex].Cells["denda_id"].Value);
-                string status = dgvDenda.Rows[e.RowIndex].Cells["status_pembayaran"].Value.ToString();
+                string status = dgvDenda.Rows[e.RowIndex].Cells["status_pembayaran"].Value?.ToString() ?? "";
 
                 if (status != "Lunas")
                 {

@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualBasic.ApplicationServices;
+using Microsoft.VisualBasic.ApplicationServices;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -91,6 +91,7 @@ namespace WinFormsApp1.View
             button13 = new Button();
             tabPage3 = new TabPage();
             panel1 = new Panel();
+            btnKirim = new Button();
             btnRefresh3 = new Button();
             txtCariID3 = new MaskedTextBox();
             dgvDistribusi = new DataGridView();
@@ -766,6 +767,7 @@ namespace WinFormsApp1.View
             // 
             panel1.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             panel1.BackColor = Color.FromArgb(122, 148, 114);
+            panel1.Controls.Add(btnKirim);
             panel1.Controls.Add(btnRefresh3);
             panel1.Controls.Add(txtCariID3);
             panel1.Controls.Add(dgvDistribusi);
@@ -773,6 +775,15 @@ namespace WinFormsApp1.View
             panel1.Name = "panel1";
             panel1.Size = new Size(979, 839);
             panel1.TabIndex = 89;
+            // 
+            // btnKirim
+            // 
+            btnKirim.Location = new Point(884, 26);
+            btnKirim.Name = "btnKirim";
+            btnKirim.Size = new Size(75, 23);
+            btnKirim.TabIndex = 99;
+            btnKirim.Text = "Kirim";
+            btnKirim.UseVisualStyleBackColor = true;
             // 
             // btnRefresh3
             // 
@@ -1838,7 +1849,6 @@ namespace WinFormsApp1.View
         private Label label4;
         private DateTimePicker dtp_KeTanggal;
         private Label label3;
-        private Panel panel22;
         private Button btn_Refresh41;
         private Panel panel23;
         private Label label30;
@@ -1856,9 +1866,6 @@ namespace WinFormsApp1.View
         private Button btnRefresh2;
         private Button btnRefresh3;
         private MaskedTextBox txtCariID3;
-        private Button button27;
-        private Button btnFilter4;
-        private Button btnAlatSewa;
         private Button btnProduk42;
         private Panel panel6;
         private Button btnTransaksi;
@@ -1872,5 +1879,6 @@ namespace WinFormsApp1.View
         private Button btnAlat42;
         private Button btnRiwayat;
         private Button btnLunas;
+        private Button btnKirim;
     }
 }
