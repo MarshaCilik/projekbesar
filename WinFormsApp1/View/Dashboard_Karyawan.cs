@@ -502,7 +502,7 @@ namespace WinFormsApp1.View
 
                 try
                 {
-                    db.TerimaPesanan(pesananId, UserSession.Username);
+                    //db.TerimaPesanan(pesananId, UserSession.Username, ku);
                     MessageBox.Show("Pesanan berhasil diterima dan dikirim ke transaksi!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LoadDistribusiData();
                 }

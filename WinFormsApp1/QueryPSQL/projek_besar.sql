@@ -653,7 +653,7 @@ ALTER PROCEDURE public.p_batal_pesanan(IN p_pesanan_id integer, IN p_alasan text
 -- Name: p_terima_pesanan(integer, character varying); Type: PROCEDURE; Schema: public; Owner: postgres
 --
 
-CREATE PROCEDURE public.p_terima_pesanan(IN p_pesanan_id integer, IN p_karyawan_username character varying)
+CREATE PROCEDURE public.p_terima_pesanan(IN p_pesanan_id integer, IN p_karyawan_username character varying, IN p_kurir_id integer DEFAULT NULL)
     LANGUAGE plpgsql
     AS $$
 DECLARE
@@ -661,6 +661,7 @@ DECLARE
     v_users_id int;
     v_opsi varchar;
     v_distribusi_id int;
+    v_kurir_id int;
     r_detail_pembelian RECORD;
     r_detail_sewa RECORD;
 BEGIN
@@ -700,18 +701,18 @@ BEGIN
     -- Update status pesanan
     UPDATE pesanan SET status_pesanan = 'Selesai' WHERE pesanan_id = p_pesanan_id;
 
-    -- Tentukan status distribusi
-    IF v_opsi = 'Diambil Sendiri' THEN
-        v_distribusi_id := 1; 
-    ELSIF v_opsi = 'Diantar' THEN
-        v_distribusi_id := 2; 
+    -- Tentukan status distribusi dan kurir
+    IF v_opsi ILIKE '%diantar%' THEN
+        v_distribusi_id := 2;
+        v_kurir_id := p_kurir_id; -- Gunakan kurir yang dipilih, NULL jika tidak ada
     ELSE
-        v_distribusi_id := 1; 
+        v_distribusi_id := 1;
+        v_kurir_id := NULL; -- Bukan diantar, set kurir NULL
     END IF;
 
-    -- Bikin transaksi (metode_pembayaran dihapus dari sini)
-    INSERT INTO transaksi (created_at, catatan, users_id, status_transaksi, status_distribusi_id, status_pembayaran, pesanan_id)
-    VALUES (NOW(), 'Penerimaan pesanan ID ' || p_pesanan_id || ' oleh ' || p_karyawan_username, v_users_id, 'Diproses', v_distribusi_id, 'belum lunas', p_pesanan_id)
+    -- Bikin transaksi
+    INSERT INTO transaksi (created_at, catatan, users_id, status_transaksi, status_distribusi_id, status_pembayaran, pesanan_id, kurir_id)
+    VALUES (NOW(), 'Penerimaan pesanan ID ' || p_pesanan_id || ' oleh ' || p_karyawan_username, v_users_id, 'Diproses', v_distribusi_id, 'belum lunas', p_pesanan_id, v_kurir_id)
     RETURNING transaksi_id INTO v_transaksi_id;
 
     -- Salin ke detail transaksi pembelian
@@ -729,7 +730,7 @@ END;
 $$;
 
 
-ALTER PROCEDURE public.p_terima_pesanan(IN p_pesanan_id integer, IN p_karyawan_username character varying) OWNER TO postgres;
+ALTER PROCEDURE public.p_terima_pesanan(IN p_pesanan_id integer, IN p_karyawan_username character varying, IN p_kurir_id integer) OWNER TO postgres;
 
 --
 -- TOC entry 291 (class 1255 OID 82828)
